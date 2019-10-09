@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDS_ML", "BDS_ML\BDS_ML.csproj", "{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {682C34C0-4E14-4122-9F31-BC7C5BBF2E43}
+	EndGlobalSection
+EndGlobal
