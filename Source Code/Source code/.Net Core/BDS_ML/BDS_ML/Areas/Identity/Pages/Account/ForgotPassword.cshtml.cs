@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using BDS_ML.Models.Mail;
 
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
@@ -58,7 +59,8 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                SendMail.sendMail($"Vui lòng đặt lại mật khẩu của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>nhấn vào đây</a>.", Input.Email,
+                       "Đặt lại mật khẩu của bạn");
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
