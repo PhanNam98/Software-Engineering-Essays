@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BDS_ML.Controllers
 {
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [Authorize]
     public class HomeController : Controller
     {
@@ -17,7 +17,7 @@ namespace BDS_ML.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
             return View();

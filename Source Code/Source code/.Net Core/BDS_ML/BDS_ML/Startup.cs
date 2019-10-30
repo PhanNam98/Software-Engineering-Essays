@@ -59,6 +59,7 @@ namespace BDS_ML
             services.AddMvc()
         .AddSessionStateTempDataProvider();
             services.AddSession();
+            services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(1));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,7 +93,7 @@ namespace BDS_ML
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            DummyData.Initialize(userManager,roleManager,context).Wait();
+            
         }
     }
 }

@@ -46,14 +46,14 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-            [Required]
-            [StringLength(50, ErrorMessage = "The First Name must be at max {1} characters long.", MinimumLength = 2)]
-            [Display(Name = "First Name")]
-            public string FirstName { get; set; }
-            [Required]
-            [StringLength(50, ErrorMessage = "The Last Name must be at max {1} characters long.", MinimumLength = 2)]
-            [Display(Name = "Last Name")]
-            public string LastName { get; set; }
+            //[Required]
+            //[StringLength(50, ErrorMessage = "The First Name must be at max {1} characters long.", MinimumLength = 2)]
+            //[Display(Name = "First Name")]
+            //public string FirstName { get; set; }
+            //[Required]
+            //[StringLength(50, ErrorMessage = "The Last Name must be at max {1} characters long.", MinimumLength = 2)]
+            //[Display(Name = "Last Name")]
+            //public string LastName { get; set; }
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -71,15 +71,15 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The Address must be at max {1} characters long.", MinimumLength = 6)]
-            [Display(Name = "Address")]
-            public string Address { get; set; }
+            //[Required]
+            //[StringLength(100, ErrorMessage = "The Address must be at max {1} characters long.", MinimumLength = 6)]
+            //[Display(Name = "Address")]
+            //public string Address { get; set; }
 
-            [Required]
-            [StringLength(20, ErrorMessage = "The City be at max {1} characters long.", MinimumLength = 6)]
-            [Display(Name = "City")]
-            public string City { get; set; }
+            //[Required]
+            //[StringLength(20, ErrorMessage = "The City be at max {1} characters long.", MinimumLength = 6)]
+            //[Display(Name = "City")]
+            //public string City { get; set; }
 
 
 
@@ -97,7 +97,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,
-                LastName=Input.LastName, FirstName=Input.FirstName,City=Input.City,Address=Input.Address,PhoneNumber=Input.PhoneNumber};
+                PhoneNumber=Input.PhoneNumber};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
