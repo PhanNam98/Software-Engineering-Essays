@@ -46,37 +46,37 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email phải được điền.")]
+            [EmailAddress(ErrorMessage = "Email không hợp lệ.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
-            [Required]
-            [StringLength(50, ErrorMessage = "The First Name must be at max {1} characters long.", MinimumLength = 2)]
+            [Required(ErrorMessage = "Họ phải được điền.")]
+            [StringLength(50, ErrorMessage = "Họ phải dài hơn {2} kí tự.", MinimumLength = 2)]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
-            [Required]
-            [StringLength(50, ErrorMessage = "The Last Name must be at max {1} characters long.", MinimumLength = 2)]
+            [Required(ErrorMessage = "Tên phải được điền.")]
+            [StringLength(50, ErrorMessage = "Tên phải dài hơn {2} kí tự.", MinimumLength = 2)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Mật khẩu phải được điền.")]
+            [StringLength(100, ErrorMessage = "Mật khẩu phải dài từ {2} đến {1} kí tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Mật khẩu không khớp.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [DataType(DataType.PhoneNumber)]
-            [StringLength(15, ErrorMessage = "The Phone Number must be at max {1} characters long.", MinimumLength = 10)]
+            [Required(ErrorMessage = "Số điện thoại phải được điền.")]
+            [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
+            [StringLength(11, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "the address must be at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Địa chỉ phải được điền.")]
+            [StringLength(100, ErrorMessage = "Địa chỉ phải dài hơn {2} kí tự.", MinimumLength = 10)]
             [Display(Name = "Address")]
             public string Address { get; set; }
 
@@ -119,16 +119,17 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                             await image.CopyToAsync(stream);
                         }
                         customer.Avatar_URL = fileName;
-                        
+
                     }
-                    
+                    else
+                        customer.Avatar_URL = "avatar_common.png";
+           
                     customer.Account_ID = user.Id;
                     customer.FirstName = Input.FirstName;
                     customer.LastName = Input.LastName;
                     customer.PhoneNumber = Input.PhoneNumber;
                     customer.Email = Input.Email;
                     customer.Address = Input.Address;
-                   
                     customer.ModifiedDate = DateTime.Now;
                     customer.CreatedDate = DateTime.Now;
                     try
@@ -139,7 +140,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     }
                     catch(Exception e)
                     {
-                        _logger.LogInformation("Error a new customer with account.");
+                        _logger.LogInformation("Error a new customer with account."+"Error: "+e);
                     }
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
