@@ -35,7 +35,13 @@ namespace BDS_ML
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Default Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.AllowedForNewUsers = true;
+            });
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DataConnect")));
@@ -53,6 +59,7 @@ namespace BDS_ML
             services.AddMvc()
         .AddSessionStateTempDataProvider();
             services.AddSession();
+            services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(1));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,7 +93,7 @@ namespace BDS_ML
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            DummyData.Initialize(userManager,roleManager,context).Wait();
+            
         }
     }
 }
