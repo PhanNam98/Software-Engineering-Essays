@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using RES.Models.Security;
+using BDS_ML.Models.Security;
+using BDS_ML.Models.ModelDB;
 
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
@@ -19,11 +20,13 @@ namespace BDS_ML.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly BDT_MLDBContext _context;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = new BDT_MLDBContext();
         }
 
         [BindProperty]
@@ -93,7 +96,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Đăng nhập không thành công!.");
                     return Page();
                 }
             }

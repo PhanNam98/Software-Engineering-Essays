@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BDS_ML.Models.Mail;
-using RES.Models.Security;
+using BDS_ML.Models.Security;
+using BDS_ML.Models.ModelDB;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
@@ -22,7 +25,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        private readonly BDT_MLDBContext _context;
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -33,6 +36,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = new BDT_MLDBContext();
         }
 
         [BindProperty]
@@ -46,14 +50,14 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-            //[Required]
-            //[StringLength(50, ErrorMessage = "The First Name must be at max {1} characters long.", MinimumLength = 2)]
-            //[Display(Name = "First Name")]
-            //public string FirstName { get; set; }
-            //[Required]
-            //[StringLength(50, ErrorMessage = "The Last Name must be at max {1} characters long.", MinimumLength = 2)]
-            //[Display(Name = "Last Name")]
-            //public string LastName { get; set; }
+            [Required]
+            [StringLength(50, ErrorMessage = "The First Name must be at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Required]
+            [StringLength(50, ErrorMessage = "The Last Name must be at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -71,19 +75,14 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
-            //[Required]
-            //[StringLength(100, ErrorMessage = "The Address must be at max {1} characters long.", MinimumLength = 6)]
-            //[Display(Name = "Address")]
-            //public string Address { get; set; }
+            [Required]
+            [StringLength(100, ErrorMessage = "the address must be at max {1} characters long.", MinimumLength = 6)]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
 
-            //[Required]
-            //[StringLength(20, ErrorMessage = "The City be at max {1} characters long.", MinimumLength = 6)]
-            //[Display(Name = "City")]
-            //public string City { get; set; }
-
-
-
-
+            [Display(Name = "Avatar")]
+            public IFormFile Avatar_URL { get; set; }
+            
         }
 
         public void OnGet(string returnUrl = null)
@@ -96,6 +95,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
+              
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,
                 PhoneNumber=Input.PhoneNumber};
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -103,7 +103,44 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 {
                     await _userManager.AddToRoleAsync(user, "User");
                     _logger.LogInformation("User created a new account with password.");
+                    Customer customer = new Customer();
+                    if (Input.Avatar_URL != null)
+                    {
+                        string fileName = Path.GetFileName(Input.Avatar_URL.FileName);
 
+                        string extensionFileName = Path.GetExtension(fileName);
+
+                        fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
+
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars", fileName);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await Input.Avatar_URL.CopyToAsync(stream);
+                        }
+                        customer.Avatar_URL = fileName;
+                        
+                    }
+                    
+                    customer.Account_ID = user.Id;
+                    customer.FirstName = Input.FirstName;
+                    customer.LastName = Input.LastName;
+                    customer.PhoneNumber = Input.PhoneNumber;
+                    customer.Email = Input.Email;
+                    customer.Address = Input.Address;
+                   
+                    customer.ModifiedDate = DateTime.Now;
+                    customer.CreatedDate = DateTime.Now;
+                    try
+                    {
+                        _context.Customer.Add(customer);
+                        _context.SaveChanges();
+                        _logger.LogInformation("Created a new customer with account.");
+                    }
+                    catch(Exception e)
+                    {
+                        _logger.LogInformation("Error a new customer with account.");
+                    }
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
