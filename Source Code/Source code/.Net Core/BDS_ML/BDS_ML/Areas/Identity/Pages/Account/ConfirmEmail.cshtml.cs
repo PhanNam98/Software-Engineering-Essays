@@ -22,21 +22,27 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
-            if (userId == null || code == null)
-            {
-                return RedirectToPage("/");
-            }
+            try{
+                if (userId == null || code == null)
+                {
+                    return RedirectToPage("/");
+                }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{userId}'.");
+                }
 
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            if (!result.Succeeded)
+                var result = await _userManager.ConfirmEmailAsync(user, code);
+                if (!result.Succeeded)
+                {
+                    throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                }
+            }
+            catch (Exception e)
             {
-                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                return RedirectToPage("./ConfirmEmailExpire");
             }
 
             return Page();

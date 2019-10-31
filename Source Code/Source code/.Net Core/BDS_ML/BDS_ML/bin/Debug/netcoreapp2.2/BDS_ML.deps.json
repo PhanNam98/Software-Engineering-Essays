@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "eac4891783da909b387d59d8fbc05a1405a44977"
+    "signature": "64dfc4aa9677ea9c8dbba293d89a3f4867b9c9e1"
   },
   "compilationOptions": {
     "defines": [
@@ -26,6 +26,7 @@
         "dependencies": {
           "MailKit": "2.3.2",
           "Microsoft.AspNetCore.App": "2.2.0",
+          "Microsoft.AspNetCore.Authentication.Google": "2.2.2",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
           "Microsoft.EntityFrameworkCore.Tools": "2.2.6",
@@ -54,6 +55,20 @@
         },
         "compile": {
           "lib/netstandard2.0/MailKit.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Google/2.2.2": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.OAuth": "2.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "assemblyVersion": "2.2.2.0",
+            "fileVersion": "2.2.2.19024"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Google.dll": {}
         }
       },
       "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
@@ -865,7 +880,7 @@
           "Microsoft.AspNetCore.Authentication.Cookies": "2.2.0",
           "Microsoft.AspNetCore.Authentication.Core": "2.2.0",
           "Microsoft.AspNetCore.Authentication.Facebook": "2.2.0",
-          "Microsoft.AspNetCore.Authentication.Google": "2.2.0",
+          "Microsoft.AspNetCore.Authentication.Google": "2.2.2",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "2.2.0",
           "Microsoft.AspNetCore.Authentication.MicrosoftAccount": "2.2.0",
           "Microsoft.AspNetCore.Authentication.OAuth": "2.2.0",
@@ -1062,15 +1077,6 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Facebook.dll": {}
-        },
-        "compileOnly": true
-      },
-      "Microsoft.AspNetCore.Authentication.Google/2.2.0": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Authentication.OAuth": "2.2.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.Authentication.Google.dll": {}
         },
         "compileOnly": true
       },
@@ -3831,6 +3837,13 @@
       "path": "mailkit/2.3.2",
       "hashPath": "mailkit.2.3.2.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.Authentication.Google/2.2.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oiCm+HAkkP9vBEBmqIuq+mz+ZxMRrnXviHepSChCFvpJvjYm5vWjpqD+L8JMQaGUTs3k4hycjgWbmhd/3bJx/A==",
+      "path": "microsoft.aspnetcore.authentication.google/2.2.2",
+      "hashPath": "microsoft.aspnetcore.authentication.google.2.2.2.nupkg.sha512"
+    },
     "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
       "type": "package",
       "serviceable": true,
@@ -4271,13 +4284,6 @@
       "sha512": "sha512-SOc/wjoBntSWVZ6uG0R/TqQ0xmxu2H1PhkuYxINYpkUB7s3cQQuRDyZtJIdQonzpWVwBRj0ImwktiMaBF/7ihQ==",
       "path": "microsoft.aspnetcore.authentication.facebook/2.2.0",
       "hashPath": "microsoft.aspnetcore.authentication.facebook.2.2.0.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.Authentication.Google/2.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-norGVE0KRIT0pdNKhlLlsMi/7O69ACpx2RSj8rMHCoMRETCYH4PTqUbHI1kkfAGNUtcuQ8VIGIXSa1ZdGKWcdA==",
-      "path": "microsoft.aspnetcore.authentication.google/2.2.0",
-      "hashPath": "microsoft.aspnetcore.authentication.google.2.2.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/2.2.0": {
       "type": "package",

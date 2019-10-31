@@ -58,6 +58,7 @@ namespace BDS_ML
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc()
         .AddSessionStateTempDataProvider();
+
             services.AddSession();
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(1));
         }
