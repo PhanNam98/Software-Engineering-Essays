@@ -14,6 +14,7 @@ using BDS_ML.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BDS_ML.Models;
+using BDS_ML.Models.ModelDB;
 
 namespace BDS_ML
 {
@@ -45,6 +46,10 @@ namespace BDS_ML
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DataConnect")));
+            services.AddDbContext<BDT_MLDBContext>(options =>
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("DataConnect")));
+         
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

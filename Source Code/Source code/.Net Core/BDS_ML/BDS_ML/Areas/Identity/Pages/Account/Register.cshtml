@@ -38,12 +38,14 @@
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Avatar_URL"></label>
-                <div class="custom-file">
-                    <input asp-for="Input.Avatar_URL" class="form-control custom-file-input" accept="image/*">
-                    <label class="custom-file-label">Chọn ảnh</label>
-                    <span asp-validation-for="Input.Avatar_URL" class="text-danger"></span>
-                </div>
+                @*<label asp-for="Input.Avatar_URL"></label>
+        <div class="custom-file">
+            <input asp-for="Input.Avatar_URL" class="form-control custom-file-input" accept="image/*">
+            <label class="custom-file-label">Chọn ảnh</label>
+            <span asp-validation-for="Input.Avatar_URL" class="text-danger"></span>
+        </div>*@
+                    <label>Upload file</label>
+                    <input type="file" class="form-control" name="image" />
             </div>
             <div class="form-group">
                 <label asp-for="Input.Password"></label>

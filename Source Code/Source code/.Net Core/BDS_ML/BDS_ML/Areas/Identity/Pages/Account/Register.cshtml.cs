@@ -90,7 +90,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(IFormFile image,string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
@@ -104,9 +104,9 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     await _userManager.AddToRoleAsync(user, "User");
                     _logger.LogInformation("User created a new account with password.");
                     Customer customer = new Customer();
-                    if (Input.Avatar_URL != null)
+                    if (image != null)
                     {
-                        string fileName = Path.GetFileName(Input.Avatar_URL.FileName);
+                        string fileName = Path.GetFileName(image.FileName);
 
                         string extensionFileName = Path.GetExtension(fileName);
 
@@ -116,7 +116,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
-                            await Input.Avatar_URL.CopyToAsync(stream);
+                            await image.CopyToAsync(stream);
                         }
                         customer.Avatar_URL = fileName;
                         
