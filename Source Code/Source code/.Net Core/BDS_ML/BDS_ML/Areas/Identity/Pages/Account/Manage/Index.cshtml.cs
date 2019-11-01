@@ -45,7 +45,9 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             public string Email { get; set; }
 
-            [Phone]
+            [Required]
+            [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
+            [StringLength(11, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
@@ -81,7 +83,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-           
+            var id = await _userManager.GetUserIdAsync(user);
 
             Username = userName;
 
@@ -159,7 +161,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
             }
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Thông tin của bạn đã được cập nhật";
             return RedirectToPage();
         }
 
