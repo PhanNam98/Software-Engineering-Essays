@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using BDS_ML.Models.ModelDB;
 
 namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 {
@@ -18,6 +19,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly BDT_MLDBContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
@@ -27,6 +29,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _context = new BDT_MLDBContext();
         }
 
         public string Username { get; set; }
@@ -45,31 +48,27 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Số điên thoại phải được điền.")]
             [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
             [StringLength(11, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Số điện thoại")]
             public string PhoneNumber { get; set; }
 
-            //[Required]
-            //[StringLength(50, ErrorMessage = "The First Name must be at max {1} characters long.", MinimumLength = 2)]
-            //[Display(Name = "First Name")]
-            //public string FirstName { get; set; }
+            [Required(ErrorMessage = "Họ phải được điền.")]
+            [StringLength(50, ErrorMessage = "Họ phải dài hơn {2} kí tự và ít hơn {1} kí tự.", MinimumLength = 2)]
+            [Display(Name = "Họ")]
+            public string FirstName { get; set; }
 
-            //[Required]
-            //[StringLength(50, ErrorMessage = "The Last Name must be at max {1} characters long.", MinimumLength = 2)]
-            //[Display(Name = "Last Name")]
-            //public string LastName { get; set; }
+            [Required(ErrorMessage = "Tên phải được điền.")]
+            [StringLength(50, ErrorMessage = "Tên phải dài hơn {2} kí tự và ít hơn {1} kí tự.", MinimumLength = 2)]
+            [Display(Name = "Tên")]
+            public string LastName { get; set; }
 
-            //[Required]
-            //[StringLength(100, ErrorMessage = "The Address must be at max {1} characters long.", MinimumLength = 6)]
-            //[Display(Name = "Address")]
-            //public string Address { get; set; }
+            [Required(ErrorMessage = "Địa chỉ phải được điền.")]
+            [StringLength(100, ErrorMessage = "Địa chỉ chưa hợp lệ.", MinimumLength = 6)]
+            [Display(Name = "Địa chỉ")]
+            public string Address { get; set; }
 
-            //[Required]
-            //[StringLength(20, ErrorMessage = "The City be at max {1} characters long.", MinimumLength = 6)]
-            //[Display(Name = "City")]
-            //public string City { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -87,14 +86,16 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
 
+            Customer customer = _context.Customer.Where(c=>c.Account_ID==id).SingleOrDefault();
+            
+
             Input = new InputModel
             {
                 Email = email,
                 PhoneNumber = phoneNumber,
-                //LastName=lastname,
-                //FirstName=firstname,
-                //City=city,
-                //Address=Address
+                LastName=customer.LastName,
+                FirstName=customer.FirstName,
+                Address=customer.Address
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -114,10 +115,11 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+            Customer customer = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
             var email = await _userManager.GetEmailAsync(user);
             if (Input.Email != email)
             {
+                customer.Email = Input.Email;
                 var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
                 if (!setEmailResult.Succeeded)
                 {
@@ -129,6 +131,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
+                customer.PhoneNumber = Input.PhoneNumber;
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
@@ -136,29 +139,41 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
-            //if (Input.FirstName != user.FirstName)
-            //{
-            //    user.FirstName = Input.FirstName;
-            //}
-            //if (Input.LastName != user.LastName)
-            //{
-            //    user.LastName = Input.LastName;
-            //}
-            //if (Input.City != user.City)
-            //{
-            //    user.City = Input.City;
-            //}
-            //if (Input.Address != user.Address)
-            //{
-            //    user.Address = Input.Address;
+            if (Input.FirstName != customer.FirstName)
+            {
+                customer.FirstName = Input.FirstName;
+            }
+            if (Input.LastName != customer.LastName)
+            {
+                customer.LastName = Input.LastName;
+            }
+           
+            if (Input.Address != customer.Address)
+            {
+                customer.Address = Input.Address;
 
-            //}
-
+            }
+            customer.ModifiedDate = DateTime.Now;
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
+                
                 var userId = await _userManager.GetUserIdAsync(user);
                 throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
+            }
+            else
+            {
+                try
+                {
+                    _context.Customer.Attach(customer);
+                    _context.Entry(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.SaveChanges();
+                }
+                catch
+                {
+                    StatusMessage = "Error Cập nhật thông tin không thành công!";
+                    return RedirectToPage();
+                }
             }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Thông tin của bạn đã được cập nhật";
@@ -193,7 +208,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
             SendMail.sendMail($"Vui lòng xác nhận tài khoản của bạn bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.", Input.Email,
                      "Xác nhận email của bạn");
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Gửi email xác minh đã được gửi. Kiểm tra email của bạn.";
             return RedirectToPage();
         }
     }

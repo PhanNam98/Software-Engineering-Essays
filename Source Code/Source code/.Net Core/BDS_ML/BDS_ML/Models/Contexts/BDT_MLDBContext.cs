@@ -47,7 +47,7 @@ namespace BDS_ML.Models.ModelDB
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseSqlServer("Server=(local);Database=BDT_MLDB;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Server=(local);Database=BDT_MLDB;Trusted_Connection=True");
             }
         }
 

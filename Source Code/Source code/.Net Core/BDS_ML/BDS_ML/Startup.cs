@@ -46,9 +46,9 @@ namespace BDS_ML
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DataConnect")));
-            services.AddDbContext<BDT_MLDBContext>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("DataConnect")));
+            //services.AddDbContext<BDT_MLDBContext>(options =>
+            //   options.UseSqlServer(
+            //       Configuration.GetConnectionString("DataConnect")));
          
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<BDS_ML.Models.ModelDB.Customer>
+@{
+    ViewData["Title"] = "Quản lí khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách khách hàng</h1>
+<partial name="_StatusMessage" for="@TempData["StatusMessage"]" />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Họ")
+            </th>
+            <th>
+                @Html.DisplayName("Tên")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayName("Số điện thoại")
+            </th>
+            <th>
+                @Html.DisplayName("Địa chỉ")
+            </th>
+            <th>
+                @Html.DisplayName("Ngày tham gia")
+            </th>
+            <th>
+                @Html.DisplayName("Id tài khoản")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account_.Id)
+                </td>
+                <td>
+
+                    <a asp-action="Details" asp-route-id="@item.ID_User">Chi tiết</a> |
+                    @if (item.Account_.IsBlock == 0)
+                    {
+                        <a href="/">Khóa</a>
+                    }
+                    else
+                    {
+                        <a href="/">Mở khóa</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
