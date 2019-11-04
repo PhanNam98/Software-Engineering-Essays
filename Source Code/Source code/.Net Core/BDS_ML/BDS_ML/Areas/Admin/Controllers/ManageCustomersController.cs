@@ -21,6 +21,7 @@ namespace BDS_ML.Areas.Admin.Controllers
         public ManageCustomersController()
         {
             _context = new BDT_MLDBContext();
+            StatusMessage = "Đang xử lí";
         }
 
         // GET: Admin/ManageCustomers
@@ -59,7 +60,7 @@ namespace BDS_ML.Areas.Admin.Controllers
 
             return View(customer);
         }
-
+        //Không cần thiết
         // GET: Admin/ManageCustomers/Create
         //public IActionResult Create()
         //{
