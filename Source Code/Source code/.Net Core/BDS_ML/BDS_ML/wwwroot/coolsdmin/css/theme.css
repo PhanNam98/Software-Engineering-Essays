@@ -106,6 +106,7 @@ body {
     color: #666;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
 }
 
 h1,
@@ -276,7 +277,7 @@ section {
 .page-wrapper {
     overflow: hidden;
     background: #e5e5e5;
-    padding-bottom: 8vh;
+    background-image: url('../../images/background/building-background-in-shanghai-china.jpg');
 }
 
 @media (max-width: 991px) {
@@ -332,14 +333,18 @@ section {
 }
 
 .page-content--bge5 {
-    background: #e5e5e5;
-    height: 100vh;
+    background-image: url('../../images/background/building-background-in-shanghai-china.jpg');
+    /*background: #e5e5e5;*/
+    background: #8b7777;
+    height: 100%;
+    width: 100%;
 }
 
 .login-wrap {
-    max-width: 540px;
+    max-width: 550px;
     padding-top: 8vh;
     margin: 0 auto;
+    background-image: url('../../images/background/building-background-in-shanghai-china.jpg');
 }
 
 .login-logo {

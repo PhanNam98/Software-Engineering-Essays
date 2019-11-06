@@ -42,8 +42,11 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background: #e5e5e5;
 }
 .footer {
   position: absolute;

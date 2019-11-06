@@ -1,0 +1,446 @@
+﻿@model BDS_ML.Areas.Admin.Models.Dashboard
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+}
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>DashBoard</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li class ="active">Dashboard</li>
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<h1>Bảng điều khiển</h1>
+<partial name="_StatusMessage" for="@TempData["StatusMessage"]" />
+<div class="col-sm-6 col-lg-3">
+    <div class="card text-white bg-flat-color-1">
+        <div class="card-body pb-0">
+            <div class="dropdown float-right">
+                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                    <i class="fa fa-cog"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu-content">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mb-0">
+                <span class="count">@Model.PostNumber</span>
+            </h4>
+            <p class="text-light">Số bài post</p>
+            <div class="chart-wrapper px-0" style="height:70px;" height="70">
+                <canvas id="widgetChart1"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.col-->
+<div class="col-sm-6 col-lg-3">
+    <div class="card text-white bg-flat-color-2">
+        <div class="card-body pb-0">
+            <div class="dropdown float-right">
+                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                    <i class="fa fa-cog"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu-content">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mb-0">
+                <span class="count">@Model.PostSoldNumber</span>
+            </h4>
+            <p class="text-light">Đã bán</p>
+            <div class="chart-wrapper px-0" style="height:70px;" height="70">
+                <canvas id="widgetChart2"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.col-->
+<div class="col-sm-6 col-lg-3">
+    <div class="card text-white bg-flat-color-3">
+        <div class="card-body pb-0">
+            <div class="dropdown float-right">
+                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                    <i class="fa fa-cog"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu-content">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mb-0">
+                <span class="count">@Model.PostPendingApprovalNumber</span>
+            </h4>
+            <p class="text-light">Bài đăng chờ duyệt</p>
+        </div>
+        <div class="chart-wrapper px-0" style="height:70px;" height="70">
+            <canvas id="widgetChart3"></canvas>
+        </div>
+    </div>
+</div>
+<!--/.col-->
+<div class="col-sm-6 col-lg-3">
+    <div class="card text-white bg-flat-color-4">
+        <div class="card-body pb-0">
+            <div class="dropdown float-right">
+                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                    <i class="fa fa-cog"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu-content">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mb-0">
+                <span class="count">@Model.CustomerNumber</span>
+               
+            <p class="text-light">Khách hàng</p>
+            <div class="chart-wrapper px-3" style="height:70px;" height="70">
+                <canvas id="widgetChart4"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.col-->
+<div class="col-lg-3 col-md-6">
+    <div class="social-box facebook">
+        <i class="fa fa-facebook"></i>
+        <ul>
+            <li>
+                <strong><span class="count">40</span> k</strong>
+                <span>friends</span>
+            </li>
+            <li>
+                <strong><span class="count">450</span></strong>
+                <span>feeds</span>
+            </li>
+        </ul>
+    </div>
+    <!--/social-box-->
+</div><!--/.col-->
+
+<div class="col-lg-3 col-md-6">
+    <div class="social-box twitter">
+        <i class="fa fa-twitter"></i>
+        <ul>
+            <li>
+                <strong><span class="count">30</span> k</strong>
+                <span>friends</span>
+            </li>
+            <li>
+                <strong><span class="count">450</span></strong>
+                <span>tweets</span>
+            </li>
+        </ul>
+    </div>
+    <!--/social-box-->
+</div><!--/.col-->
+
+<div class="col-lg-3 col-md-6">
+    <div class="social-box linkedin">
+        <i class="fa fa-linkedin"></i>
+        <ul>
+            <li>
+                <strong><span class="count">40</span> +</strong>
+                <span>contacts</span>
+            </li>
+            <li>
+                <strong><span class="count">250</span></strong>
+                <span>feeds</span>
+            </li>
+        </ul>
+    </div>
+    <!--/social-box-->
+</div><!--/.col-->
+
+<div class="col-lg-3 col-md-6">
+    <div class="social-box google-plus">
+        <i class="fa fa-google-plus"></i>
+        <ul>
+            <li>
+                <strong><span class="count">94</span> k</strong>
+                <span>followers</span>
+            </li>
+            <li>
+                <strong><span class="count">92</span></strong>
+                <span>circles</span>
+            </li>
+        </ul>
+    </div>
+    <!--/social-box-->
+</div><!--/.col-->
+<script>
+    
+
+        //WidgetChart 1
+        var ctx = document.getElementById("widgetChart1");
+        ctx.height = 150;
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                type: 'line',
+                datasets: [{
+                    data: [0,0,0,0,0,0,0],
+                    label: 'Dataset',
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgba(255,255,255,.55)',
+                },]
+            },
+            options: {
+
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                tooltips: {
+                    mode: 'index',
+                    titleFontSize: 12,
+                    titleFontColor: '#000',
+                    bodyFontColor: '#000',
+                    backgroundColor: '#fff',
+                    titleFontFamily: 'Montserrat',
+                    bodyFontFamily: 'Montserrat',
+                    cornerRadius: 3,
+                    intersect: false,
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            color: 'transparent',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: {
+                            fontSize: 2,
+                            fontColor: 'transparent'
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+                        ticks: {
+                            display: false,
+                        }
+                    }]
+                },
+                title: {
+                    display: false,
+                },
+                elements: {
+                    line: {
+                        borderWidth: 1
+                    },
+                    point: {
+                        radius: 4,
+                        hitRadius: 10,
+                        hoverRadius: 4
+                    }
+                }
+            }
+        });
+     
+
+
+        //WidgetChart 2
+        var ctx = document.getElementById("widgetChart2");
+        ctx.height = 150;
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                type: 'line',
+                datasets: [{
+                    data: [1, 18, 9, 17, 34, 22, 11],
+                    label: 'Dataset',
+                    backgroundColor: '#63c2de',
+                    borderColor: 'rgba(255,255,255,.55)',
+                },]
+            },
+            options: {
+
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                tooltips: {
+                    mode: 'index',
+                    titleFontSize: 12,
+                    titleFontColor: '#000',
+                    bodyFontColor: '#000',
+                    backgroundColor: '#fff',
+                    titleFontFamily: 'Montserrat',
+                    bodyFontFamily: 'Montserrat',
+                    cornerRadius: 3,
+                    intersect: false,
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            color: 'transparent',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: {
+                            fontSize: 2,
+                            fontColor: 'transparent'
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+                        ticks: {
+                            display: false,
+                        }
+                    }]
+                },
+                title: {
+                    display: false,
+                },
+                elements: {
+                    line: {
+                        tension: 0.00001,
+                        borderWidth: 1
+                    },
+                    point: {
+                        radius: 4,
+                        hitRadius: 10,
+                        hoverRadius: 4
+                    }
+                }
+            }
+        });
+
+
+
+        //WidgetChart 3
+        var ctx = document.getElementById("widgetChart3");
+        ctx.height = 70;
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                type: 'line',
+                datasets: [{
+                    data: [78, 81, 80, 45, 34, 12, 40],
+                    label: 'Dataset',
+                    backgroundColor: 'rgba(255,255,255,.2)',
+                    borderColor: 'rgba(255,255,255,.55)',
+                },]
+            },
+            options: {
+
+                maintainAspectRatio: true,
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                // tooltips: {
+                //     mode: 'index',
+                //     titleFontSize: 12,
+                //     titleFontColor: '#000',
+                //     bodyFontColor: '#000',
+                //     backgroundColor: '#fff',
+                //     titleFontFamily: 'Montserrat',
+                //     bodyFontFamily: 'Montserrat',
+                //     cornerRadius: 3,
+                //     intersect: false,
+                // },
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            color: 'transparent',
+                            zeroLineColor: 'transparent'
+                        },
+                        ticks: {
+                            fontSize: 2,
+                            fontColor: 'transparent'
+                        }
+                    }],
+                    yAxes: [{
+                        display: false,
+                        ticks: {
+                            display: false,
+                        }
+                    }]
+                },
+                title: {
+                    display: false,
+                },
+                elements: {
+                    line: {
+                        borderWidth: 2
+                    },
+                    point: {
+                        radius: 0,
+                        hitRadius: 10,
+                        hoverRadius: 4
+                    }
+                }
+            }
+        });
+
+
+        //WidgetChart 4
+        var ctx = document.getElementById("widgetChart4");
+        ctx.height = 70;
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
+                        borderColor: "rgba(0, 123, 255, 0.9)",
+                        //borderWidth: "0",
+                        backgroundColor: "rgba(255,255,255,.3)"
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [{
+                        display: false,
+                        categoryPercentage: 1,
+                        barPercentage: 0.5
+                    }],
+                    yAxes: [{
+                        display: false
+                    }]
+                }
+            }
+        });
+
+
+
+    })(jQuery);
+</script>
