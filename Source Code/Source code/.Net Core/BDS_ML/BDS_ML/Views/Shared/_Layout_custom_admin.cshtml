@@ -65,7 +65,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Khách hàng</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-users"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManageCustomers" asp-action="Index">Danh sách khách hàng</a></li>
-                            <li><i class="fa fa-lock "></i><a href="tables-basic.html">Tài khoản bị khóa</a></li>
+                            <li><i class="fa fa-lock "></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManageCustomers" asp-action="BlockList">Tài khoản bị khóa</a></li>
                         </ul>
                     </li>
                     <h3 class="menu-title">Bài đăng</h3><!-- /.menu-title -->
@@ -211,7 +211,7 @@
                         </a>
 
                         <div class="user-menu dropdown-menu">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Thông tin tài khoản</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
                             <a class="nav-link" href="#"><i class="fa fa- user"></i>Duyệt bài <span class="count">1</span></a>
 
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

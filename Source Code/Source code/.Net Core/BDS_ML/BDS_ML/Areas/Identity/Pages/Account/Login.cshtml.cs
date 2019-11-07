@@ -41,11 +41,11 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email phải được điền.")]
+            [EmailAddress(ErrorMessage = "Email không hợp lệ.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Mật khẩu phải được điền.")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

@@ -211,14 +211,15 @@ namespace BDS_ML.Areas.Admin.Controllers
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
-                    _context.SaveChanges();
+                  
                     StatusMessage = "Error Khóa không thành công";
                     return RedirectToAction("Index", "ManageCustomers");
                     //var userId = await _userManager.GetUserIdAsync(user);
                     //throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
                 }
 
-
+                _context.Block.Add(block);
+                _context.SaveChanges();
                 StatusMessage = "Khóa thành công";
                 return RedirectToAction("Index", "ManageCustomers");
             }
@@ -226,6 +227,54 @@ namespace BDS_ML.Areas.Admin.Controllers
                 StatusMessage = "Error Khóa không có lí do";
 
             return RedirectToAction("Index", "ManageCustomers");
+
+        }
+        public async Task<IActionResult> BlockList()
+        {
+            try
+            {
+                var list = await _context.Block.Include(c=>c.ID_AdminNavigation).Include(c=>c.ID_UserNavigation).Include(p=>p.ID_UserNavigation.Account_).OrderByDescending(p=>p.ID_Block).ThenByDescending(p=>p.ID_Block).ToListAsync();
+                StatusMessage = "Lấy danh sách thành công";
+                return View(list);
+            }
+            catch { StatusMessage = "Error Lấy danh sách không thành công"; }
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnBlockCustomer(int idcus,string idacc, int idblock)
+        {
+            try
+            {
+                var block = await _context.Block.Where(p => p.ID_User == idcus && p.ID_Block==idblock).SingleOrDefaultAsync();
+                if(block==null)
+                {
+                    StatusMessage = "Error Không tìm thấy khách hàng";
+                    return RedirectToAction("BlockList", "ManageCustomers");
+                }
+                block.UnLockDate = DateTime.Now.Date;
+                block.ModifiedDate = DateTime.Now.Date;
+                var user = await _userManager.FindByIdAsync(idacc);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+                user.IsBlock = 0;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                   
+                    StatusMessage = "Error Mở khóa không thành công";
+                    return RedirectToAction("BlockList", "ManageCustomers");
+                    //var userId = await _userManager.GetUserIdAsync(user);
+                    //throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
+                }
+                _context.Block.Attach(block);
+                _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+            }
+            catch { }
+            StatusMessage = "Mở khóa thành công";
+            return RedirectToAction("BlockList", "ManageCustomers");
 
         }
     }

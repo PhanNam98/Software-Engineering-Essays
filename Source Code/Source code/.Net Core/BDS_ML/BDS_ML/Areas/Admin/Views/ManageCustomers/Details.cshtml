@@ -1,24 +1,43 @@
 ﻿@model BDS_ML.Models.ModelDB.Customer
 
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Chi tiết khách hàng";
+    Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
 }
-
-<h1>Details</h1>
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Khách hàng</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li>Khách hàng</li>
+                    <li>Danh sách khách hàng</li>
+                    <li class="active">Chi tiết khách hàng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<h1>Chi tiết khách hàng</h1>
 
 <div>
-    <h4>Customer</h4>
+
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayName("Họ")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayName("Tên")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LastName)
@@ -30,37 +49,31 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayName("Số điện thoại")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayName("Địa chỉ")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Address)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avatar_URL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Avatar_URL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
+            @Html.DisplayName("Ngày thay đổi")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ModifiedDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
+            @Html.DisplayName("Ngày tạo")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CreatedDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Account_)
+            @Html.DisplayName("ID")
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Account_.Id)
@@ -68,6 +81,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID_User">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.ID_User">Edit</a> |*@
+    <a asp-action="Index">Quay lại</a>
 </div>

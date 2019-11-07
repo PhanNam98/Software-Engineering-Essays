@@ -80,3 +80,5 @@ D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Co
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout_login.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Dashboard\Index.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Dashboard\_StatusMessage.g.cshtml.cs
+D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\ManageCustomers\BlockList.g.cshtml.cs
+D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Identity\Pages\Account\Manage\IndexAdmin.g.cshtml.cs

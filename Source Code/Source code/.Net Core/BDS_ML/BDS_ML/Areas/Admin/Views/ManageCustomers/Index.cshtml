@@ -68,9 +68,9 @@
             <th>
                 @Html.DisplayName("Ngày tham gia")
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayName("Id tài khoản")
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -96,9 +96,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Account_.Id)
-                </td>
+                </td>*@
                 <td>
 
                     <a asp-action="Details" asp-route-id="@item.ID_User">Chi tiết</a> |

@@ -1,0 +1,99 @@
+﻿@model IEnumerable<BDS_ML.Models.ModelDB.Block>
+
+@{
+    ViewData["Title"] = "Danh sách tài khoản bị khóa";
+    Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+}
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Khách hàng</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li>Khách hàng</li>
+                    <li class="active">Danh sách bị khóa tài khoản</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<h1>Danh sách tài khoản bị khóa</h1>
+<partial name="_StatusMessage" for="@TempData["StatusMessage"]" />
+
+<table id="bootstrap-data-table" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID_Block)
+            </th>
+            <th>
+                @Html.DisplayName("Họ tên")
+            </th>
+            <th>
+                @Html.DisplayName("Admin")
+            </th>
+            <th>
+                @Html.DisplayName("Lí do")
+            </th>
+            <th>
+                @Html.DisplayName("Ngày khóa")
+            </th>
+            <th>
+                @Html.DisplayName("Ngày mở khóa")
+            </th>
+            <th>
+                @Html.DisplayName("Ngày thay đổi")
+            </th>
+
+            <th>@Html.Raw("Tình trạng")</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID_Block)
+            </td>
+            
+            <td>
+                
+                @Html.Raw(item.ID_UserNavigation.FirstName+" "+item.ID_UserNavigation.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID_AdminNavigation.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlockDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnLockDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+
+            <td>
+                @if (item.UnLockDate <= DateTime.Now.Date && item.ID_UserNavigation.Account_.IsBlock==0)
+                {
+                    @Html.Raw("Đã mở khóa")
+                }
+                else
+                {
+                    <form action="@Url.Action("UnBlockCustomer", "ManageCustomers", new { idcus = item.ID_UserNavigation.ID_User, idacc = item.ID_UserNavigation.Account_.Id ,idblock=item.ID_Block})" method="post">
+                        <input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">
+                    </form>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

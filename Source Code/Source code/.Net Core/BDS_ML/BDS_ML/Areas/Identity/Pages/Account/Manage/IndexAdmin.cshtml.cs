@@ -14,14 +14,14 @@ using BDS_ML.Models.ModelDB;
 
 namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 {
-    public partial class IndexModel : PageModel
+    public partial class IndexAdminModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly BDT_MLDBContext _context;
 
-        public IndexModel(
+        public IndexAdminModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
@@ -54,15 +54,12 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Số điện thoại")]
             public string PhoneNumber { get; set; }
 
-            [Required(ErrorMessage = "Họ phải được điền.")]
-            [StringLength(50, ErrorMessage = "Họ phải dài hơn {2} kí tự và ít hơn {1} kí tự.", MinimumLength = 2)]
+            [Required(ErrorMessage = "Họ tên phải được điền.")]
+            [StringLength(50, ErrorMessage = "Họ tên phải dài hơn {2} kí tự và ít hơn {1} kí tự.", MinimumLength = 2)]
             [Display(Name = "Họ")]
-            public string FirstName { get; set; }
+            public string FullName { get; set; }
 
-            [Required(ErrorMessage = "Tên phải được điền.")]
-            [StringLength(50, ErrorMessage = "Tên phải dài hơn {2} kí tự và ít hơn {1} kí tự.", MinimumLength = 2)]
-            [Display(Name = "Tên")]
-            public string LastName { get; set; }
+           
 
             [Required(ErrorMessage = "Địa chỉ phải được điền.")]
             [StringLength(100, ErrorMessage = "Địa chỉ chưa hợp lệ.", MinimumLength = 6)]
@@ -86,19 +83,18 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 
             Username = userName;
 
-            Customer customer = _context.Customer.Where(c=>c.Account_ID==id).SingleOrDefault();
+            BDS_ML.Models.ModelDB.Admin admin = _context.Admin.Where(c => c.Account_ID == id).SingleOrDefault();
 
 
             Input = new InputModel
             {
                 Email = email,
                 PhoneNumber = phoneNumber,
-                LastName = customer.LastName,
-                FirstName = customer.FirstName,
-                Address = customer.Address
+                FullName=admin.FullName,
+                Address = admin.Address
             };
-         
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user); 
+
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
             return Page();
         }
@@ -115,11 +111,11 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            Customer customer = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+            BDS_ML.Models.ModelDB.Admin admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
             var email = await _userManager.GetEmailAsync(user);
             if (Input.Email != email)
             {
-                customer.Email = Input.Email;
+                admin.Email = Input.Email;
                 var setEmailResult = await _userManager.SetEmailAsync(user, Input.Email);
                 if (!setEmailResult.Succeeded)
                 {
@@ -131,7 +127,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-                customer.PhoneNumber = Input.PhoneNumber;
+                admin.PhoneNumber = Input.PhoneNumber;
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
@@ -139,25 +135,22 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
-            if (Input.FirstName != customer.FirstName)
+          
+            if (Input.FullName != admin.FullName)
             {
-                customer.FirstName = Input.FirstName;
+                admin.FullName = Input.FullName;
             }
-            if (Input.LastName != customer.LastName)
+
+            if (Input.Address != admin.Address)
             {
-                customer.LastName = Input.LastName;
-            }
-           
-            if (Input.Address != customer.Address)
-            {
-                customer.Address = Input.Address;
+                admin.Address = Input.Address;
 
             }
-            customer.ModifiedDate = DateTime.Now;
+            admin.ModifiedDate = DateTime.Now;
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
-                
+
                 var userId = await _userManager.GetUserIdAsync(user);
                 throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
             }
@@ -165,8 +158,8 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             {
                 try
                 {
-                    _context.Customer.Attach(customer);
-                    _context.Entry(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.Admin.Attach(admin);
+                    _context.Entry(admin).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     _context.SaveChanges();
                 }
                 catch
