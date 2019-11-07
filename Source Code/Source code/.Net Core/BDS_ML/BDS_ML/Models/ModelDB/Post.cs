@@ -47,6 +47,9 @@ namespace BDS_ML.Models.ModelDB
         public virtual project ProjectNavigation { get; set; }
         [ForeignKey("RealEstateType")]
         [InverseProperty("Post")]
+        public virtual Post_Status PostStatusNavigation { get; set; }
+        [ForeignKey("Post_Status")]
+        [InverseProperty("Post")]
         public virtual RealEstate_Type RealEstateTypeNavigation { get; set; }
         [InverseProperty("ID_PostNavigation")]
         public virtual ICollection<Post_Comment> Post_Comment { get; set; }
