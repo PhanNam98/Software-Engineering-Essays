@@ -38,7 +38,7 @@ namespace BDS_ML.Areas.Admin.Controllers
             else
                 ViewData["DateNow"] = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString();
             string a = ViewData["DateNow"].ToString();
-            var bDT_MLDBContext = _context.Customer.Include(c => c.Account_).Where(c => c.Account_.IsAdmin == 0 && c.Account_.IsBlock == 0);
+            var bDT_MLDBContext = _context.Customer.Include(c => c.Account_).Include(p=>p.Block).Where(c => c.Account_.IsAdmin == 0);
             if (bDT_MLDBContext.ToListAsync().Result.Count() != 0)
                 StatusMessage = "Lấy danh sách thành công";
             else

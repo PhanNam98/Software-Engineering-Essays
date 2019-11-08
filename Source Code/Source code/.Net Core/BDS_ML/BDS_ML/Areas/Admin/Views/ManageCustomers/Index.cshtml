@@ -45,7 +45,7 @@
     </div>
 </div>
 <h1>Danh sách khách hàng</h1>
-<partial name="_StatusMessage" for="@TempData["StatusMessage"]" />
+<partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 
 <table id="bootstrap-data-table" class="table table-striped table-bordered">
     <thead>
@@ -155,7 +155,7 @@
                     }
                     else
                     {
-                        <a href="/">Mở khóa</a>
+                        <a href="/">Đã khóa</a>
                     }
                 </td>
             </tr>
