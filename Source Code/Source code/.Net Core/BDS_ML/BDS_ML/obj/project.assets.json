@@ -6227,7 +6227,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "IE7jVquhC7dHcbjbzJ4YV8fOoDbJypQcxVI7Y/uwieCAqjQh19NUftBKVUY1OUcQovRysNGQnlPSDQ/Kw+FlvA==",
+      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "hasTools": true,
@@ -8515,7 +8515,7 @@
       ]
     },
     "runtime.native.System.Net.Security/4.3.0": {
-      "sha512": "cnHpUuR9dfMJGVleFHM3a7VpdDMVO5NWHYO861eZxONBOL8IIJAOWbwK2WDEi6Y8zk6dQWytTKSUcrVy9YmqYA==",
+      "sha512": "M2nN92ePS8BgQ2oi6Jj3PlTUzadYSIWLdZrHY1n1ZcW9o4wAQQ6W+aQ2lfq1ysZQfVCgDwY58alUdowrzezztg==",
       "type": "package",
       "path": "runtime.native.system.net.security/4.3.0",
       "files": [
@@ -9364,11 +9364,12 @@
       ]
     },
     "System.Diagnostics.Contracts/4.3.0": {
-      "sha512": "kVnwhDC6EZka4gtNUvUjEM9+yIfn8jVFPEu68PwTJSo0l/rHI5yvkEXnLbJWqrfO7vH4SdiRU5vupx+NdBIU7Q==",
+      "sha512": "eelRRbnm+OloiQvp9CXS0ixjNQldjjkHO4iIkR5XH2VIP8sUB/SIpa1TdUW6/+HDcQ+MlhP3pNa1u5SbzYuWGA==",
       "type": "package",
       "path": "system.diagnostics.contracts/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -10403,7 +10404,7 @@
       ]
     },
     "System.Linq.Parallel/4.3.0": {
-      "sha512": "VcEcwKFuBCm8TWpDOqLh9MDom17yDFQEKsWm5PuJ80vgcEZCaqIoIX2GfKQIbJz/Iff574aZhi7odjPXfVdc3A==",
+      "sha512": "td7x21K8LalpjTWCzW/nQboQIFbq9i0r+PCyBBCdLWWnm4NBcdN18vpz/G9hCpUaCIfRL+ZxJNVTywlNlB1aLQ==",
       "type": "package",
       "path": "system.linq.parallel/4.3.0",
       "files": [
@@ -10459,7 +10460,7 @@
       ]
     },
     "System.Linq.Queryable/4.0.1": {
-      "sha512": "IFCkyHsN5oh6Vhya0MGNVxH5t3ELQATEQknHnnThsv/PsS+R9q9xZgultH2iBQwwOwJDdNtjSFVxHdBVKfgpcQ==",
+      "sha512": "Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
       "type": "package",
       "path": "system.linq.queryable/4.0.1",
       "files": [
@@ -12937,11 +12938,12 @@
       ]
     },
     "System.Threading.Tasks.Parallel/4.3.0": {
-      "sha512": "voaxa+GJ0MrPCqZaZ5a4qWkzx8/tWpRY8RD+egH8n0BBntS78n0pTjytqBCA42xD0Yhh3bS0hUguYNbP8Znurg==",
+      "sha512": "cbjBNZHf/vQCfcdhzx7knsiygoCKgxL8mZOeocXZn5gWhCdzHIq6bYNKWX0LAJCWYP7bds4yBK8p06YkP0oa0g==",
       "type": "package",
       "path": "system.threading.tasks.parallel/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13425,23 +13427,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\phant\\.nuget\\packages\\": {},
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
       "projectName": "BDS_ML",
-      "projectPath": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
-      "packagesPath": "C:\\Users\\phant\\.nuget\\packages\\",
-      "outputPath": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\phant\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
