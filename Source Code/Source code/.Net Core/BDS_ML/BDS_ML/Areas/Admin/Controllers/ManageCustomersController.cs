@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BDS_ML.Models.ModelDB;
 using Microsoft.AspNetCore.Authorization;
 using BDS_ML.Models;
+using BDS_ML.Models.CustomModel;
 using Microsoft.AspNetCore.Identity;
 
 namespace BDS_ML.Areas.Admin.Controllers
@@ -30,15 +31,17 @@ namespace BDS_ML.Areas.Admin.Controllers
 
         }
 
-        // GET: Admin/ManageCustomers
+        //GET: Admin/ManageCustomers
         public async Task<IActionResult> Index()
         {
-            if (DateTime.Now.Day < 10)
-                ViewData["DateNow"] = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-0" + DateTime.Now.Day.ToString();
+            DateTime date = DateTime.Now.AddDays(1);
+            if (date.Day < 10)
+                ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-0" + date.Day.ToString();
             else
-                ViewData["DateNow"] = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString();
+                ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString();
             string a = ViewData["DateNow"].ToString();
-            var bDT_MLDBContext = _context.Customer.Include(c => c.Account_).Include(p=>p.Block).Where(c => c.Account_.IsAdmin == 0);
+
+            var bDT_MLDBContext = _context.Customer.Include(c => c.Account_).Include(p => p.Block).Where(c => c.Account_.IsAdmin == 0);
             if (bDT_MLDBContext.ToListAsync().Result.Count() != 0)
                 StatusMessage = "Lấy danh sách thành công";
             else
@@ -48,6 +51,40 @@ namespace BDS_ML.Areas.Admin.Controllers
             return View(await bDT_MLDBContext.ToListAsync());
 
         }
+        //Code Test
+        //public IActionResult Index()
+        //{
+        //    DateTime date = DateTime.Now.AddDays(1);
+        //    if (date.Day < 10)
+        //        ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-0" + date.Day.ToString();
+        //    else
+        //        ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString();
+        //    string a = ViewData["DateNow"].ToString();
+
+        //    var listCus = _context.Customer.Include(c => c.Account_).Include(p => p.Block).Where(c => c.Account_.IsAdmin == 0).ToList();
+
+        //    if (listCus.Count() != 0)
+        //    {
+        //        var listAdmin = _context.Admin.ToList();
+        //        var cusRecord = from c in listCus
+        //                       join ad in listAdmin on c.Block.LastOrDefault().ID_Admin equals ad.ID_Admin
+
+        //                         select new CustomerCustom
+        //                         {
+        //                             customer = c,
+        //                             nameAdmin = ad.FullName,
+
+        //                         };
+        //        StatusMessage = "Lấy danh sách thành công";
+        //        return View(cusRecord);
+        //    }
+        //    else
+        //    {
+        //        StatusMessage = "Error Lấy danh sách không thành công";
+        //    }
+        //    return View(null);
+
+        //}
 
         // GET: Admin/ManageCustomers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -240,18 +277,43 @@ namespace BDS_ML.Areas.Admin.Controllers
             catch { StatusMessage = "Error Lấy danh sách không thành công"; }
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> UnBlockCustomer(int idcus,string idacc, int idblock)
+        public async Task<IActionResult> BlockListAccount()
         {
             try
             {
+                DateTime date = DateTime.Now.AddDays(1);
+                if (date.Day < 10)
+                    ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-0" + date.Day.ToString();
+                else
+                    ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString();
+                string a = ViewData["DateNow"].ToString();
+                var list = await _context.Customer.Include(p=>p.Block).Include(p=>p.Account_).Where(p=>p.Account_.IsAdmin==0 && p.Account_.IsBlock!=0).OrderByDescending(p => p.ID_User).ToListAsync();
+                StatusMessage = "Lấy danh sách thành công";
+                return View(list);
+            }
+            catch { StatusMessage = "Error Lấy danh sách không thành công"; }
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnBlockCustomer(int idcus,string idacc, int idblock,string returnURL=null)
+        {
+              string returnUrl = returnURL ?? Url.Content("~/Admin/BlockList");
+            try
+            {
+               
                 var block = await _context.Block.Where(p => p.ID_User == idcus && p.ID_Block==idblock).SingleOrDefaultAsync();
                 if(block==null)
                 {
                     StatusMessage = "Error Không tìm thấy khách hàng";
-                    return RedirectToAction("BlockList", "ManageCustomers");
+                    return RedirectToAction("Index", "ManageCustomers");
                 }
-                block.UnLockDate = DateTime.Now.Date;
+                var admin = await _userManager.GetUserAsync(User);
+                if (block.ID_Admin!= _context.Admin.Where(q => q.Account_ID == admin.Id).SingleOrDefault().ID_Admin)
+                {
+                    StatusMessage = "Error Tài khoản Admin không có quyền mở khóa khách hàng này";
+                    return RedirectToAction("Index", "ManageCustomers");
+                }
+                //block.UnLockDate = DateTime.Now.Date;
                 block.ModifiedDate = DateTime.Now.Date;
                 var user = await _userManager.FindByIdAsync(idacc);
                 if (user == null)
@@ -274,7 +336,8 @@ namespace BDS_ML.Areas.Admin.Controllers
             }
             catch { }
             StatusMessage = "Mở khóa thành công";
-            return RedirectToAction("BlockList", "ManageCustomers");
+            return LocalRedirect(returnUrl);
+            //return RedirectToAction("BlockList", "ManageCustomers");
 
         }
     }
