@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BDS_ML.Models.ModelDB;
 using Microsoft.AspNetCore.Authorization;
+using BDS_ML.Models.CustomModel;
 
 namespace BDS_ML.Areas.Admin.Controllers
 {
@@ -22,12 +23,26 @@ namespace BDS_ML.Areas.Admin.Controllers
         }
 
         // GET: Admin/ManagePostsAdmin
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var bDT_MLDBContext = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-                .Include(p => p.RealEstateTypeNavigation).Include(p=>p.Post_Status).OrderByDescending(p=>p.PostTime);
-            return View(await bDT_MLDBContext.ToListAsync());
-         
+            //var bDT_MLDBContext = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+            //  .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Status).OrderByDescending(p => p.PostTime);
+            //return View(await bDT_MLDBContext.ToListAsync());
+
+            var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+              .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Status).OrderByDescending(p => p.PostTime).ToList();
+            var listStatuspost = _context.Status.ToList();
+            var postRecord = from p in listpost
+                                 join s in listStatuspost on p.Post_Status.LastOrDefault().Status equals s.ID_Status 
+                                
+                                 select new PostCustom
+                                 {
+                                    post = p,
+                                     statusPost = s.Description,
+                                    
+                                 };
+            return View(postRecord);
+
         }
 
         // GET: Admin/ManagePostsAdmin/Details/5
