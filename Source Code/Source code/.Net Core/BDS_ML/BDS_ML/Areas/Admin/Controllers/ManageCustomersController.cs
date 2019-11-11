@@ -240,21 +240,28 @@ namespace BDS_ML.Areas.Admin.Controllers
               
 
                 var user = await _userManager.FindByIdAsync(id_acc);
-                if (user == null)
+                AspNetUsers USer = _context.AspNetUsers.Where(p=>p.Id==id_acc).SingleOrDefault();
+                if (user == null && USer==null)
                 {
                     return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                 }
+                
                 user.IsBlock = 1;
+                USer.IsBlock = 1;
+                _context.AspNetUsers.Attach(USer);
+                _context.Entry(USer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
-                  
+                    var a = user;
                     StatusMessage = "Error Khóa không thành công";
                     return RedirectToAction("Index", "ManageCustomers");
                     //var userId = await _userManager.GetUserIdAsync(user);
                     //throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
                 }
-
+               
+                
                 _context.Block.Add(block);
                 _context.SaveChanges();
                 StatusMessage = "Khóa thành công";

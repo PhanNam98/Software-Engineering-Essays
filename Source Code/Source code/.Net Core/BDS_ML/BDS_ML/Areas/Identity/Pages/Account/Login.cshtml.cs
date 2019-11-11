@@ -72,8 +72,23 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            int flapblock = 0;
+         
             returnUrl = returnUrl ?? Url.Content("~/");
+            var user = _context.AspNetUsers.Where(p => p.UserName == Input.Email).SingleOrDefault();
+            if(user==null)
+            {
+                ModelState.AddModelError(string.Empty, "Đăng nhập không thành công!.");
+                return Page();
+            }
+            if(user.IsBlock!=0)
+            {
+                
 
+                flapblock = 1;
+                
+                
+            }
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -93,6 +108,12 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
+                }
+                else if (flapblock == 1)
+                {
+                   var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    ModelState.AddModelError(string.Empty, "Tài khoản bị khóa!.Lí do: " + cus.Block.LastOrDefault().Reason);
+                    return Page();
                 }
                 else
                 {
