@@ -51,7 +51,8 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Số điên thoại phải được điền.")]
-            [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không hợp lệ.")]
+            [DataType(DataType.PhoneNumber)]
             [StringLength(11, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
             [Display(Name = "Số điện thoại")]
             public string PhoneNumber { get; set; }

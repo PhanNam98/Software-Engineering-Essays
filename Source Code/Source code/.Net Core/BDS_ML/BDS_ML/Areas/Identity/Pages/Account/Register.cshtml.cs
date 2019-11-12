@@ -70,6 +70,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required(ErrorMessage = "Số điện thoại phải được điền.")]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không hợp lệ.")]
             [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
             [StringLength(11, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
             [Display(Name = "Phone Number")]

@@ -1,19 +1,23 @@
 ﻿@{
-    Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout_custom_manage_account.cshtml";
 }
 
-<h1>Manage your account</h1>
+@*<h1>Quản lí tài khoản</h1>*@
 
 <div>
-    <h4>Change your account settings</h4>
+    @*<h4>Thay đổi thông tin tài khoản</h4>*@
     <hr />
     <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
+        @*<div class="col-md-1">
+
+        </div>*@
+
+        <div class="col-md-12">
             @RenderBody()
         </div>
+        @*<div class="col-md-2">
+
+        </div>*@
     </div>
 </div>
 
