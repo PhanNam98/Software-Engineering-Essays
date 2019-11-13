@@ -72,22 +72,40 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            int flapblock = 0;
-         
+            
             returnUrl = returnUrl ?? Url.Content("~/");
             var user = _context.AspNetUsers.Where(p => p.UserName == Input.Email).SingleOrDefault();
-            if(user==null)
+            if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Đăng nhập không thành công!.");
                 return Page();
             }
-            if(user.IsBlock!=0)
+            if (user.IsBlock != 0)
             {
-                
+                var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                var block = _context.Block.Where(b => b.ID_User == cus.ID_User).LastOrDefault();
+                if (block.UnLockDate <= DateTime.Now)
+                {
+                    try
+                    {
+                        block.ModifiedDate = DateTime.Now.Date;
+                        user.IsBlock = 0;
+                        _context.AspNetUsers.Attach(user);
+                        _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
-                flapblock = 1;
-                
-                
+                        _context.Block.Attach(block);
+                        _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        _context.SaveChanges();
+                      
+                    }
+                    catch { }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Tài khoản bị khóa!. Lí do: " + block.Reason);
+                    return Page();
+                }
+              
             }
             if (ModelState.IsValid)
             {
@@ -109,14 +127,9 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-                else if (flapblock == 1)
-                {
-                   var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-                    ModelState.AddModelError(string.Empty, "Tài khoản bị khóa!.Lí do: " + cus.Block.LastOrDefault().Reason);
-                    return Page();
-                }
                 else
                 {
+
                     ModelState.AddModelError(string.Empty, "Đăng nhập không thành công!.");
                     return Page();
                 }

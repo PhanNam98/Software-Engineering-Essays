@@ -34,20 +34,21 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Mật khẩu cũ phải được điền.")]
+            [StringLength(100, ErrorMessage = "Mật khẩu phải dài từ {2} đến {1} kí tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Password")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Mật khẩu mới phải được điền.")]
+            [StringLength(100, ErrorMessage = "Mật khẩu phải dài từ {2} đến {1} kí tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Password")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Compare("NewPassword", ErrorMessage = "Mật khẩu mới không khớp.")]
             public string ConfirmPassword { get; set; }
         }
 
