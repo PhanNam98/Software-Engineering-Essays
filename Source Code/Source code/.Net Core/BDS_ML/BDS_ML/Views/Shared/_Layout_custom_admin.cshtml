@@ -210,6 +210,7 @@
                             <img class="user-avatar rounded-circle" src="~/sufeeadmin/images/admin.jpg" alt="User Avatar">Admin @User.Identity.Name!
                         </a>
                         <div class="user-menu dropdown-menu">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Trang admin</a>
                             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
                             <a class="nav-link" href="#"><i class="fa fa- user"></i>Duyệt bài <span class="count">1</span></a>
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
