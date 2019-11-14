@@ -51,7 +51,15 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Hello Admin @User.Identity.Name!</a>
+                }
+                else
+                {
+                    <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello <br />@User.Identity.Name!</a>
+                }
+               
                 @*<a class="navbar-brand hidden" href="./">B</a>*@
             </div>
             <div id="main-menu" class="main-menu collapse navbar-collapse">

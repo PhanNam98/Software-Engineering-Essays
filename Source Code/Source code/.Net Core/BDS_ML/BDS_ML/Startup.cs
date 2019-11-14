@@ -58,7 +58,8 @@ namespace BDS_ML
                 //(options=> options.Stores.MaxLengthForKeys=128)
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<VietnameseIdentityErrorDescriber>(); ;
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc()

@@ -6,7 +6,7 @@
 }
 
 @*<h4>@ViewData["Title"]</h4>*@
-<partial name="_StatusMessage" for="StatusMessage" />
+
 <div class="breadcrumbs">
     <div class="col-sm-4">
         <div class="page-header float-left">
@@ -26,6 +26,7 @@
         </div>
     </div>
 </div>
+<partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 <div class="col-lg-1">
 </div>
 <div class="col-lg-9">
@@ -124,7 +125,60 @@
 
                     </div>
                 </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label>Vip</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        @{
+                            if (Model.IsVip)
+                            {
 
+                                <input class="form-control" value="Có" readonly="readonly" />
+
+                            }
+                            else
+                            {
+
+                                <input class="form-control" value="Không" readonly="readonly" />
+                            }
+                        }
+
+                    </div>
+
+                </div>
+                @{
+                    if (Model.IsVip)
+                    {
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label>Thời gian</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <div class="row">
+                                    <div class="col-12 col-md-1">
+                                        <label>Từ</label>
+                                    </div>
+                                    <div class="col-12 col-md-5">
+                                        <input class="form-control" value="@Model.activeDay" readonly="readonly" />
+
+                                    </div>
+                                    <div class="col-12 col-md-1">
+                                        <label>đến</label>
+                                    </div>
+                                    <div class="col-12 col-md-5">
+                                        <input class="form-control" value="@Model.expiryDate" readonly="readonly" />
+
+                                    </div>
+                                </div>
+                                </div>
+
+                                    
+
+                           
+                        </div>
+                    }
+                }
                 <div class="card-footer">
                     <button id="update-profile-button" type="submit" class="btn btn-primary" title="Lưu">Lưu</button>
                     <button type="button" class="btn btn-secondary"><a class="text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Hủy">Hủy</a></button>

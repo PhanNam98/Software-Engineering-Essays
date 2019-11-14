@@ -35,6 +35,10 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
+        public bool IsVip { get; set; }
+        public DateTime expiryDate { get; set; }
+        public DateTime activeDay { get; set; }
+
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -51,7 +55,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             [Required(ErrorMessage = "Số điên thoại phải được điền.")]
             [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
             [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không hợp lệ.")]
-            [StringLength(11, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
+            [StringLength(10, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
             [Display(Name = "Số điện thoại")]
             public string PhoneNumber { get; set; }
 
@@ -99,8 +103,19 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                 Address = customer.Address
             };
          
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user); 
-
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            var vip = _context.Vip_Status.Where(p => p.ID_User == user.Id && p.ExpiryDate <= DateTime.Now).LastOrDefault();
+            if(vip!=null)
+            {
+                IsVip = true;
+                expiryDate = vip.ExpiryDate.GetValueOrDefault();
+                activeDay = vip.ActiveDay.GetValueOrDefault();
+            }
+            else
+            {
+                IsVip = false;
+            }
+            
             return Page();
         }
 

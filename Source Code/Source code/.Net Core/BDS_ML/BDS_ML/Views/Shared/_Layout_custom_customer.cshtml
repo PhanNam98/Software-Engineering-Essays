@@ -52,7 +52,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 @*<a class="navbar-brand" href="/User/Dashboard">BDS_ML </a>*@
-                <a class="nav-link text-dark" asp-area="User" asp-controller="Dashboard" asp-action="Index">Danh sách khách hàng</a>
+                <a class="navbar-brand" asp-area="User" asp-controller="Dashboard" asp-action="Index">BDS_ML User</a>
                 @*<a class="navbar-brand hidden" href="./">B</a>*@
             </div>
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -204,8 +204,8 @@
                         </a>
                         <div class="user-menu dropdown-menu">
                             <a class="nav-link text-dark" asp-area="User" asp-controller="Dashboard" asp-action="Index">Quản lí bài đăng</a>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Quản lí tài khoản của bạn">Thông tin tài khoản</a>
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Duyệt bài <span class="count">1</span></a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Quản lí tài khoản của bạn">Thông tin tài khoản</a>
+                            
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                 <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-power -off"></i>Đăng xuất</button>
                             </form>
