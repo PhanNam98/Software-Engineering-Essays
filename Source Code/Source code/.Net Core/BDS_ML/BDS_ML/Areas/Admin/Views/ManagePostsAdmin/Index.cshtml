@@ -136,7 +136,7 @@
                         </form>
                         @{
 
-                            if (item.post.Post_Status.LastOrDefault().Status == 1)
+                            if (item.post.Post_Status.LastOrDefault().Status == 1)//Khóa
                             {
 
                                 string blockq = "b" + @item.post.ID_Post.ToString();
@@ -167,7 +167,7 @@
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Lí do khóa")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="reasonBlockPost" class="input-md form-control" value="" id="reasonBlockPost" placeholder="Lí do khóa">
+                                                                <input type="text" name="reasonBlockPost" class="input-md form-control" id="reasonBlockPost" placeholder="Lí do khóa">
                                                                 @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
                                                             </div>
                                                         </div>
@@ -188,20 +188,51 @@
                                     </div>
                                 </div>
                                 @*<form action="@Url.Action("BlockPost", "ManagePostsAdmin", new { idpost = item.post.ID_Post })" method="post">
-                                        <input type="submit" value="Khóa" class="btn btn-custon-rounded-three btn-warning btn-xs">
-                                    </form>*@
+                    <input type="submit" value="Khóa" class="btn btn-custon-rounded-three btn-warning btn-xs">
+                </form>*@
                             }
-                            else if (item.post.Post_Status.LastOrDefault().Status == 3)
+                            else if (item.post.Post_Status.LastOrDefault().Status == 3)//mở khóa
                             {
-                                <form action="@Url.Action("UnBlockPost", "ManagePostsAdmin", new { idpost = item.post.ID_Post })" method="post">
-                                    <input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">
-                                </form>
+                                string ublockq = "ub" + @item.post.ID_Post.ToString();
+                                <button type="button" class="btn btn-custon-rounded-three btn-primary btn-xs" data-toggle="modal" data-target="#@ublockq">Mở khóa</button>
+
+                                <div class="modal fade" id="@ublockq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="center">
+                                        <div class="modal-dialog modal-dialog-center" role="document">
+                                            <div class="modal-content">
+                                                @using (Html.BeginForm("UnBlockPost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "unblockform", @novalidate = "novalidate", @name = "unblockform" }))
+                                                {
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Mở khóa bài đăng</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <input type="text" name="idpost" class="input-md form-control" value="@item.post.ID_Post" hidden="hidden">
+                                                    @*<input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">*@
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-1">
+
+                                                        </div>
+                                                        <div class="col col-md-11">
+                                                            <strong> <a>Bạn muốn mở khóa bài đăng này?</a></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-success">Đồng ý</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             }
                             else if (item.post.Post_Status.LastOrDefault().Status == 5)
                             {
                                 string accept = "acc" + item.post.ID_Post.ToString();
 
-                                <button type="button" class="btn btn-custon-rounded-three btn-success btn-xs" data-toggle="modal" data-target="#@accept">Duyệt bài</button>
+                                <button type="button" class="btn btn-custon-rounded-three btn-primary btn-xs" data-toggle="modal" data-target="#@accept">Duyệt bài</button>
 
                                 <!-- Modal -->
 
@@ -251,9 +282,59 @@
                                         </div>
                                     </div>
                                 </div>
-                                @*<form action="@Url.Action("AcceptPost", "ManagePostsAdmin", new { idpost = item.post.ID_Post })" method="post">
-                                        <input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">
-                                    </form>*@
+                                string ignore = "ignore" + item.post.ID_Post.ToString();
+
+                                <button type="button" class="btn btn-custon-rounded-three btn-danger btn-xs" data-toggle="modal" data-target="#@ignore">Không duyệt</button>
+
+                                <!-- Modal -->
+
+                                <div class="modal fade" id="@ignore" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="center">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                @using (Html.BeginForm("IgnorePost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @idpost = item.post.ID_Post, @id = "ignoreform", @name = "ignoreform", @novalidate = "novalidate" }))
+                                                {
+                                                    @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Không duyệt bài đăng</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">@Html.Label("Mã bài đăng")</div>
+                                                            <div class="col-12 col-md-9">
+                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.post.ID_Post" readonly>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">@Html.Label("Tiêu đề")</div>
+                                                            <div class="col-12 col-md-9">
+                                                                <input type="text" name="tittle" class="input-md form-control" value="@item.post.Tittle" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-12">
+                                                                <strong> <a>Bạn có chắc không duyệt bài đăng này?</a></strong><br />
+                                                                <strong> <a>Bài đăng này sẽ bị ẩn?</a></strong>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-success">Đồng ý</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                                    </div>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             }
                         }
                     </td>
@@ -268,13 +349,13 @@
             alert("Lí do khóa bài đăng phải được điền.");
             return false;
         }
-       
+
         return true;
     }
     $(document).ready(function () {
         $('#exam').DataTable({
-           
-                "lengthMenu": [[10, 25, 50, - 1], [10, 25, 50, "All"]]
+
+            "lengthMenu": [[10, 25, 50, - 1], [10, 25, 50, "All"]]
 
         });
     });
@@ -295,5 +376,5 @@
 
     //    });
     //});
-    
+
 </script>

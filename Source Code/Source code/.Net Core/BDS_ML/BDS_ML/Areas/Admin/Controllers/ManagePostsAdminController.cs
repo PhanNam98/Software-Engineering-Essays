@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BDS_ML.Models.ModelDB;
 using Microsoft.AspNetCore.Authorization;
 using BDS_ML.Models.CustomModel;
+using Microsoft.AspNetCore.Identity;
+using BDS_ML.Models;
 
 namespace BDS_ML.Areas.Admin.Controllers
 {
@@ -16,12 +18,15 @@ namespace BDS_ML.Areas.Admin.Controllers
     public class ManagePostsAdminController : Controller
     {
         private readonly BDT_MLDBContext _context;
-
-        public ManagePostsAdminController()
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ManagePostsAdminController(UserManager<ApplicationUser> userManager)
         {
             _context = new BDT_MLDBContext();
+            _userManager = userManager;
+            StatusMessage = "Đang xử lí";
         }
-
+        [TempData]
+        public string StatusMessage { get; set; }
         // GET: Admin/ManagePostsAdmin
         public IActionResult Index()
         {
@@ -34,7 +39,7 @@ namespace BDS_ML.Areas.Admin.Controllers
             var listStatuspost = _context.Status.ToList();
             var postRecord = from p in listpost
                                  join s in listStatuspost on p.Post_Status.LastOrDefault().Status equals s.ID_Status 
-                                
+                                where s.ID_Status!=6
                                  select new PostCustom
                                  {
                                     post = p,
@@ -193,5 +198,147 @@ namespace BDS_ML.Areas.Admin.Controllers
         {
             return _context.Post.Any(e => e.ID_Post == id);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BlockPost(int idpost,string reasonBlockPost)
+        {
+            if (reasonBlockPost ==null)
+            {
+                return NotFound();
+            }
+            var post = await _context.Post.FindAsync(idpost);
+            Post_Status poststatus = new Post_Status();
+            if (post!=null)
+            {
+                
+                poststatus.ID_Post = post.ID_Post;
+                var user = await _userManager.GetUserAsync(User);
+                poststatus.ID_Account=user.Id;
+                poststatus.Reason = reasonBlockPost;
+                poststatus.Status = 3;
+                poststatus.ModifiedDate = DateTime.Now;
+                _context.Post_Status.Add(poststatus);
+                
+            }
+            try {
+               
+                await _context.SaveChangesAsync();
+                post.Status = poststatus.ID_PostStatus;
+                _context.Post.Attach(post);
+                _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                StatusMessage = "Khóa bài đăng thành công";
+            }
+            catch
+            {
+                StatusMessage = "Error Khóa bài đăng không thành công";
+            }
+            
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UnBlockPost(int idpost)
+        {
+           
+            var post = await _context.Post.FindAsync(idpost);
+            Post_Status poststatus = new Post_Status();
+            if (post != null)
+            {
+               
+                poststatus.ID_Post = post.ID_Post;
+                var user = await _userManager.GetUserAsync(User);
+                poststatus.ID_Account = user.Id;
+                poststatus.Reason = "";
+                poststatus.Status = 1;
+                poststatus.ModifiedDate = DateTime.Now;
+                _context.Post_Status.Add(poststatus);
+
+            }
+
+           try
+            {
+                await _context.SaveChangesAsync();
+                post.Status = poststatus.ID_PostStatus;
+                _context.Post.Attach(post);
+                _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                StatusMessage = "Mở khóa bài đăng thành công";
+            }
+            catch
+            {
+                StatusMessage = "Error Mở khóa bài đăng không thành công";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptPost(int idpost)
+        {
+
+            var post = await _context.Post.FindAsync(idpost);
+            Post_Status poststatus = new Post_Status();
+            if (post != null)
+            {
+
+                poststatus.ID_Post = post.ID_Post;
+                var user = await _userManager.GetUserAsync(User);
+                poststatus.ID_Account = user.Id;
+                poststatus.Reason = "";
+                poststatus.Status = 1;
+                poststatus.ModifiedDate = DateTime.Now;
+                _context.Post_Status.Add(poststatus);
+
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                post.Status = poststatus.ID_PostStatus;
+                _context.Post.Attach(post);
+                _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                StatusMessage = "Duyệt bài đăng thành công";
+            }
+            catch
+            {
+                StatusMessage = "Error Duyệt bài đăng không thành công";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> IgnorePost(int idpost)
+        {
+
+            var post = await _context.Post.FindAsync(idpost);
+            Post_Status poststatus = new Post_Status();
+            if (post != null)
+            {
+
+                poststatus.ID_Post = post.ID_Post;
+                var user = await _userManager.GetUserAsync(User);
+                poststatus.ID_Account = user.Id;
+                poststatus.Reason = "";
+                poststatus.Status = 6;
+                poststatus.ModifiedDate = DateTime.Now;
+                _context.Post_Status.Add(poststatus);
+
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                post.Status = poststatus.ID_PostStatus;
+                _context.Post.Attach(post);
+                _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                StatusMessage = "Đã ẩn bài đăng không được duyệt thành công";
+            }
+            catch
+            {
+                StatusMessage = "Error Ẩn bài đăng không thành công";
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
