@@ -35,7 +35,9 @@ namespace BDS_ML.Areas.Admin.Controllers
             //return View(await bDT_MLDBContext.ToListAsync());
             
            var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-              .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Status).OrderByDescending(p => p.PostTime).ToList();
+              .Include(p => p.RealEstateTypeNavigation)
+              .Include(p => p.Post_Status)
+              .ThenInclude(post=>post.StatusNavigation.Post_Status).OrderByDescending(p => p.PostTime).ToList();
             var listStatuspost = _context.Status.ToList();
             var postRecord = from p in listpost
                                  join s in listStatuspost on p.Post_Status.LastOrDefault().Status equals s.ID_Status 
@@ -46,6 +48,7 @@ namespace BDS_ML.Areas.Admin.Controllers
                                      statusPost = s.Description,
                                     
                                  };
+            //string a = listpost.LastOrDefault().Post_Status.LastOrDefault().StatusNavigation.Description;
             return View(postRecord);
 
         }

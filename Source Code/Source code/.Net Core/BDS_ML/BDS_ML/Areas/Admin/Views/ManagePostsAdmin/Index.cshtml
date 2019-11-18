@@ -47,8 +47,8 @@
 @*<h1>Danh sách bài đăng</h1>*@
 <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 <p>
-    <form method="GET">
-        <button type="submit" class="btn btn-custon-rounded-three btn-primary btn-xs" asp-action="Create">Tạo bài viết</button>
+    <form method="GET" >
+        <button type="submit" class="btn btn-custon-rounded-three btn-primary btn-xs"asp-area=""  asp-controller="Post" asp-action="Create">Tạo bài viết</button>
     </form>
 </p>
 @*<div style="width: auto; height: 350px; overflow-y: scroll;">*@

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Đăng kí tài khoản";
 
-    Layout = "/Views/Shared/_Layout_login.cshtml";
+    Layout = "/Views/Shared/_Layout.cshtml";
 
 }
 <h1>@ViewData["Title"]</h1>
@@ -48,7 +48,7 @@
                 @*<label>Upload Image</label>
                     <input type="file" class="form-control" name="image" accept="image/*" />*@
                 <label for="file-input" class=" form-control-label">Ảnh đại diện</label>
-                <input type="file" id="file-input" name="file" accept="image/*" class="form-control-file">
+                <input type="file" id="image" name="image" accept="image/*" class="form-control-file"/>
             </div>
             <div class="form-group">
                 <label>Mật khẩu</label>
