@@ -24,7 +24,6 @@ namespace BDS_ML.Areas.User.Controllers
         public DashboardController(UserManager<ApplicationUser> userManager)
         {
             _context = new BDT_MLDBContext();
-            StatusMessage = "Đang xử lí";
             _userManager = userManager;
 
         }
@@ -39,10 +38,19 @@ namespace BDS_ML.Areas.User.Controllers
                 {
                     return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                 }
-                
-                dboard.PostPending = _context.Post_Status.Include(p=>p.ID_PostStatus).Where(p=>p.ID_Account==user.Id && p.Status==5).Count();
-                dboard.PostNumber = _context.Post.Where(p=>p.ID_Account==user.Id).Count();
-                dboard.PostSoldNumber = _context.Post_Status.Include(p => p.ID_PostStatus).Where(p => p.ID_Account == user.Id && p.Status == 2).Count();
+                var list = _context.Post.Include(p => p.Post_Status).Where(p => p.ID_Account == user.Id);
+                int Pending = 0;
+                int Sold = 0;
+                foreach (var p in list)
+                {
+                    if (p.Post_Status.LastOrDefault().Status == 5)
+                        Pending++;
+                    if (p.Post_Status.LastOrDefault().Status == 2)
+                        Sold++;
+                }
+                dboard.PostPending = Pending;
+                dboard.PostNumber = list.Count();
+                dboard.PostSoldNumber = Sold;
                 dboard.Postfollowed = _context.Post_Favorite.Where(c => c.ID_User == user.Id).Count();
                 StatusMessage = "Lấy dữ liệu thành công";
             }

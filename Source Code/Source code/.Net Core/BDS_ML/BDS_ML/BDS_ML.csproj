@@ -25,7 +25,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\User\Data\" />
     <Folder Include="wwwroot\images\avatars\" />
-    <Folder Include="wwwroot\images\posts\" />
+    <Folder Include="wwwroot\images\background\" />
   </ItemGroup>
 
 
