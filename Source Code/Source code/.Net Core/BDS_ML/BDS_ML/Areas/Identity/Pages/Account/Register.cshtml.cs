@@ -108,7 +108,10 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     if (image != null)
                     {
                         string fileName = Path.GetFileName(image.FileName);
-
+                        if (fileName.Length > 30)
+                        {
+                            fileName = fileName.Substring(0, 30);
+                        }
                         string extensionFileName = Path.GetExtension(fileName);
 
                         fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;

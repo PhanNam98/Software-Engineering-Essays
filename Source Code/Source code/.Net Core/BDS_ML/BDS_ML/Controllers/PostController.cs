@@ -118,6 +118,10 @@ namespace BDS_ML.Controllers
                     if (file != null && images[i].Length > 0)
                     {
                         string fileName = Path.GetFileName(file.FileName);
+                        if(fileName.Length>30)
+                        {
+                            fileName= fileName.Substring(0, 30);
+                        }
 
                         string extensionFileName = Path.GetExtension(fileName);
 
