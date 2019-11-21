@@ -203,7 +203,8 @@
                     {
                         string block = "b" + @item.ID_User.ToString();
                         <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@block">Khóa</button>
-
+                        string dateUnBlock= "da" + @item.ID_User.ToString();
+                        string reasonBlockCus= "re" + @item.ID_User.ToString();
                         <!-- Modal -->
 
                         <div class="modal fade" id="@block" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -228,16 +229,16 @@
                                                 <div class="form-group">
                                                     Ngày mở khóa:<br />
 
-                                                    <input type="date" name="dateUnBlock" id="dateUnBlock" min="@ViewData["DateNow"].ToString()">
+                                                    <input type="date" name="dateUnBlock" id="@dateUnBlock" min="@ViewData["DateNow"].ToString()">
                                                 </div>
                                                 <div class="form-group">
                                                     Lí do khóa<br />
-                                                    <input type="text" name="reasonBlockCus" class="input-md form-control" value="" id="reasonBlockCus" placeholder="Lí do khóa">
+                                                    <input type="text" name="reasonBlockCus" class="input-md form-control" value="" id="@reasonBlockCus" placeholder="Lí do khóa">
                                                     @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success" onclick="return IsEmpty();">Lưu</button>
+                                                <button type="submit" class="btn btn-success" onclick="return IsEmpty('@reasonBlockCus','@dateUnBlock');">Lưu</button>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                                             </div>
 
@@ -314,12 +315,12 @@
     </tbody>
 </table>
 <script>
-    function IsEmpty() {
-        if (document.forms['blockform'].reasonBlockCus.value === "") {
+    function IsEmpty(reasonBlockCus,dateUnBlock) {
+        if (document.getElementById(arguments[0]).value === "") {
             alert("Lí do khóa tài khoản phải được điền.");
             return false;
         }
-        if (document.forms['blockform'].dateUnBlock.value === "") {
+        if (document.getElementById(arguments[1]).value === "") {
             alert("Ngày mở khóa phải được điền.");
             return false;
         }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BDS_ML.Models.CustomModel.PostCustom>
+﻿@model IEnumerable<BDS_ML.Models.ModelDB.Post>
 
 @{
     ViewData["Title"] = "Danh sách bài đăng";
@@ -46,11 +46,11 @@
 </div>
 @*<h1>Danh sách bài đăng</h1>*@
 <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
-<p>
-    <form method="GET" >
-        <button type="submit" class="btn btn-custon-rounded-three btn-primary btn-xs"asp-area=""  asp-controller="Post" asp-action="Create">Tạo bài viết</button>
+
+    <form method="GET">
+        <button type="submit" class="btn btn-custon-rounded-three btn-primary btn-xs" asp-area="" asp-controller="Post" asp-action="Create">Tạo bài viết</button>
     </form>
-</p>
+
 @*<div style="width: auto; height: 350px; overflow-y: scroll;">*@
 <div>
     <table id="exam" class="table table-striped table-bordered">
@@ -98,50 +98,50 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.ID_Post)
+                        @Html.DisplayFor(modelItem => item.ID_Post)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.PostTime)
+                        @Html.DisplayFor(modelItem => item.PostTime)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.Tittle)
+                        @Html.DisplayFor(modelItem => item.Tittle)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.Size)
+                        @Html.DisplayFor(modelItem => item.Size)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.Price)
+                        @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.Description)
+                        @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.statusPost)
+                        @Html.DisplayFor(modelItem => item.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().StatusNavigation.Description)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.ID_AccountNavigation.Id)
+                        @Html.DisplayFor(modelItem => item.ID_AccountNavigation.Id)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.PostTypeNavigation.Description)
+                        @Html.DisplayFor(modelItem => item.PostTypeNavigation.Description)
                     </td>
                     @*<td>
                             @Html.DisplayFor(modelItem => item.post.ProjectNavigation.id)
                         </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.post.RealEstateTypeNavigation.Description)
+                        @Html.DisplayFor(modelItem => item.RealEstateTypeNavigation.Description)
                     </td>
                     <td>
                         <form method="GET">
-                            <button type="submit" class="btn btn-custon-rounded-three btn-success btn-xs" asp-route-id="@item.post.ID_Post" asp-action="Details">Chi tiết</button>
+                            <button type="submit" class="btn btn-custon-rounded-three btn-success btn-xs" asp-route-id="@item.ID_Post" asp-action="Details">Chi tiết</button>
                         </form>
                         @{
 
-                            if (item.post.Post_Status.LastOrDefault().Status == 1)//Khóa
+                            if (item.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 1)//Khóa
                             {
 
-                                string blockq = "b" + @item.post.ID_Post.ToString();
+                                string blockq = "b" + @item.ID_Post.ToString();
                                 <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@blockq">Khóa</button>
-
+                                string reasonBlockPost = "re" + @item.ID_Post.ToString();
                                 <!-- Modal -->
 
                                 <div class="modal fade" id="@blockq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -161,13 +161,13 @@
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Mã bài đăng")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.post.ID_Post" readonly>
+                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.ID_Post" readonly>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Lí do khóa")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="reasonBlockPost" class="input-md form-control" id="reasonBlockPost" placeholder="Lí do khóa">
+                                                                <input type="text" name="reasonBlockPost" class="input-md form-control" id="@reasonBlockPost" placeholder="Lí do khóa">
                                                                 @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
                                                             </div>
                                                         </div>
@@ -178,7 +178,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-success" onclick="return IsEmpty();">Đồng ý</button>
+                                                        <button type="submit" class="btn btn-success" onclick="return IsEmpty('@reasonBlockPost');">Đồng ý</button>
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                                                     </div>
 
@@ -187,13 +187,14 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 @*<form action="@Url.Action("BlockPost", "ManagePostsAdmin", new { idpost = item.post.ID_Post })" method="post">
-                    <input type="submit" value="Khóa" class="btn btn-custon-rounded-three btn-warning btn-xs">
-                </form>*@
+                                        <input type="submit" value="Khóa" class="btn btn-custon-rounded-three btn-warning btn-xs">
+                                    </form>*@
                             }
-                            else if (item.post.Post_Status.LastOrDefault().Status == 3)//mở khóa
+                            else if (item.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 3)//mở khóa
                             {
-                                string ublockq = "ub" + @item.post.ID_Post.ToString();
+                                string ublockq = "ub" + @item.ID_Post.ToString();
                                 <button type="button" class="btn btn-custon-rounded-three btn-primary btn-xs" data-toggle="modal" data-target="#@ublockq">Mở khóa</button>
 
                                 <div class="modal fade" id="@ublockq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -208,7 +209,7 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <input type="text" name="idpost" class="input-md form-control" value="@item.post.ID_Post" hidden="hidden">
+                                                    <input type="text" name="idpost" class="input-md form-control" value="@item.ID_Post" hidden="hidden">
                                                     @*<input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">*@
                                                     <div class="row form-group">
                                                         <div class="col col-md-1">
@@ -227,10 +228,11 @@
                                         </div>
                                     </div>
                                 </div>
+
                             }
-                            else if (item.post.Post_Status.LastOrDefault().Status == 5)
+                            else if (item.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 5)
                             {
-                                string accept = "acc" + item.post.ID_Post.ToString();
+                                string accept = "acc" + item.ID_Post.ToString();
 
                                 <button type="button" class="btn btn-custon-rounded-three btn-primary btn-xs" data-toggle="modal" data-target="#@accept">Duyệt bài</button>
 
@@ -240,7 +242,7 @@
                                     <div class="center">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                @using (Html.BeginForm("AcceptPost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @idpost = item.post.ID_Post, @id = "acceptform", @name = "acceptform", @novalidate = "novalidate" }))
+                                                @using (Html.BeginForm("AcceptPost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @idpost = item.ID_Post, @id = "acceptform", @name = "acceptform", @novalidate = "novalidate" }))
                                                 {
                                                     @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
                                                     <div class="modal-header">
@@ -254,7 +256,7 @@
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Mã bài đăng")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.post.ID_Post" readonly>
+                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.ID_Post" readonly>
                                                             </div>
 
 
@@ -262,7 +264,7 @@
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Tiêu đề")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="tittle" class="input-md form-control" value="@item.post.Tittle" readonly>
+                                                                <input type="text" name="tittle" class="input-md form-control" value="@item.Tittle" readonly>
                                                             </div>
                                                         </div>
 
@@ -282,7 +284,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                string ignore = "ignore" + item.post.ID_Post.ToString();
+                                string ignore = "ignore" + item.ID_Post.ToString();
 
                                 <button type="button" class="btn btn-custon-rounded-three btn-danger btn-xs" data-toggle="modal" data-target="#@ignore">Không duyệt</button>
 
@@ -292,7 +294,7 @@
                                     <div class="center">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                @using (Html.BeginForm("IgnorePost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @idpost = item.post.ID_Post, @id = "ignoreform", @name = "ignoreform", @novalidate = "novalidate" }))
+                                                @using (Html.BeginForm("IgnorePost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @idpost = item.ID_Post, @id = "ignoreform", @name = "ignoreform", @novalidate = "novalidate" }))
                                                 {
                                                     @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
                                                     <div class="modal-header">
@@ -306,7 +308,7 @@
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Mã bài đăng")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.post.ID_Post" readonly>
+                                                                <input type="text" name="idpost" class="input-md form-control" value="@item.ID_Post" readonly>
                                                             </div>
 
 
@@ -314,7 +316,7 @@
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">@Html.Label("Tiêu đề")</div>
                                                             <div class="col-12 col-md-9">
-                                                                <input type="text" name="tittle" class="input-md form-control" value="@item.post.Tittle" readonly>
+                                                                <input type="text" name="tittle" class="input-md form-control" value="@item.Tittle" readonly>
                                                             </div>
                                                         </div>
 
@@ -344,14 +346,16 @@
     </table>
 </div>
 <script>
-    function IsEmpty() {
-        if (document.forms['blockform'].reasonBlockPost.value === "") {
+
+    function IsEmpty(reasonBlockPost) {
+        if (document.getElementById(arguments[0]).value === "") {
             alert("Lí do khóa bài đăng phải được điền.");
             return false;
         }
 
         return true;
     }
+
     $(document).ready(function () {
         $('#exam').DataTable({
 

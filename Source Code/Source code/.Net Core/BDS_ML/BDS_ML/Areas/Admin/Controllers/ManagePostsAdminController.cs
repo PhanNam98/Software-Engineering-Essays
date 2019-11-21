@@ -37,19 +37,19 @@ namespace BDS_ML.Areas.Admin.Controllers
            var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
               .Include(p => p.RealEstateTypeNavigation)
               .Include(p => p.Post_Status)
-              .ThenInclude(post=>post.StatusNavigation.Post_Status).OrderByDescending(p => p.PostTime).ToList();
+              .ThenInclude(post=>post.StatusNavigation.Post_Status).ToList();
             var listStatuspost = _context.Status.ToList();
-            var postRecord = from p in listpost
-                                 join s in listStatuspost on p.Post_Status.LastOrDefault().Status equals s.ID_Status 
-                                where s.ID_Status!=6
-                                 select new PostCustom
-                                 {
-                                    post = p,
-                                     statusPost = s.Description,
+            //var postRecord = from p in listpost
+            //                     join s in listStatuspost on p.Post_Status.LastOrDefault().Status equals s.ID_Status 
+            //                    where p.Post_Status.LastOrDefault().Status != 6
+            //                     select new PostCustom
+            //                     {
+            //                        post = p,
+            //                         statusPost = s.Description,
                                     
-                                 };
-            //string a = listpost.LastOrDefault().Post_Status.LastOrDefault().StatusNavigation.Description;
-            return View(postRecord);
+            //                     };
+            var a = listpost.Where(p=>p.ID_Post==2).SingleOrDefault().Post_Status.OrderBy(p=>p.ModifiedDate).ToList();
+            return View(listpost);
 
         }
 
@@ -113,15 +113,31 @@ namespace BDS_ML.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post.FindAsync(id);
+            var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+              .Include(p => p.RealEstateTypeNavigation).Include(p=>p.Post_Location).ThenInclude(lo=>lo.Tinh_TPNavigation.Post_Location)
+              .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
+              .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
+              .Include(p => p.Post_Status)
+              .ThenInclude(pt=> pt.StatusNavigation.Post_Status).Where(p=>p.ID_Post==id).SingleOrDefaultAsync();
             if (post == null)
             {
                 return NotFound();
             }
-            ViewData["ID_Account"] = new SelectList(_context.AspNetUsers, "Id", "Id", post.ID_Account);
-            ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "ID_PostType", post.PostType);
-            ViewData["Project"] = new SelectList(_context.project, "id", "id", post.Project);
-            ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "ID_RealEstateType", post.RealEstateType);
+            var user = await _userManager.GetUserAsync(User);
+            int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
+            int District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
+            int Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
+            int Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id;
+            ViewData["ID_Account"] = user.Id;
+            ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description", post.PostType);
+            ViewData["Project"] = new SelectList(_context.project, "id", "_name", post.Project);
+            ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description", post.RealEstateType);
+            ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name", Province);
+            ViewData["District"] = new SelectList(_context.district.OrderBy(p => p._name).Where(p=>p._province_id== Province), "id", "_name", District);
+            ViewData["Ward"] = new SelectList(_context.ward.OrderBy(p => p._name).Where(p=>p._province_id==Province && p._district_id==District), "id", "_name", Ward);
+            ViewData["Street"] = new SelectList(_context.street.OrderBy(p => p._name).Where(p => p._province_id == Province && p._district_id == District), "id", "_name", Street);
+
+
             return View(post);
         }
 
@@ -130,7 +146,8 @@ namespace BDS_ML.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post,int province,int district,
+            int ward,int street)
         {
             if (id != post.ID_Post)
             {
@@ -342,6 +359,33 @@ namespace BDS_ML.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        public JsonResult Get_district(int province_id)
+        {
+            var list = _context.district.Where(p => p._province_id == province_id);
+            return Json(list.Select(x => new
+            {
+                ID = x.id,
+                Name = x._prefix + " " + x._name
+            }).ToList());
+        }
+        public JsonResult Get_ward(int province_id, int district_id)
+        {
+            var list = _context.ward.Where(p => p._province_id == province_id && p._district_id == district_id);
+            return Json(list.Select(x => new
+            {
+                ID = x.id,
+                Name = x._prefix + " " + x._name
+            }).ToList());
+        }
+        public JsonResult Get_street(int province_id, int district_id)
+        {
+            var list = _context.street.Where(p => p._province_id == province_id && p._district_id == district_id);
+            return Json(list.Select(x => new
+            {
+                ID = x.id,
+                Name = x._prefix + " " + x._name
+            }).ToList());
+        }
     }
+
 }

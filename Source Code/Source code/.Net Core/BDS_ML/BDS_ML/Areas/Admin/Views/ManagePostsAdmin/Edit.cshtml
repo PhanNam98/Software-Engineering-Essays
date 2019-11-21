@@ -1,22 +1,38 @@
 ﻿@model BDS_ML.Models.ModelDB.Post
-
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
 }
-
-<h1>Edit</h1>
-
-<h4>Post</h4>
-<hr />
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Bài đăng</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li>Bài đăng</li>
+                    <li>Danh sách bài đăng</li>
+                    <li class="active">Chỉnh sửa bài đăng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@*<h1>Danh sách bài đăng</h1>*@
+<partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID_Post" />
-            <div class="form-group">
+            <div class="form-group" hidden="hidden">
                 <label asp-for="ID_Account" class="control-label"></label>
-                <select asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account"></select>
+                <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" />
                 <span asp-validation-for="ID_Account" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -59,7 +75,38 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+                    <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
+                    <select  id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
+                    <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Post_Location.SingleOrDefault().Quan_Huyen" class="control-label"></label>
+                    <select id="district" name="district" class="form-control"></select>
+                    <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
+                <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
+                <select id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
+                <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Quận/Huyện</label><br />
+                <select id="district" name="district" class="form-control" asp-items="ViewBag.District"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
+                <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post_Location.SingleOrDefault().Phuong_Xa" class="control-label"></label>
+                <select asp-for="Post_Location.SingleOrDefault().Phuong_Xa" id="ward" name="ward" class="form-control" asp-items="ViewBag.Ward"></select>
+
+                <span asp-validation-for="Post_Location.SingleOrDefault().Phuong_Xa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post_Location.SingleOrDefault().Duong_Pho" class="control-label"></label>
+                <select asp-for="Post_Location.SingleOrDefault().Duong_Pho" id="street" name="street" class="form-control" asp-items="ViewBag.Street"></select>
+                <span asp-validation-for="Post_Location.SingleOrDefault().Duong_Pho" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="hidden">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" />
                 <span asp-validation-for="Status" class="text-danger"></span>
@@ -70,8 +117,83 @@
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script>
+
+
+
+    $(document).ready(function () {
+
+        $("#district").change(function () {
+
+            var id = $(this).val();
+            var id_p = $("#province").val();
+            $("#ward").empty();
+
+            $.get("/Admin/ManagePostsAdmin/Get_ward", { province_id: id_p, district_id: id }, function (data) {
+
+                var v = "";
+
+                $.each(data, (i, v1) => {
+
+                    v += "<option value=" + v1.id + ">" + v1.name + "</option>";
+
+                });
+
+                $("#ward").html(v);
+
+            });
+
+        });
+
+
+
+        $("#province").change(function () {
+
+            var id = $(this).val();
+
+            $("#district").empty();
+    
+            $.get("/Admin/ManagePostsAdmin/Get_district", { province_id: id }, function (data) {
+             
+                var v = "";
+
+                $.each(data, (i, v1) => {
+
+                    v += "<option value=" + v1.id + ">" + v1.name + "</option>";
+
+                });
+
+                $("#district").html(v);
+
+            });
+
+        });
+        $("#district").change(function () {
+
+            var id = $(this).val();
+            var id_p = $("#province").val();
+            $("#street").empty();
+
+            $.get("/Admin/ManagePostsAdmin/Get_street", { province_id: id_p, district_id: id }, function (data) {
+
+                var v = "";
+
+                $.each(data, (i, v1) => {
+
+                    v += "<option value=" + v1.id + ">" + v1.name + "</option>";
+
+                });
+
+                $("#street").html(v);
+
+            });
+
+        });
+
+    });
+
+</script>
