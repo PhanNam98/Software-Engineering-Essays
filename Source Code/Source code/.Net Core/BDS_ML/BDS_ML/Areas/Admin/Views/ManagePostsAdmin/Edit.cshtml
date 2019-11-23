@@ -47,7 +47,7 @@
                 <span asp-validation-for="ID_Account" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Ngày đăng</label>
+                <label class="control-label">Ngày tạo</label>
                 <input asp-for="PostTime" class="form-control" readonly="readonly" />
                 <span asp-validation-for="PostTime" class="text-danger"></span>
             </div>
@@ -58,8 +58,11 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label">Kích thước</label>
-                <input asp-for="Size" class="form-control" />
+                <label class="control-label">Diện tích</label>
+                <div class="input-group">
+                    <input type="number" asp-for="Size" class="form-control" min="0" />
+                    <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
+                </div>
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -67,9 +70,14 @@
                 <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"> <option disabled selected>--- Không ---</option></select>
                 <span asp-validation-for="Project" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label class="control-label">Giá</label>
-                <input asp-for="Price" class="form-control" />
+                <div class="input-group">
+
+                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" />
+                    <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                </div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -142,15 +150,15 @@
                 <textarea id="descriptiondetail" name="descriptiondetail" class="form-control">@Model.Post_Detail.SingleOrDefault().Description</textarea>
             </div>
             @*<div class="form-group">
-                    <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
-                    <select  id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
-                    <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Post_Location.SingleOrDefault().Quan_Huyen" class="control-label"></label>
-                    <select id="district" name="district" class="form-control"></select>
-                    <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
-                </div>*@
+            <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
+            <select  id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
+            <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Post_Location.SingleOrDefault().Quan_Huyen" class="control-label"></label>
+            <select id="district" name="district" class="form-control"></select>
+            <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
+        </div>*@
 
             <div class="form-group">
                 <label class="control-label">Tỉnh/Thành phố</label>
@@ -191,9 +199,9 @@
   "Details",                         // controller action        // controller
   new { @id= Model.ID_Post },         // action parameters aka route values
   new { @class = "btn btn-info" })
-    @* <button class="btn btn-md btn-info" onclick="location.href='@Url.Action("Details",new { @id= Model.ID_Post}))'">Xem chi tiết</button>*@
-</div>
-</form>
+                @* <button class="btn btn-md btn-info" onclick="location.href='@Url.Action("Details",new { @id= Model.ID_Post}))'">Xem chi tiết</button>*@
+            </div>
+        </form>
 </div>
 
 </div>

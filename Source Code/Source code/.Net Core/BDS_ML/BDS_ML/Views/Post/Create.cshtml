@@ -37,128 +37,128 @@
                     <input type="number" asp-for="Size" class="form-control" min="0" />
                     <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
                 </div>
-                    <span asp-validation-for="Size" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Project" class="control-label"></label>
-                    <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"><option>--- Không ---</option></select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Giá</label>
-                    <div class="input-group">
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Project" class="control-label"></label>
+                <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"><option>--- Không ---</option></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Giá</label>
+                <div class="input-group">
 
-                        <input type="number" asp-for="Price" class="form-control" placeholder="Giá" value="1" />
-                        <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
-                    </div>
-                    <span asp-validation-for="Price" class="text-danger"></span>
+                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" value="1" />
+                    <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Loại bất động sản</label>
-                    <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Loại bất động sản</label>
+                <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Miêu tả về bất động sản</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tầng</label>
+                <div class="input-group">
+                    <input type="number" id="floor" name="floor" class="form-control" value="0" min="0" max="20" />
+                    <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Miêu tả về bất động sản</label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Phòng ngủ</label>
+                <div class="input-group">
+                    <input type="number" id="bedroom" name="bedroom" class="form-control" value="0" min="0" max="100" />
+                    <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Tầng</label>
-                    <div class="input-group">
-                        <input type="number" id="floor" name="floor" class="form-control" value="0" min="0" max="20" />
-                        <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
-                    </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Phòng vệ sinh</label>
+                <div class="input-group">
+                    <input type="number" id="bathroom" name="bathroom" class="form-control" value="0" min="0" max="100" />
+                    <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Phòng ngủ</label>
-                    <div class="input-group">
-                        <input type="number" id="bedroom" name="bedroom" class="form-control" value="0" min="0" max="100" />
-                        <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Phòng vệ sinh</label>
-                    <div class="input-group">
-                        <input type="number" id="bathroom" name="bathroom" class="form-control" value="0" min="0" max="100" />
-                        <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Sân</label>
-                    <input type="number" id="yard" name="yard" class="form-control" value="1" min="0" max="10" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Sân</label>
+                <input type="number" id="yard" name="yard" class="form-control" value="1" min="0" max="10" />
+
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="nearHospital" name="nearHospital" value="true" /> Gần bệnh viện
+                </label>
+
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="nearMarket" name="nearMarket" value="true" /> Gần chợ/siêu thị
+                </label>
+
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="nearAirport" name="nearAirport" value="true" /> Gần sân bay
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="nearSchool" name="nearSchool" value="true" /> Gần trường học
+                </label>
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    <input type="checkbox" id="alley" name="alley" value="true" /> Trong Hẻm
+                </label>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Miêu tả</label>
+                <textarea id="descriptiondetail" name="descriptiondetail" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tỉnh/Thành phố</label>
+                @Html.DropDownList("Province", (IEnumerable<SelectListItem>)ViewBag.Province, new { @class = "form-control", @id = "province" })
+            </div>
+            <div class="form-group">
+                <label class="control-label">Quận/Huyện</label><br />
+                <select id="district" name="district" class="form-control"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Khu vực</label><br />
+                <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Đường</label><br />
+                <select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Số nhà, tên hẻm</label>
+                <div class="input-group">
+                    <input id="diachi" name="diachi" class="form-control" />
 
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="file-input" class=" form-control-label">Ảnh chụp</label>
+                <input type="file" id="images" name="images" accept="image/*" class="form-control-file" multiple />
+            </div>
 
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="nearHospital" name="nearHospital" value="true" /> Gần bệnh viện
-                    </label>
-
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="nearMarket" name="nearMarket" value="true" /> Gần chợ/siêu thị
-                    </label>
-
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="nearAirport" name="nearAirport" value="true" /> Gần sân bay
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="nearSchool" name="nearSchool" value="true" /> Gần trường học
-                    </label>
-
-                </div>
-                <div class="form-group">
-                    <label class="control-label">
-                        <input type="checkbox" id="alley" name="alley" value="true" /> Trong Hẻm
-                    </label>
-
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label">Miêu tả</label>
-                    <textarea id="descriptiondetail" name="descriptiondetail" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Tỉnh/Thành phố</label>
-                    @Html.DropDownList("Province", (IEnumerable<SelectListItem>)ViewBag.Province, new { @class = "form-control", @id = "province" })
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Quận/Huyện</label><br />
-                    <select id="district" name="district" class="form-control"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Khu vực</label><br />
-                    <select id="ward" name="ward" class="form-control"><option disabled selected >---Chọn Phường/Xã---</option></select><br />
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Đường</label><br />
-                    <select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Số nhà, tên hẻm</label>
-                    <div class="input-group">
-                        <input id="diachi" name="diachi" class="form-control" />
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="file-input" class=" form-control-label">Ảnh chụp</label>
-                    <input type="file" id="images" name="images" accept="image/*" class="form-control-file" multiple />
-                </div>
-
-                <div class="form-group" hidden="hidden">
-                    <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" />
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Tạo bài đăng" class="btn btn-primary" />
-                </div>
-</form>
+            <div class="form-group" hidden="hidden">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Tạo bài đăng" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 

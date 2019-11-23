@@ -223,13 +223,21 @@ namespace BDS_ML.Areas.Admin.Controllers
             post_Location.Quan_Huyen = district;
             post_Location.Tinh_TP = province;
             post_Location.DuAn = post.Project;
+            var user = await _userManager.GetUserAsync(User);
+            Post_Status post_Status = new Post_Status();
+            post_Status.ID_Account = user.Id;
+            post_Status.ID_Post = post.ID_Post;
+            post_Status.Reason = "Bài đăng được cập nhật. Xin đợi admin duyệt";
+            post_Status.Status = 5;
+            post_Status.ModifiedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
                 try
-                {
+                { 
                     _context.Update(post);
                     _context.Update(postdetail);
                     _context.Update(post_Location);
+                    _context.Post_Status.Add(post_Status);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -246,16 +254,7 @@ namespace BDS_ML.Areas.Admin.Controllers
                 //return View(post);
                 return RedirectToAction(nameof(Details),new { id=id});
             }
-            //post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-            //    .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
-            //    .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
-            //    .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
-            //    .Include(d => d.Post_Detail).
-            //    Include(image => image.Post_Image)
-            //    .Include(p => p.Post_Status)
-            //    .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.ID_Post == id).SingleOrDefaultAsync();
-         
-            var user = await _userManager.GetUserAsync(User);
+           
             int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
             int District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
             int Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;

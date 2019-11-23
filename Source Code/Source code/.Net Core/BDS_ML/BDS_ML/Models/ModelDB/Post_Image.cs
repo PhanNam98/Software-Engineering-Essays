@@ -10,7 +10,7 @@ namespace BDS_ML.Models.ModelDB
         [Key]
         public int ID_Image { get; set; }
         public int ID_Post { get; set; }
-        [StringLength(50)]
+        [StringLength(255)]
         public string url { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? AddedDate { get; set; }

@@ -35,10 +35,10 @@
                 <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" readonly="readonly" />
                 <span asp-validation-for="ID_Account" class="text-danger"></span>
             </div>
-            <div class="form-group" >
+            <div class="form-group">
                 <label class="control-label">Người đăng</label>
                 <input class="form-control" value="@ViewBag.Name_Account" readonly="readonly" />
-               
+
             </div>
             <div class="form-group">
                 <label class="control-label">Tiêu đề<span style="color:red">*</span></label>
@@ -46,10 +46,21 @@
                 <span asp-validation-for="Tittle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Ngày đăng</label>
+                <label class="control-label">Ngày tạo</label>
                 <input asp-for="PostTime" class="form-control" readonly="readonly" />
                 <span asp-validation-for="PostTime" class="text-danger"></span>
             </div>
+            @{
+                if (Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 1)
+                {
+                    <div class="form-group">
+                        <label class="control-label">Ngày đăng</label>
+                        <input value="@Model.Post_Status.LastOrDefault().ModifiedDate" class="form-control" readonly="readonly" />
+
+                    </div>
+                }
+            }
+
             <div class="form-group">
                 <label class="control-label">Loại bài đăng</label>
                 <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType" readonly="readonly"></select>
@@ -57,8 +68,11 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label">Kích thước</label>
-                <input asp-for="Size" class="form-control" readonly="readonly" />
+                <label class="control-label">Diện tích</label>
+                <div class="input-group">
+                    <input type="number" asp-for="Size" class="form-control" min="0" readonly="readonly"/>
+                    <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
+                </div>
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -68,7 +82,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Giá</label>
-                <input asp-for="Price" class="form-control" readonly="readonly" />
+                <div class="input-group">
+
+                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" readonly="readonly" />
+                    <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                </div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -132,7 +150,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label">
-                    <input type="checkbox" id="alley" name="alley" checked="@Model.Post_Detail.SingleOrDefault().Alley" value="true" onclick="return false;"/> Trong Hẻm
+                    <input type="checkbox" id="alley" name="alley" checked="@Model.Post_Detail.SingleOrDefault().Alley" value="true" onclick="return false;" /> Trong Hẻm
                 </label>
 
             </div>
