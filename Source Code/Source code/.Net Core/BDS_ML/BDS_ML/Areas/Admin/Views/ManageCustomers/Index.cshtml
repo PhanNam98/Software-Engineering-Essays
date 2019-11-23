@@ -44,8 +44,7 @@
     </div>
 </div>
 <h1>Danh sách khách hàng</h1>
-<partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
-
+<partial name="~/Areas/Admin/Views/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 @*<table id="bootstrap-data-table" class="table table-striped table-bordered">*@
 <table id="exam" class="table table-striped table-bordered">
     <thead>
@@ -280,21 +279,21 @@
                                                     </div>
                                                     <div class="form-group">
                                                         Ngày khóa:<br />
-                                                        @Html.TextBox("txtJoiningDate", @item.Block.LastOrDefault().BlockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
+                                                        @Html.TextBox("txtJoiningDate", @item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().BlockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
                                                     </div>
                                                     <div class="form-group">
                                                         Ngày mở khóa:<br />
-                                                        @Html.TextBox("txtJoiningDate", @item.Block.LastOrDefault().UnLockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
+                                                        @Html.TextBox("txtJoiningDate", @item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().UnLockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
 
                                                     </div>
                                                     <div class="form-group">
                                                         Lí do khóa<br />
-                                                        <input type="text" name="reasonBlockCus" class="input-md form-control" value="@item.Block.LastOrDefault().Reason" id="reasonBlockCus" readonly>
+                                                        <input type="text" name="reasonBlockCus" class="input-md form-control" value="@item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().Reason" id="reasonBlockCus" readonly>
                                                         @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
                                                     </div>
                                                     <div class="form-group">
                                                         Khóa bởi Admin_ID<br />
-                                                        <input type="text" name="BlockCusBy" class="input-md form-control" value="@item.Block.LastOrDefault().ID_Admin" id="BlockCusBy" readonly>
+                                                        <input type="text" name="BlockCusBy" class="input-md form-control" value="@item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_Admin" id="BlockCusBy" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">

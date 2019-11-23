@@ -27,7 +27,7 @@ namespace BDS_ML.Areas.Admin.Controllers
         {
             _userManager = userManager;
             _context = new BDT_MLDBContext();
-            StatusMessage = "Đang xử lí";
+            //StatusMessage = "Đang xử lí";
 
         }
 
@@ -43,7 +43,11 @@ namespace BDS_ML.Areas.Admin.Controllers
 
             var bDT_MLDBContext = _context.Customer.Include(c => c.Account_).Include(p => p.Block).Where(c => c.Account_.IsAdmin == 0);
             if (bDT_MLDBContext.ToListAsync().Result.Count() != 0)
+            {
+                ViewData["StatusMessage"] = "Lấy danh sách thành công";
                 StatusMessage = "Lấy danh sách thành công";
+            }
+               
             else
             {
                 StatusMessage = "Error Lấy danh sách không thành công";

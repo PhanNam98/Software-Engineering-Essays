@@ -51,7 +51,7 @@ namespace BDS_ML.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post, string id
-            , int district, int ward, int street, string diachi, bool alley, bool nearSchool, bool nearAirport, bool nearHospital, bool nearMarket, List<IFormFile> images, string description, int bathroom,
+            , int district, int ward, int street, string diachi, bool alley, bool nearSchool, bool nearAirport, bool nearHospital, bool nearMarket, List<IFormFile> images, string descriptiondetail, int bathroom,
             int bedroom, int yard, int floor, int province)
         {
 
@@ -84,7 +84,7 @@ namespace BDS_ML.Controllers
                 Alley = alley,
                 Bathroom = bathroom,
                 Bedroom = bedroom,
-                Description = description,
+                Description = descriptiondetail,
                 Floor = floor,
                 Yard = yard,
                 NearHospital = nearHospital,
@@ -118,12 +118,8 @@ namespace BDS_ML.Controllers
                     if (file != null && images[i].Length > 0)
                     {
                         string fileName = Path.GetFileName(file.FileName);
-                        if(fileName.Length>30)
-                        {
-                            fileName= fileName.Substring(0, 30);
-                        }
-
                         string extensionFileName = Path.GetExtension(fileName);
+                      
 
                         fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
 
