@@ -44,14 +44,14 @@
         </div>
     </div>
 </div>
-@*<h1>Danh sách bài đăng</h1>*@
+
 <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 
     <form method="GET">
         <button type="submit" class="btn btn-custon-rounded-three btn-primary btn-xs" asp-area="" asp-controller="Post" asp-action="Create">Tạo bài viết</button>
     </form>
+    <br />
 
-@*<div style="width: auto; height: 350px; overflow-y: scroll;">*@
 <div>
     <table id="exam" class="table table-striped table-bordered">
 
