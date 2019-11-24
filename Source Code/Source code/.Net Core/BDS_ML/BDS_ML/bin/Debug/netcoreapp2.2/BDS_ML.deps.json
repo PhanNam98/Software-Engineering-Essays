@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "64dfc4aa9677ea9c8dbba293d89a3f4867b9c9e1"
+    "signature": "777f07206fd96b20bf022b9c13c88de25251e5dc"
   },
   "compilationOptions": {
     "defines": [
@@ -31,7 +31,8 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
           "Microsoft.EntityFrameworkCore.Tools": "2.2.6",
           "Microsoft.NETCore.App": "2.2.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.3"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.3",
+          "ReflectionIT.Mvc.Paging": "3.5.0"
         },
         "runtime": {
           "BDS_ML.dll": {}
@@ -358,6 +359,26 @@
         },
         "compile": {
           "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
+        }
+      },
+      "ReflectionIT.Mvc.Paging/3.5.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc": "2.2.0",
+          "Microsoft.EntityFrameworkCore.Relational": "2.2.6"
+        },
+        "runtime": {
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.Views.dll": {
+            "assemblyVersion": "3.5.0.0",
+            "fileVersion": "3.5.0.0"
+          },
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.dll": {
+            "assemblyVersion": "3.5.0.0",
+            "fileVersion": "3.5.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.Views.dll": {},
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.dll": {}
         }
       },
       "Remotion.Linq/2.2.0": {
@@ -3990,6 +4011,13 @@
       "sha512": "sha512-EaCgmntbH1sOzemRTqyXSqYjB6pLH7VCYHhhDYZ59guHSD5qPwhIYa7kfy0QUlmTRt9IXhaXdFhNuBUArp70Ng==",
       "path": "portable.bouncycastle/1.8.5",
       "hashPath": "portable.bouncycastle.1.8.5.nupkg.sha512"
+    },
+    "ReflectionIT.Mvc.Paging/3.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IyFeiOX25SvwGftPuGYzkzNyyuSevS9yCc88FNHoeWrR2iQoxCd3QLh/QOT+EtDnhpR30aQlkljrnV9NBk2H4A==",
+      "path": "reflectionit.mvc.paging/3.5.0",
+      "hashPath": "reflectionit.mvc.paging.3.5.0.nupkg.sha512"
     },
     "Remotion.Linq/2.2.0": {
       "type": "package",

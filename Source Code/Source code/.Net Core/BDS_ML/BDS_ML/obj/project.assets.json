@@ -2944,6 +2944,21 @@
           "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
         }
       },
+      "ReflectionIT.Mvc.Paging/3.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc": "2.2.0",
+          "Microsoft.EntityFrameworkCore.Relational": "2.2.4"
+        },
+        "compile": {
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.Views.dll": {},
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.Views.dll": {},
+          "lib/netstandard2.0/ReflectionIT.Mvc.Paging.dll": {}
+        }
+      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -8397,6 +8412,22 @@
         "portable.bouncycastle.nuspec"
       ]
     },
+    "ReflectionIT.Mvc.Paging/3.5.0": {
+      "sha512": "IyFeiOX25SvwGftPuGYzkzNyyuSevS9yCc88FNHoeWrR2iQoxCd3QLh/QOT+EtDnhpR30aQlkljrnV9NBk2H4A==",
+      "type": "package",
+      "path": "reflectionit.mvc.paging/3.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License..txt",
+        "lib/netstandard2.0/ReflectionIT.Mvc.Paging.Views.dll",
+        "lib/netstandard2.0/ReflectionIT.Mvc.Paging.Views.pdb",
+        "lib/netstandard2.0/ReflectionIT.Mvc.Paging.dll",
+        "lib/netstandard2.0/ReflectionIT.Mvc.Paging.pdb",
+        "reflectionit.mvc.paging.3.5.0.nupkg.sha512",
+        "reflectionit.mvc.paging.nuspec"
+      ]
+    },
     "Remotion.Linq/2.2.0": {
       "sha512": "fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
       "type": "package",
@@ -13421,7 +13452,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.2.6",
       "Microsoft.EntityFrameworkCore.Tools >= 2.2.6",
       "Microsoft.NETCore.App >= 2.2.0",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3",
+      "ReflectionIT.Mvc.Paging >= 3.5.0"
     ]
   },
   "packageFolders": {
@@ -13503,6 +13535,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[2.2.3, )"
+          },
+          "ReflectionIT.Mvc.Paging": {
+            "target": "Package",
+            "version": "[3.5.0, )"
           }
         },
         "imports": [
