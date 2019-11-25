@@ -43,9 +43,9 @@ namespace BDS_ML.Areas.User.Controllers
                 int Sold = 0;
                 foreach (var p in list)
                 {
-                    if (p.Post_Status.LastOrDefault().Status == 5)
+                    if (p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 5)
                         Pending++;
-                    if (p.Post_Status.LastOrDefault().Status == 2)
+                    if (p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 2)
                         Sold++;
                 }
                 dboard.PostPending = Pending;

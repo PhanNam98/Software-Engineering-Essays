@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BDS_ML.Models.ModelDB;
+using Microsoft.AspNetCore.Http;
 
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
@@ -88,7 +89,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new {ReturnUrl = returnUrl });
+                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -97,8 +98,84 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
+            var user = _context.AspNetUsers.Where(p => p.UserName == info.Principal.FindFirstValue(ClaimTypes.Email)).SingleOrDefault();
+            if (user != null)
+            {
+                BDS_ML.Models.ModelDB.Admin admin = new Models.ModelDB.Admin();
+                Customer cus = new Customer();
+                string urlavatar = "";
+                if (user.IsAdmin == 1)
+                {
+                    admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    urlavatar += admin.Avatar_URL;
+                }
+                else
+                {
+                    cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    urlavatar += cus.Avatar_URL;
+                }
+                HttpContext.Session.SetString("AvatarImage", urlavatar);
+                if (user.IsBlock != 0)
+                {
+                    if (user.IsAdmin == 0)
+                    {
+                        //var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                        var block = _context.Block.Where(b => b.ID_User == cus.ID_User).OrderBy(p => p.ModifiedDate).LastOrDefault();
+                        if (block.UnLockDate <= DateTime.Now)
+                        {
+                            try
+                            {
+                                block.ModifiedDate = DateTime.Now.Date;
+                                user.IsBlock = 0;
+                                _context.AspNetUsers.Attach(user);
+                                _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                                _context.Block.Attach(block);
+                                _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                                _context.SaveChanges();
+
+                            }
+                            catch { }
+                        }
+                        else
+                        {
+                            ErrorMessage = "Tài khoản bị khóa!. Lí do: " + block.Reason+".";
+                            return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                         
+                        }
+                    }
+                    if (user.IsAdmin == 1)
+                    {
+                        //admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                        var block = _context.Block.Where(b => b.ID_User == admin.ID_Admin).OrderBy(p => p.ModifiedDate).LastOrDefault();
+                        if (block.UnLockDate <= DateTime.Now)
+                        {
+                            try
+                            {
+                                block.ModifiedDate = DateTime.Now.Date;
+                                user.IsBlock = 0;
+                                _context.AspNetUsers.Attach(user);
+                                _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                                _context.Block.Attach(block);
+                                _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                                _context.SaveChanges();
+
+                            }
+                            catch { }
+                        }
+                        else
+                        {
+                            ErrorMessage = "Tài khoản bị khóa!. Lí do: " + block.Reason + ".";
+                            return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                        }
+                    }
+
+                }
+            }
+           
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -115,14 +192,14 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 LoginProvider = info.LoginProvider;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
-                   
+
                     Input = new InputModel
                     {
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email),
-                        FirstName=info.Principal.FindFirstValue(ClaimTypes.GivenName),
-                        LastName= info.Principal.FindFirstValue( ClaimTypes.Surname),
-                        Address= info.Principal.FindFirstValue(ClaimTypes.Country),
-                        PhoneNumber= info.Principal.FindFirstValue(ClaimTypes.OtherPhone)
+                        FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
+                        LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
+                        Address = info.Principal.FindFirstValue(ClaimTypes.Country),
+                        PhoneNumber = info.Principal.FindFirstValue(ClaimTypes.MobilePhone)
                     };
                 }
                 return Page();
@@ -142,7 +219,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.PhoneNumber };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, PhoneNumber = Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -151,7 +228,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     if (result.Succeeded)
                     {
                         Customer customer = new Customer();
-                      
+
                         customer.Avatar_URL = "avatar_common.png";
 
                         customer.Account_ID = user.Id;
@@ -164,7 +241,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                         customer.CreatedDate = DateTime.Now;
                         try
                         {
-                            
+
                             _context.Customer.Add(customer);
                             _context.SaveChanges();
                             user.EmailConfirmed = true;
@@ -184,9 +261,9 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         return LocalRedirect(returnUrl);
-                       
+
                     }
-                    
+
                 }
 
                 foreach (var error in result.Errors)

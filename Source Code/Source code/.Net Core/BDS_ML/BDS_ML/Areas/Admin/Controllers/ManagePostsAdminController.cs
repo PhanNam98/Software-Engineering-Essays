@@ -61,7 +61,7 @@ namespace BDS_ML.Areas.Admin.Controllers
                .Include(p => p.Post_Status)
                .ThenInclude(post => post.StatusNavigation.Post_Status).Where(p=>p.ID_Account==user.Id && p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status != 8 &&
                p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status != 7).ToList();
-            List<Post> a = listpost;
+          
             return View(listpost);
 
         }
@@ -73,7 +73,31 @@ namespace BDS_ML.Areas.Admin.Controllers
                .Include(p => p.RealEstateTypeNavigation)
                .Include(p => p.Post_Status)
                .ThenInclude(post => post.StatusNavigation.Post_Status).Where(p => p.ID_Account == user.Id && p.Post_Status.OrderBy(c=>c.ModifiedDate).LastOrDefault().Status==8).ToList();
-            List<Post> a = listpost;
+           
+            return View(listpost);
+
+        }
+        public async Task<IActionResult> ListPedingPost()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+               .Include(p => p.RealEstateTypeNavigation)
+               .Include(p => p.Post_Status)
+               .ThenInclude(post => post.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 5).ToList();
+            
+            return View(listpost);
+
+        }
+        public async Task<IActionResult> ListSoldPost()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+               .Include(p => p.RealEstateTypeNavigation)
+               .Include(p => p.Post_Status)
+               .ThenInclude(post => post.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 2).ToList();
+         
             return View(listpost);
 
         }
@@ -552,7 +576,7 @@ namespace BDS_ML.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
-        public async Task<IActionResult> IgnorePost(int idpost)
+        public async Task<IActionResult> IgnorePost(int idpost,string reasonIgnorePost)
         {
 
             var post = await _context.Post.FindAsync(idpost);
@@ -563,7 +587,7 @@ namespace BDS_ML.Areas.Admin.Controllers
                 poststatus.ID_Post = post.ID_Post;
                 var user = await _userManager.GetUserAsync(User);
                 poststatus.ID_Account = user.Id;
-                poststatus.Reason = "";
+                poststatus.Reason = reasonIgnorePost;
                 poststatus.Status = 6;
                 poststatus.ModifiedDate = DateTime.Now;
                 _context.Post_Status.Add(poststatus);

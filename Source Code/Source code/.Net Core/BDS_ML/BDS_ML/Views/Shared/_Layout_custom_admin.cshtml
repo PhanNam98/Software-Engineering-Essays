@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using BDS_ML.Models.Common
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -74,7 +76,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Bài đăng</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="Index">Danh sách bài đăng</a></li>
-                            <li><i class="fa fa-table"></i><a href="tables-data.html">Duyệt bài</a></li>
+                            <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListPedingPost">Duyệt bài <span class="count">@Context.Session.GetString("PedingPost")</span></a></li>
+                            <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListSoldPost">BĐS đã bán/..</a></li>
                         </ul>
                     </li>
                     <h3 class="menu-title">Bài đăng cá nhân</h3><!-- /.menu-title -->
@@ -86,47 +89,47 @@
                         </ul>
                     </li>
                     @*<li class="menu-item-has-children dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Forms</a>
-            <ul class="sub-menu children dropdown-menu">
-                <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Basic Form</a></li>
-                <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
-            </ul>
-        </li>
-        <h3 class="menu-title">Icons</h3><!-- /.menu-title -->
-        <li class="menu-item-has-children dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Icons</a>
-            <ul class="sub-menu children dropdown-menu">
-                <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Font Awesome</a></li>
-                <li><i class="menu-icon ti-themify-logo"></i><a href="font-themify.html">Themefy Icons</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="widgets.html"> <i class="menu-icon ti-email"></i>Widgets </a>
-        </li>
-        <li class="menu-item-has-children dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Charts</a>
-            <ul class="sub-menu children dropdown-menu">
-                <li><i class="menu-icon fa fa-line-chart"></i><a href="charts-chartjs.html">Chart JS</a></li>
-                <li><i class="menu-icon fa fa-area-chart"></i><a href="charts-flot.html">Flot Chart</a></li>
-                <li><i class="menu-icon fa fa-pie-chart"></i><a href="charts-peity.html">Peity Chart</a></li>
-            </ul>
-        </li>
-        <li class="menu-item-has-children dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-area-chart"></i>Maps</a>
-            <ul class="sub-menu children dropdown-menu">
-                <li><i class="menu-icon fa fa-map-o"></i><a href="maps-gmap.html">Google Maps</a></li>
-                <li><i class="menu-icon fa fa-street-view"></i><a href="maps-vector.html">Vector Maps</a></li>
-            </ul>
-        </li>
-        <h3 class="menu-title">Extras</h3><!-- /.menu-title -->
-        <li class="menu-item-has-children dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-glass"></i>Pages</a>
-            <ul class="sub-menu children dropdown-menu">
-                <li><i class="menu-icon fa fa-sign-in"></i><a href="page-login.html">Login</a></li>
-                <li><i class="menu-icon fa fa-sign-in"></i><a href="page-register.html">Register</a></li>
-                <li><i class="menu-icon fa fa-paper-plane"></i><a href="pages-forget.html">Forget Pass</a></li>
-            </ul>
-        </li>*@
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Forms</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Basic Form</a></li>
+                                <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
+                            </ul>
+                        </li>
+                        <h3 class="menu-title">Icons</h3><!-- /.menu-title -->
+                        <li class="menu-item-has-children dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Icons</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Font Awesome</a></li>
+                                <li><i class="menu-icon ti-themify-logo"></i><a href="font-themify.html">Themefy Icons</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="widgets.html"> <i class="menu-icon ti-email"></i>Widgets </a>
+                        </li>
+                        <li class="menu-item-has-children dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Charts</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="menu-icon fa fa-line-chart"></i><a href="charts-chartjs.html">Chart JS</a></li>
+                                <li><i class="menu-icon fa fa-area-chart"></i><a href="charts-flot.html">Flot Chart</a></li>
+                                <li><i class="menu-icon fa fa-pie-chart"></i><a href="charts-peity.html">Peity Chart</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-item-has-children dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-area-chart"></i>Maps</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="menu-icon fa fa-map-o"></i><a href="maps-gmap.html">Google Maps</a></li>
+                                <li><i class="menu-icon fa fa-street-view"></i><a href="maps-vector.html">Vector Maps</a></li>
+                            </ul>
+                        </li>
+                        <h3 class="menu-title">Extras</h3><!-- /.menu-title -->
+                        <li class="menu-item-has-children dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-glass"></i>Pages</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="menu-icon fa fa-sign-in"></i><a href="page-login.html">Login</a></li>
+                                <li><i class="menu-icon fa fa-sign-in"></i><a href="page-register.html">Register</a></li>
+                                <li><i class="menu-icon fa fa-paper-plane"></i><a href="pages-forget.html">Forget Pass</a></li>
+                            </ul>
+                        </li>*@
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -168,7 +171,7 @@
                                     </a>
                                 </div>
                             </div>*@
-                        <div class="dropdown for-message">
+                        @*<div class="dropdown for-message">
                             <button class="btn btn-secondary dropdown-toggle" type="button"
                                     id="message"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -210,18 +213,21 @@
                                     </span>
                                 </a>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="~/sufeeadmin/images/admin.jpg" alt="User Avatar">Admin @User.Identity.Name!
+                           
+                            <img class="user-avatar rounded-circle" src="@(Constants.AVATAR_URL + Context.Session.GetString("AvatarImage"))" alt="User Avatar" >
+
                         </a>
                         <div class="user-menu dropdown-menu">
+                            @*Admin @User.Identity.Name!*@
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Trang admin</a>
                             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
-                            <a class="nav-link" href="#"><i class="fa fa- user"></i>Duyệt bài <span class="count">1</span></a>
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListPedingPost"><i class="fa fa- user"></i>Duyệt bài <span class="count">@Context.Session.GetString("PedingPost")</span></a>
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                 <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-power -off"></i>Đăng xuất</button>
                             </form>
@@ -250,7 +256,7 @@
             </div>
         </header><!-- /header -->
         <!-- Header-->
-        <div class="content mt-3" >
+        <div class="content mt-3">
             @RenderBody()
         </div> <!-- .content -->
     </div><!-- /#right-panel -->

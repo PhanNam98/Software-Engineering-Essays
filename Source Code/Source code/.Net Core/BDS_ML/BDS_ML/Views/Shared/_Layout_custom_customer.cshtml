@@ -1,7 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
+@using BDS_ML.Models.Common
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -60,7 +62,7 @@
                     <li class="active">
                         <a class="nav-link text-dark" asp-area="Dashboard" asp-controller="Dashboard" asp-action="Index"> <i class="menu-icon fa fa-dashboard"></i>Bảng điều khiển</a>
                     </li>
-                   
+
                     <h3 class="menu-title">Bài đăng</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Bài đăng</a>
@@ -200,12 +202,12 @@
                 <div class="col-sm-5">
                     <div class="user-area dropdown float-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle" src="~/sufeeadmin/images/admin.jpg" alt="User Avatar">@User.Identity.Name!
+                            <img class="user-avatar rounded-circle" src="@(Constants.AVATAR_URL + Context.Session.GetString("AvatarImage"))" alt="User Avatar">
                         </a>
                         <div class="user-menu dropdown-menu">
                             <a class="nav-link text-dark" asp-area="User" asp-controller="Dashboard" asp-action="Index">Quản lí bài đăng</a>
                             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Quản lí tài khoản của bạn">Thông tin tài khoản</a>
-                            
+
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                 <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-power -off"></i>Đăng xuất</button>
                             </form>

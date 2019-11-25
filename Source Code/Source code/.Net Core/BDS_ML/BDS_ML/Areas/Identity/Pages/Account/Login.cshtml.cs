@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BDS_ML.Models.Security;
 using BDS_ML.Models.ModelDB;
+using Microsoft.AspNetCore.Http;
 
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
@@ -80,32 +81,75 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, "Đăng nhập không thành công!.");
                 return Page();
             }
+            BDS_ML.Models.ModelDB.Admin admin=new Models.ModelDB.Admin();
+            Customer cus=new Customer();
+            string urlavatar = "";
+            if(user.IsAdmin==1)
+            {
+                 admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                urlavatar += admin.Avatar_URL;
+            }
+            else
+            {
+                cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                urlavatar += cus.Avatar_URL;
+            }
+            HttpContext.Session.SetString("AvatarImage",urlavatar);
             if (user.IsBlock != 0)
             {
-                var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-                var block = _context.Block.Where(b => b.ID_User == cus.ID_User).LastOrDefault();
-                if (block.UnLockDate <= DateTime.Now)
+                if (user.IsAdmin == 0)
                 {
-                    try
+                    //var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    var block = _context.Block.Where(b => b.ID_User == cus.ID_User).OrderBy(p => p.ModifiedDate).LastOrDefault();
+                    if (block.UnLockDate <= DateTime.Now)
                     {
-                        block.ModifiedDate = DateTime.Now.Date;
-                        user.IsBlock = 0;
-                        _context.AspNetUsers.Attach(user);
-                        _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        try
+                        {
+                            block.ModifiedDate = DateTime.Now.Date;
+                            user.IsBlock = 0;
+                            _context.AspNetUsers.Attach(user);
+                            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
-                        _context.Block.Attach(block);
-                        _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                        _context.SaveChanges();
-                      
+                            _context.Block.Attach(block);
+                            _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                            _context.SaveChanges();
+
+                        }
+                        catch { }
                     }
-                    catch { }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Tài khoản bị khóa!. Lí do: " + block.Reason);
+                        return Page();
+                    }
                 }
-                else
+                if (user.IsAdmin == 1)
                 {
-                    ModelState.AddModelError(string.Empty, "Tài khoản bị khóa!. Lí do: " + block.Reason);
-                    return Page();
+                    //admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    var block = _context.Block.Where(b => b.ID_User == admin.ID_Admin).OrderBy(p=>p.ModifiedDate).LastOrDefault();
+                    if (block.UnLockDate <= DateTime.Now)
+                    {
+                        try
+                        {
+                            block.ModifiedDate = DateTime.Now.Date;
+                            user.IsBlock = 0;
+                            _context.AspNetUsers.Attach(user);
+                            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                            _context.Block.Attach(block);
+                            _context.Entry(block).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                            _context.SaveChanges();
+
+                        }
+                        catch { }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Tài khoản bị khóa!. Lí do: " + block.Reason);
+                        return Page();
+                    }
                 }
-              
+
             }
             if (ModelState.IsValid)
             {

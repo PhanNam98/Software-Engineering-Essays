@@ -11,6 +11,7 @@ using BDS_ML.Models.CustomModel;
 using Microsoft.AspNetCore.Identity;
 using BDS_ML.Models;
 using BDS_ML.Areas.Admin.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BDS_ML.Areas.Admin.Controllers
 {
@@ -34,7 +35,7 @@ namespace BDS_ML.Areas.Admin.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-
+           
             try
             {
                 var list = _context.Post.Include(p => p.Post_Status);
@@ -46,15 +47,15 @@ namespace BDS_ML.Areas.Admin.Controllers
                 int Sold = 0;
                 foreach (var p in list)
                 {
-                    if (p.Post_Status.LastOrDefault().Status == 5)
+                    if (p.Post_Status.OrderBy(c=>c.ModifiedDate).LastOrDefault().Status == 5)
                         Pending++;
-                    if (p.Post_Status.LastOrDefault().Status == 2)
+                    if (p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 2)
                         Sold++;
                 }
                 dboard.PostPendingApprovalNumber = Pending;
                 dboard.PostSoldNumber = Sold;
 
-
+                HttpContext.Session.SetString("PedingPost", Pending.ToString());
                 StatusMessage = "Lấy dữ liệu thành công";
             }
             catch { StatusMessage = "Error Lấy dữ liệu không thành công"; }
