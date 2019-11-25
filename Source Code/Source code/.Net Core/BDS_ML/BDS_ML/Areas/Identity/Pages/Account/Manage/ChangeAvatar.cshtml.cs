@@ -54,15 +54,28 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var id = await _userManager.GetUserIdAsync(user);
             
-
-            BDS_ML.Models.ModelDB.Admin admin = _context.Admin.Where(c => c.Account_ID == id).SingleOrDefault();
-
-
-            Input = new InputModel
+            if(user.IsAdmin==1)
             {
-                AvatarImage = admin.Avatar_URL
+                BDS_ML.Models.ModelDB.Admin admin = _context.Admin.Where(c => c.Account_ID == id).SingleOrDefault();
 
-            };
+
+                Input = new InputModel
+                {
+                    AvatarImage = admin.Avatar_URL
+
+                };
+            }
+            if(user.IsAdmin==0)
+            {
+                Customer customer = _context.Customer.Where(c => c.Account_ID == id).SingleOrDefault();
+
+
+                Input = new InputModel
+                {
+                    AvatarImage = customer.Avatar_URL
+
+                };
+            }
             return Page();
         }
    
@@ -78,21 +91,23 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            BDS_ML.Models.ModelDB.Admin admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-            var email = await _userManager.GetEmailAsync(user);
-            if (admin == null)
+            if(user.IsAdmin==1)
             {
-                return NotFound($"Unable to load admin with úuerID '{_userManager.GetUserId(User)}'.");
-            }
-            
-            if (image != null)
-            {
-               
+                BDS_ML.Models.ModelDB.Admin admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                var email = await _userManager.GetEmailAsync(user);
+                if (admin == null)
+                {
+                    return NotFound($"Unable to load admin with úuerID '{_userManager.GetUserId(User)}'.");
+                }
+
+                if (image != null)
+                {
+
                     string fileName = Path.GetFileName(image.FileName);
-                   
+
                     string extensionFileName = Path.GetExtension(fileName);
 
-                    fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" +user.Id+ "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
+                    fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
 
                     var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars", fileName);
 
@@ -102,24 +117,69 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                     }
                     admin.Avatar_URL = fileName;
 
-            }
-            else
-                admin.Avatar_URL = "avatar_common.png";
+                }
+                else
+                    admin.Avatar_URL = "avatar_common.png";
 
-            {
-                try
                 {
-                    _context.Admin.Attach(admin);
-                    _context.Entry(admin).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    _context.SaveChanges();
-                }
-                catch
-                {
-                    StatusMessage = "Error Cập nhật thông tin không thành công!";
-                    return RedirectToPage();
+                    try
+                    {
+                        _context.Admin.Attach(admin);
+                        _context.Entry(admin).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+                    catch
+                    {
+                        StatusMessage = "Error Cập nhật thông tin không thành công!";
+                        return RedirectToPage();
+                    }
                 }
             }
-           
+            
+           if(user.IsAdmin==0)
+            {
+                Customer customer = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                var email = await _userManager.GetEmailAsync(user);
+                if (customer == null)
+                {
+                    return NotFound($"Unable to load admin with úuerID '{_userManager.GetUserId(User)}'.");
+                }
+
+                if (image != null)
+                {
+
+                    string fileName = Path.GetFileName(image.FileName);
+
+                    string extensionFileName = Path.GetExtension(fileName);
+
+                    fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars", fileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+                    customer.Avatar_URL = fileName;
+
+                }
+                else
+                    customer.Avatar_URL = "avatar_common.png";
+
+                {
+                    try
+                    {
+                        _context.Customer.Attach(customer);
+                        _context.Entry(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+                    catch
+                    {
+                        StatusMessage = "Error Cập nhật thông tin không thành công!";
+                        return RedirectToPage();
+                    }
+                }
+            }
             StatusMessage = "Thông tin của bạn đã được cập nhật";
             return RedirectToPage();
         }

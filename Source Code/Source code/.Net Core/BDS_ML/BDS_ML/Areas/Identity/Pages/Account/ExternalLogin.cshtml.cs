@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using BDS_ML.Models.ModelDB;
 
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
@@ -19,7 +20,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
-
+        private readonly BDT_MLDBContext _context;
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
@@ -28,6 +29,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _context = new BDT_MLDBContext();
         }
 
         [BindProperty]
@@ -42,9 +44,29 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email phải được điền.")]
+            [EmailAddress(ErrorMessage = "Email không hợp lệ.")]
+            [Display(Name = "Email")]
             public string Email { get; set; }
+            [Required(ErrorMessage = "Họ phải được điền.")]
+            [StringLength(50, ErrorMessage = "Họ phải dài hơn {2} kí tự.", MinimumLength = 2)]
+            [Display(Name = "Họ")]
+            public string FirstName { get; set; }
+            [Required(ErrorMessage = "Tên phải được điền.")]
+            [StringLength(50, ErrorMessage = "Tên phải dài hơn {2} kí tự.", MinimumLength = 2)]
+            [Display(Name = "Tên")]
+            public string LastName { get; set; }
+            [Required(ErrorMessage = "Số điện thoại phải được điền.")]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không hợp lệ.")]
+            [DataType(DataType.PhoneNumber, ErrorMessage = "Số điện thoại không hợp lệ.")]
+            [StringLength(10, ErrorMessage = "Điện thoại chỉ chứa {2} kí tự số.", MinimumLength = 10)]
+            [Display(Name = "Số điện thoại")]
+            public string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "Địa chỉ phải được điền.")]
+            [StringLength(100, ErrorMessage = "Địa chỉ phải dài hơn {2} kí tự.", MinimumLength = 10)]
+            [Display(Name = "Địa chỉ")]
+            public string Address { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -93,9 +115,14 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 LoginProvider = info.LoginProvider;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
+                   
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        FirstName=info.Principal.FindFirstValue(ClaimTypes.GivenName),
+                        LastName= info.Principal.FindFirstValue( ClaimTypes.Surname),
+                        Address= info.Principal.FindFirstValue(ClaimTypes.Country),
+                        PhoneNumber= info.Principal.FindFirstValue(ClaimTypes.OtherPhone)
                     };
                 }
                 return Page();
@@ -115,18 +142,53 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.PhoneNumber };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        Customer customer = new Customer();
+                      
+                        customer.Avatar_URL = "avatar_common.png";
+
+                        customer.Account_ID = user.Id;
+                        customer.FirstName = Input.FirstName;
+                        customer.LastName = Input.LastName;
+                        customer.PhoneNumber = Input.PhoneNumber;
+                        customer.Email = Input.Email;
+                        customer.Address = Input.Address;
+                        customer.ModifiedDate = DateTime.Now;
+                        customer.CreatedDate = DateTime.Now;
+                        try
+                        {
+                            
+                            _context.Customer.Add(customer);
+                            _context.SaveChanges();
+                            user.EmailConfirmed = true;
+                            var updateResult = await _userManager.UpdateAsync(user);
+                            if (!updateResult.Succeeded)
+                            {
+
+                                var userId = await _userManager.GetUserIdAsync(user);
+                                throw new InvalidOperationException($"Unexpected error occurred setting fields for user with ID '{userId}'.");
+                            }
+                            _logger.LogInformation("Created a new customer with account.");
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.LogInformation("Error a new customer with account." + "Error: " + e);
+                        }
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         return LocalRedirect(returnUrl);
+                       
                     }
+                    
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

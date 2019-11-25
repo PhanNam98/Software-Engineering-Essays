@@ -15,6 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BDS_ML.Models;
 using BDS_ML.Models.ModelDB;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace BDS_ML
 {
@@ -49,12 +51,12 @@ namespace BDS_ML
             //services.AddDbContext<BDT_MLDBContext>(options =>
             //   options.UseSqlServer(
             //       Configuration.GetConnectionString("DataConnect")));
-         
+
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddIdentity<ApplicationUser,ApplicationRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 //(options=> options.Stores.MaxLengthForKeys=128)
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -65,12 +67,21 @@ namespace BDS_ML
             services.AddMvc()
         .AddSessionStateTempDataProvider();
 
+
+            //google
+            services.AddAuthentication().AddGoogle(o =>
+                {
+                    o.ClientId = "1022645103588-mo2mr8ibhu2cfinj4mbuaun872rf81bc.apps.googleusercontent.com";
+                    o.ClientSecret = "zNHbkg5Mchczcb41baHEgWr8";
+                });
+           
+
             services.AddSession();
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(1));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context,RoleManager<ApplicationRole> roleManager,
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context, RoleManager<ApplicationRole> roleManager,
             UserManager<ApplicationUser> userManager)
         {
             if (env.IsDevelopment())
@@ -89,18 +100,19 @@ namespace BDS_ML
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+
             app.UseAuthentication();
             app.UseSession();
             app.UseMvc(routes =>
             {
-		routes.MapRoute(
-                     name: "areaRoute",
-                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                             name: "areaRoute",
+                             template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            
+
         }
     }
 }
