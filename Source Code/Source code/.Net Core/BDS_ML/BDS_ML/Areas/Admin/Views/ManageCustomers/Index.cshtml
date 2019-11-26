@@ -327,6 +327,22 @@
     }
     $(document).ready(function () {
         $('#exam').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thi _MENU_ kết quả trên 1 trang",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Trang _PAGE_ của _PAGES_",
+                "infoEmpty": "Không tìm thấy dữ liệu",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp tục",
+                    "previous": "Trở về"
+                },
+                "search": "Tìm kiếm:",
+                "loadingRecords": "Đang tải...",
+                "processing": "Đang xử lí..."
+            },
             "columnDefs": [
                 {
                     // The `data` parameter refers to the data for the cell (defined by the
@@ -340,7 +356,7 @@
                 { "visible": false, "targets": [2] }
             ]
             ,
-             "lengthMenu": [[10, 25, 50,100, - 1], [10, 25, 50,100, "All"]]
+             "lengthMenu": [[10, 25, 50,100, - 1], [10, 25, 50,100, "Tất cả"]]
         });
     });
 

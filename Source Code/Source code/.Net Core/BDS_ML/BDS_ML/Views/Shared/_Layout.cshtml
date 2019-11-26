@@ -34,6 +34,16 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+    @*sufeeadmin*@
+    
+    
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </head>
 <body>
     @*<header>
@@ -74,8 +84,9 @@
                     <!-- nav -->
                     <ul class="nav-menu nav navbar-nav">
                         <li><a href="#">News</a></li>
-                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                        @*<li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>*@
                         <li class="cat-1"><a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Create">Đăng bài</a></li>
+                        <li class="cat-2"><a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Search">Lọc bài đăng</a></li>
                         <li class="cat-1"><a href="#">Web Design</a></li>
                         <li class="cat-2"><a href="#">JavaScript</a></li>
                         <li class="cat-3"><a href="#">Css</a></li>
@@ -85,13 +96,13 @@
                     <!-- /nav -->
                     <!-- search & aside toggle -->
                     @*<div class="nav-btns">
-                        <button class="aside-btn"><i class="fa fa-bars"></i></button>
-                        <button class="search-btn"><i class="fa fa-search"></i></button>
-                        <div class="search-form">
-                            <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
-                            <button class="search-close"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>*@
+                            <button class="aside-btn"><i class="fa fa-bars"></i></button>
+                            <button class="search-btn"><i class="fa fa-search"></i></button>
+                            <div class="search-form">
+                                <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
+                                <button class="search-close"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>*@
                     <!-- /search & aside toggle -->
                 </div>
             </div>
@@ -135,7 +146,6 @@
         <!-- /Nav -->
     </header>
     <!-- /Header -->
-
     <!--Main Thing Should Be Here-->
     <!-- section -->
     <div class="section">
@@ -231,6 +241,7 @@
     </footer>
     <!-- /Footer -->
 
+
     <environment include="Development">
         @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
         @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
@@ -253,8 +264,8 @@
         </script>
     </environment>
     @*<script src="~/js/site.js" asp-append-version="true"></script>*@
-    <script src="~/webmag/js/main.js" asp-append-version="true"></script>
-
+    @*<script src="~/webmag/js/main.js" asp-append-version="true"></script>*@
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
