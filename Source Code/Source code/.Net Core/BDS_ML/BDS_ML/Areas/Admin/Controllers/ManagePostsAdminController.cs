@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using BDS_ML.Models.CustomModel;
 using Microsoft.AspNetCore.Identity;
 using BDS_ML.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace BDS_ML.Areas.Admin.Controllers
 {
@@ -187,7 +189,7 @@ namespace BDS_ML.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+           
             var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
               .Include(p => p.RealEstateTypeNavigation).Include(p=>p.Post_Location).ThenInclude(lo=>lo.Tinh_TPNavigation.Post_Location)
               .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
@@ -201,6 +203,11 @@ namespace BDS_ML.Areas.Admin.Controllers
                 return NotFound();
             }
             var user = await _userManager.GetUserAsync(User);
+            if (post.ID_Account != user.Id)
+            {
+                return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+            }
+           
             int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
             int District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
             int Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
@@ -234,7 +241,7 @@ namespace BDS_ML.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post, int district, int ward, int street
+        public async Task<IActionResult> Edit(int id, [Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post, List<IFormFile> images,int district, int ward, int street
             , string diachi, bool alley, bool nearSchool, bool nearAirport, bool nearHospital, bool nearMarket, string descriptiondetail, int bathroom,
             int bedroom, int yard, int floor, int province)
         {
@@ -242,6 +249,38 @@ namespace BDS_ML.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            if (images.Count > 0 && images[0].Length > 0)
+            {
+                for (int i = 0; i < images.Count; i++)
+                {
+                    var file = images[i];
+
+                    if (file != null && images[i].Length > 0)
+                    {
+                        string fileName = Path.GetFileName(file.FileName);
+                        string extensionFileName = Path.GetExtension(fileName);
+
+
+                        fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
+
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\posts", fileName);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        Post_Image pstImg = new Post_Image();
+                        pstImg.url = fileName;
+                        pstImg.AddedDate = DateTime.Now;
+                        pstImg.ID_Post = post.ID_Post;
+                        _context.Post_Image.Add(pstImg);
+
+                    }
+                }
+
+            }
+
             Post_Detail postdetail =_context.Post_Detail.Where(p=>p.ID_Post==id).SingleOrDefault();
             postdetail.Alley = alley;
             postdetail.Bathroom = bathroom;
@@ -609,6 +648,40 @@ namespace BDS_ML.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public async Task<IActionResult> SoldPost(int idpost)
+        {
+
+            var post = await _context.Post.FindAsync(idpost);
+            Post_Status poststatus = new Post_Status();
+            if (post != null)
+            {
+
+                poststatus.ID_Post = post.ID_Post;
+                var user = await _userManager.GetUserAsync(User);
+                poststatus.ID_Account = user.Id;
+                poststatus.Reason = "";
+                poststatus.Status = 2;
+                poststatus.ModifiedDate = DateTime.Now;
+                _context.Post_Status.Add(poststatus);
+
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                post.Status = poststatus.ID_PostStatus;
+                _context.Post.Attach(post);
+                _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                StatusMessage = "Đã chuyển bài đăng thành đã thanh toán thành công";
+            }
+            catch
+            {
+                StatusMessage = "Error Không thành công";
+            }
+            return RedirectToAction(nameof(ListPost));
+        }
         public JsonResult Get_district(int province_id)
         {
             var list = _context.district.Where(p => p._province_id == province_id);
@@ -635,6 +708,38 @@ namespace BDS_ML.Areas.Admin.Controllers
                 ID = x.id,
                 Name = x._prefix + " " + x._name
             }).ToList());
+        }
+        [HttpPost]
+        public JsonResult DeleteFile(int id,int idimage)
+        {
+            string ID = id + "image" + idimage;
+            try
+            {
+               var image= _context.Post_Image.Where(p => p.ID_Post == id && p.ID_Image == idimage).SingleOrDefault();
+                if (image != null)
+                {
+                  
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\posts", image.url);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    _context.Post_Image.Remove(image);
+                    _context.SaveChanges();
+                    return Json(new { Result = "OK", id = ID });
+                }
+                else
+                {
+                    return Json(new { Result = "ERROR", Message = "KHông tìm thấy ảnh" });
+                }
+              
+            }
+            catch(Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+               
+           
         }
     }
 

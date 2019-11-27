@@ -81,6 +81,7 @@ namespace BDS_ML.Controllers
         {
 
             var user = await _userManager.GetUserAsync(User);
+           
             post.PostTime = DateTime.Now;
             post.ID_Account = user.Id;
             Post a = post;
