@@ -8,9 +8,10 @@
 
     .avatar {
         vertical-align: middle;
-        width: 200px;
-        height: 200px;
+        width: 220px;
+        height: 220px;
         border-radius: 50%;
+
     }
 
     #myImg {
@@ -133,7 +134,7 @@
                 <div class="row form-group">
                     <div class="col-12 col-md-4"></div>
                     <div class="col-12 col-md-8">
-                        <img alt="Ảnh đại diện" class="avatar" id="myImg" src="@(Constants.AVATAR_URL + Model.Input.AvatarImage)" onclick="Popupimage('myModal','myImg','img01','caption');">
+                        <img alt="Ảnh đại diện" class="avatar rounded-circle"  id="myImg" src="@(Constants.AVATAR_URL + Model.Input.AvatarImage)" onclick="Popupimage('myModal','myImg','img01','caption');">
                     </div>
                     <div id="myModal" class="modal">
 
@@ -150,14 +151,14 @@
                 <div class="row form-group">
                     <div class="col col-md-4"> <label>Chọn ảnh</label></div>
                     <div class="col-12 col-md-8">
-                        <input type="file"   id="image" name="image" accept="image/*" class="form-control-file" required/>
+                        <input type="file"   id="image" name="image" accept="image/*" class="form-control-file" required onchange="document.getElementById('myImg').src = window.URL.createObjectURL(this.files[0])"/>
                     </div>
                 </div>
 
                 <div class="card-footer">
                     <button id="update-profile-button" type="submit" class="btn btn-primary" title="Lưu">Lưu</button>
                     @* @Html.ActionLink( "Xem chi tiết",  "Details",                         new { @id= Model.ID_Post },        new { @class = "btn btn-info" })*@
-                    <button type="button" class="btn btn-secondary"><a class="text-white" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Hủy">Hủy</a></button>
+                   <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Manage/ChangeAvatar" title="Hủy">Hủy</a>
                 </div>
             </form>
 
@@ -180,7 +181,6 @@
             captionText.innerHTML = this.alt;
         }
     }
-
 
 
 </script>

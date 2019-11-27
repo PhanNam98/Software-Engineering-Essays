@@ -99,14 +99,19 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                 {
                     return NotFound($"Unable to load admin with úuerID '{_userManager.GetUserId(User)}'.");
                 }
-
+                var oldImage = admin.Avatar_URL;
                 if (image != null)
                 {
 
                     string fileName = Path.GetFileName(image.FileName);
 
                     string extensionFileName = Path.GetExtension(fileName);
+                    if(fileName.Substring(0, fileName.Length - extensionFileName.Length).Length > 40)
+                    {
+                        fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length-40) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
 
+                    }
+                    else
                     fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
 
                     var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars", fileName);
@@ -127,6 +132,15 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                         _context.Admin.Attach(admin);
                         _context.Entry(admin).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                         _context.SaveChanges();
+                        HttpContext.Session.SetString("AvatarImage", admin.Avatar_URL);
+                        if(String.Compare(oldImage, "avatar_common.png", true)!=0)
+                        {
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars",oldImage);
+                            if (System.IO.File.Exists(path))
+                            {
+                                System.IO.File.Delete(path);
+                            }
+                        }
                     }
                     catch
                     {
@@ -144,7 +158,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                 {
                     return NotFound($"Unable to load admin with úuerID '{_userManager.GetUserId(User)}'.");
                 }
-
+                var oldImage = customer.Avatar_URL;
                 if (image != null)
                 {
 
@@ -172,6 +186,15 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                         _context.Customer.Attach(customer);
                         _context.Entry(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                         _context.SaveChanges();
+                        HttpContext.Session.SetString("AvatarImage", customer.Avatar_URL);
+                        if (String.Compare(oldImage, "avatar_common.png", true) != 0)
+                        {
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars", oldImage);
+                            if (System.IO.File.Exists(path))
+                            {
+                                System.IO.File.Delete(path);
+                            }
+                        }
                     }
                     catch
                     {
