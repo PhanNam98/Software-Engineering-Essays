@@ -28,13 +28,13 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Tiêu đề</label>
-                <input asp-for="Tittle" class="form-control" />
+                <input asp-for="Tittle" class="form-control" required/>
                 <span asp-validation-for="Tittle" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Diện tích</label>
                 <div class="input-group">
-                    <input type="number" asp-for="Size" class="form-control" min="0" />
+                    <input type="number" asp-for="Size" class="form-control" min="0" required/>
                     <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
                 </div>
                 <span asp-validation-for="Size" class="text-danger"></span>
@@ -47,7 +47,7 @@
                 <label class="control-label">Giá</label>
                 <div class="input-group">
 
-                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" value="1" />
+                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" value="1" required/>
                     <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
                 </div>
                 <span asp-validation-for="Price" class="text-danger"></span>
@@ -178,7 +178,7 @@
             var id_p = $("#province").val();
             $("#ward").empty();
 
-            $.get("Get_ward", { province_id: id_p, district_id: id }, function (data) {
+            $.get("/Public/Get_ward", { province_id: id_p, district_id: id }, function (data) {
 
                 var v = "";
 
@@ -202,7 +202,7 @@
 
             $("#district").empty();
 
-            $.get("Get_district", { province_id: id }, function (data) {
+            $.get("/Public/Get_district", { province_id: id }, function (data) {
 
                 var v = "";
 
@@ -223,7 +223,7 @@
             var id_p = $("#province").val();
             $("#street").empty();
 
-            $.get("Get_street", { province_id: id_p, district_id: id }, function (data) {
+            $.get("/Public/Get_street", { province_id: id_p, district_id: id }, function (data) {
 
                 var v = "";
 
@@ -240,5 +240,12 @@
         });
 
     });
+    var uploadField = document.getElementById("images");
 
+    uploadField.onchange = function () {//Tối đa 10 MB
+        if (this.files[0].size > 10 * 1024 * 1024) {
+            alert("File ảnh quá lớn!");
+            this.value = "";
+        };
+    };
 </script>

@@ -476,7 +476,7 @@
             var id_p = $("#province").val();
             $("#ward").empty();
 
-            $.get("/Admin/ManagePostsAdmin/Get_ward", { province_id: id_p, district_id: id }, function (data) {
+            $.get("/Public/Get_ward", { province_id: id_p, district_id: id }, function (data) {
 
                 var v = "";
 
@@ -500,7 +500,7 @@
 
             $("#district").empty();
 
-            $.get("/Admin/ManagePostsAdmin/Get_district", { province_id: id }, function (data) {
+            $.get("/Public/Get_district", { province_id: id }, function (data) {
 
                 var v = "";
 
@@ -521,7 +521,7 @@
             var id_p = $("#province").val();
             $("#street").empty();
 
-            $.get("/Admin/ManagePostsAdmin/Get_street", { province_id: id_p, district_id: id }, function (data) {
+            $.get("/Public/Get_street", { province_id: id_p, district_id: id }, function (data) {
 
                 var v = "";
 

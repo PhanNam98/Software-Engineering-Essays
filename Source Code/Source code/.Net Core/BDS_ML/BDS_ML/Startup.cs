@@ -35,7 +35,7 @@ namespace BDS_ML
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-               // options.CheckConsentNeeded = context => true;
+                // options.CheckConsentNeeded = context => true;
                 options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -76,17 +76,22 @@ namespace BDS_ML
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddMvc()
-        .AddSessionStateTempDataProvider();
+            services.AddMvc().AddSessionStateTempDataProvider();
 
 
-            //google
-            services.AddAuthentication().AddGoogle(o =>
+
+            services.AddAuthentication()
+                .AddGoogle(o =>
                 {
                     o.ClientId = "1022645103588-mo2mr8ibhu2cfinj4mbuaun872rf81bc.apps.googleusercontent.com";
                     o.ClientSecret = "zNHbkg5Mchczcb41baHEgWr8";
+                })
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = "775730392898287";
+                    facebookOptions.AppSecret = "cc5e57919a422d820c52d2e356a1087a";
                 });
-           
+
 
             services.AddSession();
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(1));

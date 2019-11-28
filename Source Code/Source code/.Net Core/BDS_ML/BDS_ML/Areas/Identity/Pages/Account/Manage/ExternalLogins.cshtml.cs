@@ -64,7 +64,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "The external login was removed.";
+            StatusMessage = "Đăng nhập bên ngoài đã được loại bỏ.";
             return RedirectToPage();
         }
 
@@ -102,7 +102,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            StatusMessage = "Đăng nhập bên ngoài đã được thêm vào.";
             return RedirectToPage();
         }
     }

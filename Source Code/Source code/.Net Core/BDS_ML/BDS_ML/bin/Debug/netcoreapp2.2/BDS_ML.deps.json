@@ -26,6 +26,7 @@
         "dependencies": {
           "MailKit": "2.3.2",
           "Microsoft.AspNetCore.App": "2.2.0",
+          "Microsoft.AspNetCore.Authentication.Facebook": "2.2.0",
           "Microsoft.AspNetCore.Authentication.Google": "2.2.2",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",

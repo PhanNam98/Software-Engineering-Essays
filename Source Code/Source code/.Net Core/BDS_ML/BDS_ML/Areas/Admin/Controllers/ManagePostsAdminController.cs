@@ -682,33 +682,7 @@ namespace BDS_ML.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(ListPost));
         }
-        public JsonResult Get_district(int province_id)
-        {
-            var list = _context.district.Where(p => p._province_id == province_id);
-            return Json(list.Select(x => new
-            {
-                ID = x.id,
-                Name = x._prefix + " " + x._name
-            }).ToList());
-        }
-        public JsonResult Get_ward(int province_id, int district_id)
-        {
-            var list = _context.ward.Where(p => p._province_id == province_id && p._district_id == district_id);
-            return Json(list.Select(x => new
-            {
-                ID = x.id,
-                Name = x._prefix + " " + x._name
-            }).ToList());
-        }
-        public JsonResult Get_street(int province_id, int district_id)
-        {
-            var list = _context.street.Where(p => p._province_id == province_id && p._district_id == district_id);
-            return Json(list.Select(x => new
-            {
-                ID = x.id,
-                Name = x._prefix + " " + x._name
-            }).ToList());
-        }
+       
         [HttpPost]
         public JsonResult DeleteFile(int id,int idimage)
         {

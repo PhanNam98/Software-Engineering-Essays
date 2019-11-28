@@ -85,6 +85,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
+            bool isExist = false;
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
@@ -101,6 +102,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             var user = _context.AspNetUsers.Where(p => p.UserName == info.Principal.FindFirstValue(ClaimTypes.Email)).SingleOrDefault();
             if (user != null)
             {
+                isExist = true;
                 BDS_ML.Models.ModelDB.Admin admin = new Models.ModelDB.Admin();
                 Customer cus = new Customer();
                 string urlavatar = "";
@@ -172,6 +174,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     }
 
                 }
+
             }
            
             // Sign in the user with this external login provider if the user already has a login.
@@ -185,7 +188,11 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("./Lockout");
             }
-            else
+            else if(isExist)
+            {
+                return RedirectToPage("./ExternalExistEmail");
+            }
+            else 
             {
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
