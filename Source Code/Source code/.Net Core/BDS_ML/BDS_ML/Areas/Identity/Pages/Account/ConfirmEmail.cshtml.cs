@@ -40,7 +40,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
                 }
             }
-            catch (Exception e)
+            catch 
             {
                 return RedirectToPage("./ConfirmEmailExpire");
             }

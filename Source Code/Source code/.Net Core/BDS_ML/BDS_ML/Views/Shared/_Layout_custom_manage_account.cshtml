@@ -54,15 +54,27 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">BDS_ML</a>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Hello Admin @User.Identity.Name!</a>
-                }
-                else
-                {
-                    <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello <br />@User.Identity.Name!</a>
-                }
+                @{
+                    var name = "";
+                    if (User.Identity.Name.Length > 15)
+                    {
+                        name = User.Identity.Name.Substring(0, 15) + "...";
+                    }
+                    else
+                    {
+                        name = User.Identity.Name;
+                    }
 
+                    if (User.IsInRole("Admin"))
+                    {
+
+                        <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="@User.Identity.Name">Hello Admin @name!</a>
+                    }
+                    else
+                    {
+                        <a class="navbar-brand" asp-area="Identity" asp-page="/Account/Manage/Index" title="@User.Identity.Name">Hello @name!</a>
+                    }
+                }
                 @*<a class="navbar-brand hidden" href="./">B</a>*@
             </div>
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -100,7 +112,7 @@
                     {
                         <li>
 
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/ExternalLogins" title="Manage"> <i class="fa fa-facebook-square"></i>Đăng nhập bằng mạng xã hội</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/ExternalLogins" title="Manage"> <i class="fa fa-facebook-square"></i>Tài khoản liên kết</a>
                         </li>
 
                     }
@@ -159,13 +171,13 @@
                 <div class="col-sm-7">
                     <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
                     <div class="header-left">
-                        <button class="search-trigger"><i class="fa fa-search"></i></button>
-                        <div class="form-inline">
-                            <form class="search-form">
-                                <input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search">
-                                <button class="search-close" type="submit"><i class="fa fa-close"></i></button>
-                            </form>
-                        </div>
+                        @*<button class="search-trigger"><i class="fa fa-search"></i></button>
+                            <div class="form-inline">
+                                <form class="search-form">
+                                    <input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search">
+                                    <button class="search-close" type="submit"><i class="fa fa-close"></i></button>
+                                </form>
+                            </div>*@
                         @*<div class="dropdown for-notification">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-bell"></i>
@@ -187,49 +199,49 @@
                                     </a>
                                 </div>
                             </div>*@
-                        <div class="dropdown for-message">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                    id="message"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="ti-email"></i>
-                                <span class="count bg-primary">9</span>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="message">
-                                <p class="red">You have 4 Mails</p>
-                                <a class="dropdown-item media bg-flat-color-1" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/1.jpg"></span>
-                                    <span class="message media-body">
-                                        <span class="name float-left">Jonathan Smith</span>
-                                        <span class="time float-right">Just now</span>
-                                        <p>Hello, this is an example msg</p>
-                                    </span>
-                                </a>
-                                <a class="dropdown-item media bg-flat-color-4" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/2.jpg"></span>
-                                    <span class="message media-body">
-                                        <span class="name float-left">Jack Sanders</span>
-                                        <span class="time float-right">5 minutes ago</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                    </span>
-                                </a>
-                                <a class="dropdown-item media bg-flat-color-5" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/3.jpg"></span>
-                                    <span class="message media-body">
-                                        <span class="name float-left">Cheryl Wheeler</span>
-                                        <span class="time float-right">10 minutes ago</span>
-                                        <p>Hello, this is an example msg</p>
-                                    </span>
-                                </a>
-                                <a class="dropdown-item media bg-flat-color-3" href="#">
-                                    <span class="photo media-left"><img alt="avatar" src="images/avatar/4.jpg"></span>
-                                    <span class="message media-body">
-                                        <span class="name float-left">Rachel Santos</span>
-                                        <span class="time float-right">15 minutes ago</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur</p>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
+                        @*<div class="dropdown for-message">
+                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        id="message"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ti-email"></i>
+                                    <span class="count bg-primary">9</span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="message">
+                                    <p class="red">You have 4 Mails</p>
+                                    <a class="dropdown-item media bg-flat-color-1" href="#">
+                                        <span class="photo media-left"><img alt="avatar" src="images/avatar/1.jpg"></span>
+                                        <span class="message media-body">
+                                            <span class="name float-left">Jonathan Smith</span>
+                                            <span class="time float-right">Just now</span>
+                                            <p>Hello, this is an example msg</p>
+                                        </span>
+                                    </a>
+                                    <a class="dropdown-item media bg-flat-color-4" href="#">
+                                        <span class="photo media-left"><img alt="avatar" src="images/avatar/2.jpg"></span>
+                                        <span class="message media-body">
+                                            <span class="name float-left">Jack Sanders</span>
+                                            <span class="time float-right">5 minutes ago</span>
+                                            <p>Lorem ipsum dolor sit amet, consectetur</p>
+                                        </span>
+                                    </a>
+                                    <a class="dropdown-item media bg-flat-color-5" href="#">
+                                        <span class="photo media-left"><img alt="avatar" src="images/avatar/3.jpg"></span>
+                                        <span class="message media-body">
+                                            <span class="name float-left">Cheryl Wheeler</span>
+                                            <span class="time float-right">10 minutes ago</span>
+                                            <p>Hello, this is an example msg</p>
+                                        </span>
+                                    </a>
+                                    <a class="dropdown-item media bg-flat-color-3" href="#">
+                                        <span class="photo media-left"><img alt="avatar" src="images/avatar/4.jpg"></span>
+                                        <span class="message media-body">
+                                            <span class="name float-left">Rachel Santos</span>
+                                            <span class="time float-right">15 minutes ago</span>
+                                            <p>Lorem ipsum dolor sit amet, consectetur</p>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>*@
                     </div>
                 </div>
                 <div class="col-sm-5">
@@ -253,7 +265,7 @@
                                 }
                             }
                             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
-                           
+
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                 <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-power -off"></i>Đăng xuất</button>
                             </form>
@@ -312,7 +324,8 @@
     <script src="~/sufeeadmin/assets/js/lib/data-table/datatables-init.js"></script>
 
     <!-- Main JS-->
-    <script src="js/main.js"></script>
+
+    <script src="~/sufeeadmin/assets/js/main.js"></script>
     <script>
         (function ($) {
             "use strict";

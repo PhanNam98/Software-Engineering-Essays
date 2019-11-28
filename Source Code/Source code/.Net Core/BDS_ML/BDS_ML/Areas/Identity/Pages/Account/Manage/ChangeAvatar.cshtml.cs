@@ -165,7 +165,13 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
                     string fileName = Path.GetFileName(image.FileName);
 
                     string extensionFileName = Path.GetExtension(fileName);
+                    if(fileName.Length - extensionFileName.Length>40)
+                    {
+                        fileName = fileName.Substring(0, 40) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
 
+                    }
+
+                    else
                     fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
 
                     var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\avatars", fileName);

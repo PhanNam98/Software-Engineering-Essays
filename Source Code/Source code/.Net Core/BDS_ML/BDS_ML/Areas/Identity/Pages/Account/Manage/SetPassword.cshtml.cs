@@ -50,7 +50,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 
             [DataType(DataType.Password)]
             [Display(Name = "Nhập lại mật khẩu")]
-            [Compare("Password", ErrorMessage = "Mật khẩu không khớp.")]
+            [Compare("NewPassword", ErrorMessage = "Mật khẩu không khớp.")]
             public string ConfirmPassword { get; set; }
         }
 
