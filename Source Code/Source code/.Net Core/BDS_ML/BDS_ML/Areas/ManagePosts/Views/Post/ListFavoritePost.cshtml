@@ -1,0 +1,104 @@
+﻿@model IEnumerable<BDS_ML.Models.ModelDB.Post_Favorite>
+
+    @{
+        ViewData["Title"] = "ListFavoritePost";
+        Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    }
+
+    <h1>ListFavoritePost</h1>
+    <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="exam" class="table table-striped table-condensed table-hover table-bordered">
+                            <thead>
+                                <tr>
+
+                                    <th>
+                                        @Html.DisplayName("Tiêu đề")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Loại bài")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Loại bất động sản")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Giá")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Ngày thích")
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ID_PostNavigation.Tittle)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ID_PostNavigation.PostTypeNavigation.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ID_PostNavigation.RealEstateTypeNavigation.Description)
+                                        </td>
+                                        <td>
+                                            @if (item.ID_PostNavigation.Price >= 1000)
+                                            {
+                                                @Html.Raw((Math.Round(item.ID_PostNavigation.Price / 1000, 2)) + " tỉ")
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(item.ID_PostNavigation.Price + " triệu")
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MortifiedDate)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Chi tiết", "", "Post", new { area = "" }) |
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    $(document).ready(function () {
+
+        $('#exam').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thi _MENU_ kết quả trên 1 trang",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Trang _PAGE_ của _PAGES_",
+                "infoEmpty": "Không tìm thấy dữ liệu",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp tục",
+                    "previous": "Trở về"
+                },
+                "search": "Tìm kiếm:",
+                "loadingRecords": "Đang tải...",
+                "processing": "Đang xử lí..."
+            },
+            "lengthMenu": [[10, 25, 50, - 1], [10, 25, 50, "Tất cả"]]
+
+        });
+    });
+
+    </script>

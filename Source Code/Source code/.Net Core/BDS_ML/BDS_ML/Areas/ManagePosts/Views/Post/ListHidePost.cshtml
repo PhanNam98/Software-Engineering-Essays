@@ -52,9 +52,7 @@
                                 <th>
                                     @Html.DisplayName("ID")
                                 </th>
-                                <th>
-                                    @Html.DisplayName("Ngày đăng")
-                                </th>
+
                                 <th>
                                     @Html.DisplayName("Tiêu đề")
                                 </th>
@@ -68,15 +66,14 @@
                                     @Html.DisplayName("Miêu tả")
                                 </th>
                                 <th>
-                                    @Html.DisplayName("Tình trạng bài")
+                                    @Html.DisplayName("Ngày ẩn")
                                 </th>
-
                                 <th>
                                     @Html.DisplayName("Loại bài")
                                 </th>
                                 @*<th>
-                                        @Html.DisplayName("Dự án")
-                                    </th>*@
+            @Html.DisplayName("Dự án")
+        </th>*@
                                 <th>
                                     @Html.DisplayName("Loại")
                                 </th>
@@ -90,9 +87,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ID_Post)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PostTime)
-                                    </td>
+                                  
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Tittle)
                                     </td>
@@ -106,7 +101,7 @@
                                         @Html.DisplayFor(modelItem => item.Description)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().StatusNavigation.Description)
+                                        @Html.DisplayFor(modelItem => item.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().ModifiedDate)
                                     </td>
 
                                     <td>
@@ -122,7 +117,6 @@
                                         <form method="GET">
                                             <button type="submit" class="btn btn-custon-rounded-three btn-success btn-xs" asp-route-id="@item.ID_Post" asp-action="Details">Chi tiết</button>
                                         </form>
-                                        <br />
                                         @{
 
                                             //hiện bài đăng
@@ -136,7 +130,7 @@
                                                 <div class="center">
                                                     <div class="modal-dialog modal-dialog-center" role="document">
                                                         <div class="modal-content">
-                                                            @using (Html.BeginForm("ShownPost", "ManagePostsAdmin", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "shownform", @novalidate = "novalidate", @name = "shownform" }))
+                                                            @using (Html.BeginForm("ShownPost", "Post", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "shownform", @novalidate = "novalidate", @name = "shownform" }))
                                                             {
                                                                 @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
                                                                 <div class="modal-header">
