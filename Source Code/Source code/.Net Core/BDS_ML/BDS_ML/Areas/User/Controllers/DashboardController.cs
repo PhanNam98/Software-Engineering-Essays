@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using BDS_ML.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace BDS_ML.Areas.User.Controllers
 {
@@ -37,6 +38,12 @@ namespace BDS_ML.Areas.User.Controllers
                 if (user == null)
                 {
                     return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                }
+                if (HttpContext.Session.GetString("AvatarImage") == null)
+                {
+                    
+                    HttpContext.Session.SetString("AvatarImage", _context.Customer.Where(p => p.Account_ID == user.Id).SingleOrDefault().Avatar_URL);
+
                 }
                 var list = _context.Post.Include(p => p.Post_Status).Where(p => p.ID_Account == user.Id);
                 int Pending = 0;

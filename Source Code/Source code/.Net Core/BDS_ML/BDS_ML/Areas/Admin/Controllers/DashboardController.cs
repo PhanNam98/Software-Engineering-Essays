@@ -13,6 +13,7 @@ using BDS_ML.Models;
 using BDS_ML.Areas.Admin.Models;
 using Microsoft.AspNetCore.Http;
 
+
 namespace BDS_ML.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -20,29 +21,40 @@ namespace BDS_ML.Areas.Admin.Controllers
     public class DashboardController : Controller
     {
         private readonly BDT_MLDBContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         [TempData]
         public string StatusMessage { get; set; }
 
         public Dashboard dboard = new Dashboard();
-        public DashboardController()
+        public DashboardController(UserManager<ApplicationUser> userManager)
         {
             _context = new BDT_MLDBContext();
-
+            _userManager = userManager;
 
 
         }
 
         // GET: Dashboard
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
            
+            
             try
             {
+              
+              
                 var list = _context.Post.Include(p => p.Post_Status);
                 dboard.CustomerNumber = _context.Customer.Count();
                 dboard.PostNumber = list.Count();
-
-
+                if (HttpContext.Session.GetString("AvatarImage")==null)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    HttpContext.Session.SetString("AvatarImage", _context.Admin.Where(p => p.Account_ID == user.Id).SingleOrDefault().Avatar_URL);
+                  
+                }
+             
+               
+               
                 int Pending = 0;
                 int Sold = 0;
                 foreach (var p in list)

@@ -281,13 +281,14 @@ namespace BDS_ML.Areas.Admin.Controllers
         {
             try
             {
-                var list = await _context.Block.Include(c=>c.ID_AdminNavigation).Include(c=>c.ID_UserNavigation).Include(p=>p.ID_UserNavigation.Account_).OrderByDescending(p=>p.ID_Block).ThenByDescending(p=>p.ID_Block).ToListAsync();
+                var list = await _context.Block.Include(c=>c.ID_AdminNavigation).Include(c=>c.ID_UserNavigation).Include(c=>c.ID_AdminNavigation).Include(p=>p.ID_UserNavigation.Account_).OrderByDescending(p=>p.ID_Block).ThenByDescending(p=>p.ID_Block).ToListAsync();
                 StatusMessage = "Lấy danh sách thành công";
                 return View(list);
             }
             catch { StatusMessage = "Error Lấy danh sách không thành công"; }
             return View();
         }
+        //Danh sách tài khoản đang bị khóa
         public async Task<IActionResult> BlockListAccount()
         {
             try
@@ -298,7 +299,7 @@ namespace BDS_ML.Areas.Admin.Controllers
                 else
                     ViewData["DateNow"] = date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString();
                 string a = ViewData["DateNow"].ToString();
-                var list = await _context.Customer.Include(p=>p.Block).Include(p=>p.Account_).Where(p=>p.Account_.IsAdmin==0 && p.Account_.IsBlock!=0).OrderByDescending(p => p.ID_User).ToListAsync();
+                var list = await _context.Customer.Include(p=>p.Account_).Include(p => p.Block).ThenInclude(p=>p.ID_AdminNavigation.Block).Where(p=>p.Account_.IsAdmin==0 && p.Account_.IsBlock!=0).OrderByDescending(p => p.ID_User).ToListAsync();
                 StatusMessage = "Lấy danh sách thành công";
                 return View(list);
             }

@@ -14,15 +14,17 @@
     }
 
 
+/*.cust-table-cont { width:100%; overflow-x:auto; }*/
+
+/*.cust-table { table-layout:fixed;  }*/
+/*.cust-table thead, .cust-table tbody {
+display: block;
+}*/
+/*.cust-table tbody { max-height:620px; overflow-y:auto; }*/
 
 
 
-    /*.modal-dialog {
-        margin-left: 20px;
-        margin-right: -200px;
-        padding: 0;
-        z-index: 1050;
-    }*/
+
 </style>
 <div class="breadcrumbs">
     <div class="col-sm-4">
@@ -46,275 +48,288 @@
 <h1>Danh sách khách hàng</h1>
 <partial name="~/Areas/Admin/Views/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 @*<table id="bootstrap-data-table" class="table table-striped table-bordered">*@
-<table id="exam" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayName("ID")
-            </th>
-            <th>
-                @Html.DisplayName("Họ tên")
-            </th>
-            <th>
 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayName("Số điện thoại")
-            </th>
-            <th>
-                @Html.DisplayName("Địa chỉ")
-            </th>
-            <th>
-                @Html.DisplayName("Ngày tham gia")
-            </th>
-            @*<th>
-                    @Html.DisplayName("Id tài khoản")
-                </th>*@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID_User)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.Account_.Id)
-                    </td>*@
-                <td>
-                    @*<a asp-action="Details" asp-route-id="@item.ID_User">Chi tiết</a>*@
-                    @{
-                        string detail = "d" + @item.ID_User.ToString();
-                        <button type="button" class="btn btn-custon-rounded-three btn-success btn-xs" data-toggle="modal" data-target="#@detail">Chi tiết</button>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="exam" class="table table-striped table-condensed table-hover table-bordered cust-table ">
+                                <thead>
+                                    <tr>
+                                        <th >
+                                            @Html.DisplayName("ID")
+                                        </th>
+                                        <th style="width:150px;">
+                                            @Html.DisplayName("Họ Tên")
+                                        </th>
+                                        @*<th>
+                                            @Html.DisplayName("Tên")
+                                        </th>*@
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Email)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Số điện thoại")
+                                        </th>
+                                        <th style="width:150px;">
+                                            @Html.DisplayName("Địa chỉ")
+                                        </th>
+                                        @*<th>
+                                            @Html.DisplayName("Ngày tham gia")
+                                        </th>*@
+                                        @*<th>
+                                @Html.DisplayName("Id tài khoản")
+                            </th>*@
+                                        <th style="width:200px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ID_User)
+                                            </td>
+                                            <td style="width:150px;">
+                                                @item.FirstName.ToString() @item.LastName.ToString()
+                                            </td>
+                                            @*<td>
+                                                @Html.DisplayFor(modelItem => item.LastName)
+                                            </td>*@
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                            </td>
+                                            <td style="width:150px;">
+                                                @Html.DisplayFor(modelItem => item.Address)
+                                            </td>
+                                            @*<td>
+                                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                                            </td>*@
+                                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Account_.Id)
+                                </td>*@
+                                            <td style="width:200px;">
+                                                @*<a asp-action="Details" asp-route-id="@item.ID_User">Chi tiết</a>*@
+                                                @{
+                                                    string detail = "d" + @item.ID_User.ToString();
+                                                    <button type="button" class="btn btn-custon-rounded-three btn-success btn-xs" data-toggle="modal" data-target="#@detail">Chi tiết</button>
 
-                        <!-- Modal -->
+                                                    <!-- Modal -->
 
-                        <div class="modal fade" id="@detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="center">
-                                <div class="modal-dialog modal-dialog-center" role="document">
-                                    <div class="modal-content">
+                                                    <div class="modal fade" id="@detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="center">
+                                                            <div class="modal-dialog modal-dialog-center" role="document">
+                                                                <div class="modal-content">
 
-                                        @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Chi tiết khách hàng</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <hr />
-                                            <dl class="row">
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("ID")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    <input type="text" class="input-md form-control" value="@item.ID_User" readonly>
-                                                </dd>
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("Họ Tên")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    <input type="text" class="input-md form-control" value="@item.FirstName @item.LastName" readonly>
+                                                                    @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Chi tiết khách hàng</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <hr />
+                                                                        <dl class="row">
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("ID")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                <input type="text" class="input-md form-control" value="@item.ID_User" readonly>
+                                                                            </dd>
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("Họ Tên")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                <input type="text" class="input-md form-control" value="@item.FirstName @item.LastName" readonly>
 
-                                                </dd>
-                                                @*<dt class="col-sm-4">
-                                                        @Html.DisplayName("Tên")
-                                                    </dt>
-                                                    <dd class="col-sm-8">
-                                                        <input type="text" class="input-md form-control" value="@item.LastName" readonly>
+                                                                            </dd>
+                                                                            @*<dt class="col-sm-4">
+                                                                    @Html.DisplayName("Tên")
+                                                                </dt>
+                                                                <dd class="col-sm-8">
+                                                                    <input type="text" class="input-md form-control" value="@item.LastName" readonly>
 
-                                                    </dd>*@
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("Email")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    <input type="text" class="input-md form-control" value="@item.Email" readonly>
+                                                                </dd>*@
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("Email")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                <input type="text" class="input-md form-control" value="@item.Email" readonly>
 
-                                                </dd>
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("Số điện thoại")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    <input type="text" class="input-md form-control" value="@item.PhoneNumber" readonly>
+                                                                            </dd>
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("Số điện thoại")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                <input type="text" class="input-md form-control" value="@item.PhoneNumber" readonly>
 
-                                                </dd>
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("Địa chỉ")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    <input type="text" class="input-md form-control" value="@item.Address" readonly>
+                                                                            </dd>
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("Địa chỉ")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                <input type="text" class="input-md form-control" value="@item.Address" readonly>
 
-                                                </dd>
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("Ngày tạo")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    <input type="text" class="input-md form-control" value="@item.CreatedDate.Value.ToString("dd-MM-yyyy")" readonly>
-                                                    @*@Html.TextBox("txtJoiningDate", item.CreatedDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })*@
-                                                </dd>
-                                                <dt class="col-sm-4">
-                                                    @Html.DisplayName("Ngày thay đổi")
-                                                </dt>
-                                                <dd class="col-sm-8">
-                                                    @*@Html.TextBox("txtJoiningDate", item.ModifiedDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })*@
-                                                    <input type="text" class="input-md form-control" value="@item.ModifiedDate.Value.ToString("dd-MM-yyyy")" readonly>
-                                                </dd>
-
-
-                                            </dl>
-                                        </div>
-                                        <div class="modal-footer">
-
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                        </div>
+                                                                            </dd>
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("Ngày tạo")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                <input type="text" class="input-md form-control" value="@item.CreatedDate.Value.ToString("dd-MM-yyyy")" readonly>
+                                                                                @*@Html.TextBox("txtJoiningDate", item.CreatedDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })*@
+                                                                            </dd>
+                                                                            <dt class="col-sm-4">
+                                                                                @Html.DisplayName("Ngày thay đổi")
+                                                                            </dt>
+                                                                            <dd class="col-sm-8">
+                                                                                @*@Html.TextBox("txtJoiningDate", item.ModifiedDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })*@
+                                                                                <input type="text" class="input-md form-control" value="@item.ModifiedDate.Value.ToString("dd-MM-yyyy")" readonly>
+                                                                            </dd>
 
 
-                                    </div>
-                                </div>
-                            </div>
+                                                                        </dl>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                |
+                                                @if (item.Account_.IsBlock == 0)
+                                                {
+                                                    string block = "b" + @item.ID_User.ToString();
+                                                    <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@block">Khóa</button>
+                                                    string dateUnBlock = "da" + @item.ID_User.ToString();
+                                                    string reasonBlockCus = "re" + @item.ID_User.ToString();
+                                                    <!-- Modal -->
+
+                                                    <div class="modal fade" id="@block" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="center">
+                                                            <div class="modal-dialog modal-dialog-center" role="document">
+                                                                <div class="modal-content">
+                                                                    @using (Html.BeginForm("BlockCustomer", "ManageCustomers", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "blockform", @novalidate = "novalidate", @name = "blockform" }))
+                                                                    {
+                                                                        @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Khóa tài khoản</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group">
+                                                                                @Html.LabelFor(model => item.ID_User)<br />
+                                                                                <input type="text" name="iDCus" class="input-md form-control" value="@item.ID_User" readonly>
+                                                                                <input type="text" name="id_acc" class="input-md form-control" value="@item.Account_ID" hidden="hidden">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                Ngày mở khóa:<br />
+
+                                                                                <input type="date" name="dateUnBlock" id="@dateUnBlock" min="@ViewData["DateNow"].ToString()">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                Lí do khóa<br />
+                                                                                <input type="text" name="reasonBlockCus" class="input-md form-control" value="" id="@reasonBlockCus" placeholder="Lí do khóa">
+                                                                                @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit" class="btn btn-success" onclick="return IsEmpty('@reasonBlockCus','@dateUnBlock');">Lưu</button>
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                        </div>
+
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    if (item.Account_.IsBlock != 0)
+                                                    {
+                                                        string unblock = "u" + @item.ID_User.ToString();
+                                                        <button type="button" class="btn btn-custon-rounded-three btn-danger btn-xs" data-toggle="modal" data-target="#@unblock">Đã khóa</button>
+
+                                                        <!-- Modal -->
+
+                                                        <div class="modal fade" id="@unblock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="center">
+                                                                <div class="modal-dialog modal-dialog-center" role="document">
+                                                                    <div class="modal-content">
+                                                                        @using (Html.BeginForm("UnBlockCustomer", "ManageCustomers", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "ublockform", @novalidate = "novalidate", @name = "ublockform", idcus = item.ID_User, idacc = item.Account_ID, idblock = item.Block.LastOrDefault().ID_Block }))
+                                                                        {
+                                                                            @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Tài khoản bị khóa</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    @Html.Label("User_ID:")<br />
+                                                                                    <input type="text" name="iDCus" class="input-md form-control" value="@item.ID_User" readonly>
+                                                                                    <input type="text" name="idacc" class="input-md form-control" value="@item.Account_ID" hidden="hidden">
+                                                                                    <input type="text" name="idblock" class="input-md form-control" value="@item.Block.LastOrDefault().ID_Block" hidden="hidden">
+                                                                                    <input type="text" name="returnURL" class="input-md form-control" value="~/Admin/ManageCustomers" hidden="hidden">
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    Ngày khóa:<br />
+                                                                                    @Html.TextBox("txtJoiningDate", @item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().BlockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    Ngày mở khóa:<br />
+                                                                                    @Html.TextBox("txtJoiningDate", @item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().UnLockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
+
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    Lí do khóa<br />
+                                                                                    <input type="text" name="reasonBlockCus" class="input-md form-control" value="@item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().Reason" id="reasonBlockCus" readonly>
+                                                                                    @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    Khóa bởi Admin_ID<br />
+                                                                                    <input type="text" name="BlockCusBy" class="input-md form-control" value="@item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_Admin" id="BlockCusBy" readonly>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="submit" class="btn btn-success">Mở khóa</button>
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                                            </div>
+
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                    }
-                    |
-                    @if (item.Account_.IsBlock == 0)
-                    {
-                        string block = "b" + @item.ID_User.ToString();
-                        <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@block">Khóa</button>
-                        string dateUnBlock= "da" + @item.ID_User.ToString();
-                        string reasonBlockCus= "re" + @item.ID_User.ToString();
-                        <!-- Modal -->
+                    </div>
+                </div> </div>
+    </div>
 
-                        <div class="modal fade" id="@block" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="center">
-                                <div class="modal-dialog modal-dialog-center" role="document">
-                                    <div class="modal-content">
-                                        @using (Html.BeginForm("BlockCustomer", "ManageCustomers", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "blockform", @novalidate = "novalidate", @name = "blockform" }))
-                                        {
-                                            @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Khóa tài khoản</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group">
-                                                    @Html.LabelFor(model => item.ID_User)<br />
-                                                    <input type="text" name="iDCus" class="input-md form-control" value="@item.ID_User" readonly>
-                                                    <input type="text" name="id_acc" class="input-md form-control" value="@item.Account_ID" hidden="hidden">
-                                                </div>
-                                                <div class="form-group">
-                                                    Ngày mở khóa:<br />
 
-                                                    <input type="date" name="dateUnBlock" id="@dateUnBlock" min="@ViewData["DateNow"].ToString()">
-                                                </div>
-                                                <div class="form-group">
-                                                    Lí do khóa<br />
-                                                    <input type="text" name="reasonBlockCus" class="input-md form-control" value="" id="@reasonBlockCus" placeholder="Lí do khóa">
-                                                    @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success" onclick="return IsEmpty('@reasonBlockCus','@dateUnBlock');">Lưu</button>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                            </div>
 
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        if (item.Account_.IsBlock != 0)
-                        {
-                            string unblock = "u" + @item.ID_User.ToString();
-                            <button type="button" class="btn btn-custon-rounded-three btn-danger btn-xs" data-toggle="modal" data-target="#@unblock">Đã khóa</button>
-
-                            <!-- Modal -->
-
-                            <div class="modal fade" id="@unblock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="center">
-                                    <div class="modal-dialog modal-dialog-center" role="document">
-                                        <div class="modal-content">
-                                            @using (Html.BeginForm("UnBlockCustomer", "ManageCustomers", FormMethod.Post, htmlAttributes: new { enctype = "multipart/form-data", @class = "dropzone dropzone-custom needsclick add-professors dz-clickable", @id = "ublockform", @novalidate = "novalidate", @name = "ublockform", idcus = item.ID_User, idacc = item.Account_ID, idblock = item.Block.LastOrDefault().ID_Block }))
-                                            {
-                                                @Html.ValidationSummary(true, null, new { @class = "alert alert-block alert-danger fade in" })
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Tài khoản bị khóa</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        @Html.Label("User_ID:")<br />
-                                                        <input type="text" name="iDCus" class="input-md form-control" value="@item.ID_User" readonly>
-                                                        <input type="text" name="idacc" class="input-md form-control" value="@item.Account_ID" hidden="hidden">
-                                                        <input type="text" name="idblock" class="input-md form-control" value="@item.Block.LastOrDefault().ID_Block" hidden="hidden">
-                                                        <input type="text" name="returnURL" class="input-md form-control" value="~/Admin/ManageCustomers" hidden="hidden">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        Ngày khóa:<br />
-                                                        @Html.TextBox("txtJoiningDate", @item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().BlockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
-                                                    </div>
-                                                    <div class="form-group">
-                                                        Ngày mở khóa:<br />
-                                                        @Html.TextBox("txtJoiningDate", @item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().UnLockDate.Value, "{0:dd/MM/yyyy}", new { @readonly = true })
-
-                                                    </div>
-                                                    <div class="form-group">
-                                                        Lí do khóa<br />
-                                                        <input type="text" name="reasonBlockCus" class="input-md form-control" value="@item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().Reason" id="reasonBlockCus" readonly>
-                                                        @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
-                                                    </div>
-                                                    <div class="form-group">
-                                                        Khóa bởi Admin_ID<br />
-                                                        <input type="text" name="BlockCusBy" class="input-md form-control" value="@item.Block.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_Admin" id="BlockCusBy" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-success">Mở khóa</button>
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                                </div>
-
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 <script>
-    function IsEmpty(reasonBlockCus,dateUnBlock) {
+    function IsEmpty(reasonBlockCus, dateUnBlock) {
         if (document.getElementById(arguments[0]).value === "") {
             alert("Lí do khóa tài khoản phải được điền.");
             return false;
@@ -343,21 +358,24 @@
                 "loadingRecords": "Đang tải...",
                 "processing": "Đang xử lí..."
             },
-            "columnDefs": [
-                {
-                    // The `data` parameter refers to the data for the cell (defined by the
-                    // `data` option, which defaults to the column being worked with, in
-                    // this case `data: 0`.
-                    "render": function (data, type, row) {
-                        return data + ' ' + row[2];
-                    },
-                    "targets": 1
-                },
-                { "visible": false, "targets": [2] }
-            ]
-            ,
-             "lengthMenu": [[10, 25, 50,100, - 1], [10, 25, 50,100, "Tất cả"]]
+            //"columnDefs": [
+            //    {
+            //        // The `data` parameter refers to the data for the cell (defined by the
+            //        // `data` option, which defaults to the column being worked with, in
+            //        // this case `data: 0`.
+            //        "render": function (data, type, row) {
+            //            return data + ' ' + row[2];
+            //        },
+            //        "targets": 1
+            //    },
+            //    { "visible": false, "targets": [2] }
+            //]
+            //,
+            "lengthMenu": [[5, 10, 25, 50, 100, - 1], [5, 10, 25, 50, 100, "Tất cả"]],
+            pageLength:5
+           
         });
+
     });
 
 </script>

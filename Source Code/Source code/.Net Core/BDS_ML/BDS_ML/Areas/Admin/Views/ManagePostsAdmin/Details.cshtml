@@ -30,11 +30,12 @@
         <form id="frmDetail">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID_Post" />
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label class="control-label">Id người đăng</label>
                 <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" readonly="readonly" />
                 <span asp-validation-for="ID_Account" class="text-danger"></span>
             </div>
+          
             <div class="form-group">
                 <label class="control-label">Người đăng</label>
                 <input class="form-control" value="@ViewBag.Name_Account" readonly="readonly" />
@@ -53,11 +54,11 @@
             @{
                 if (Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 1)
                 {
-            <div class="form-group">
-                <label class="control-label">Ngày đăng</label>
-                <input value="@Model.Post_Status.LastOrDefault().ModifiedDate" class="form-control" readonly="readonly" />
-               
-            </div>
+                    <div class="form-group">
+                        <label class="control-label">Ngày đăng</label>
+                        <input value="@Model.Post_Status.LastOrDefault().ModifiedDate" class="form-control" readonly="readonly" />
+
+                    </div>
                 }
 
                 <div class="form-group">
@@ -73,7 +74,7 @@
                         <span asp-validation-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().Reason" class="text-danger"></span>
                     </div>
                 }
-               
+
             }
 
 
@@ -99,9 +100,21 @@
             <div class="form-group">
                 <label class="control-label">Giá</label>
                 <div class="input-group">
+                    @{
+                        if (Model.Price >= 1000)
+                        {
+                            var price = (Math.Round(Model.Price / 1000, 2));
+                            <input type="number" value="@price" class="form-control" placeholder="Giá" readonly="readonly" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Tỉ VNĐ</span></div>
+                        }
+                        else
+                        {
+                            <input type="number" asp-for="Price" class="form-control" placeholder="Giá" readonly="readonly" />
 
-                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" readonly="readonly" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                            <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                        }
+                    }
+
                 </div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>

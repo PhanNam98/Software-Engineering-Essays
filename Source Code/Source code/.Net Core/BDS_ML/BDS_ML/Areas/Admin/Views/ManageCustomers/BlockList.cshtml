@@ -25,93 +25,120 @@
 </div>
 <h1>Danh sách tài khoản bị khóa</h1>
 <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="exam" class="table table-striped table-bordered table-hover" name="table">
+                        <thead>
+                            <tr>
+                                <th style="width:20px;">
+                                    @Html.DisplayName("#")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Họ tên")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Admin")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Lí do")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Ngày khóa")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Ngày mở khóa")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Ngày thay đổi")
+                                </th>
 
-<table id="exam" class="table table-striped table-bordered" name="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ID_Block)
-            </th>
-            <th>
-                @Html.DisplayName("Họ tên")
-            </th>
-            <th>
-                @Html.DisplayName("Admin")
-            </th>
-            <th>
-                @Html.DisplayName("Lí do")
-            </th>
-            <th>
-                @Html.DisplayName("Ngày khóa")
-            </th>
-            <th>
-                @Html.DisplayName("Ngày mở khóa")
-            </th>
-            <th>
-                @Html.DisplayName("Ngày thay đổi")
-            </th>
+                                <th>@Html.Raw("Tình trạng")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="width:20px;">
+                                        @Html.DisplayFor(modelItem => item.ID_Block)
+                                    </td>
 
-            <th>@Html.Raw("Tình trạng")</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID_Block)
-            </td>
-            
-            <td>
-                
-                @Html.Raw(item.ID_UserNavigation.FirstName+" "+item.ID_UserNavigation.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID_AdminNavigation.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reason)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BlockDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnLockDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
+                                    <td>
 
-            <td>
-                @if (item.UnLockDate <= DateTime.Now.Date && item.ID_UserNavigation.Account_.IsBlock == 0)
-                {
-                    @Html.Raw("Đã mở khóa")
-                }
-                else
-               if (item.UnLockDate > DateTime.Now.Date && item.ID_UserNavigation.Account_.IsBlock == 1)
-                {
-                    @*<form action="@Url.Action("UnBlockCustomer", "ManageCustomers", new { idcus = item.ID_UserNavigation.ID_User, idacc = item.ID_UserNavigation.Account_.Id ,idblock=item.ID_Block})" method="post">
-                <input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">
-            </form>*@
-                    @Html.Raw("Đang khóa")
-                }
-                else if (item.UnLockDate > item.ModifiedDate && item.ID_UserNavigation.Account_.IsBlock == 0)
-                {
-                    @Html.Raw("Mở khóa trước hạn")
-                }
-                else
-                { @Html.Raw("Đã mở khóa")
-            }
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                                        @Html.Raw(item.ID_UserNavigation.FirstName + " " + item.ID_UserNavigation.LastName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_AdminNavigation.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Reason)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BlockDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UnLockDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ModifiedDate)
+                                    </td>
+
+                                    <td>
+                                        @if (item.UnLockDate <= DateTime.Now.Date && item.ID_UserNavigation.Account_.IsBlock == 0)
+                                        {
+                                            @Html.Raw("Đã mở khóa")
+                                        }
+                                        else
+                                     if (item.UnLockDate > DateTime.Now.Date && item.ID_UserNavigation.Account_.IsBlock == 1)
+                                        {
+                                            @*<form action="@Url.Action("UnBlockCustomer", "ManageCustomers", new { idcus = item.ID_UserNavigation.ID_User, idacc = item.ID_UserNavigation.Account_.Id ,idblock=item.ID_Block})" method="post">
+                                                    <input type="submit" value="Mở khóa" class="btn btn-custon-rounded-three btn-primary btn-xs">
+                                                </form>*@
+                                            @Html.Raw("Đang khóa")
+                                        }
+                                        else if (item.UnLockDate > item.ModifiedDate && item.ID_UserNavigation.Account_.IsBlock == 0)
+                                        {
+                                            @Html.Raw("Mở khóa trước hạn")
+                                        }
+                                        else
+                                        { @Html.Raw("Đã mở khóa")
+                                    }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $('#exam').DataTable({
-            scrollY: '50vh',
-            scrollCollapse: true,
-            
+            "language": {
+                "lengthMenu": "Hiển thi _MENU_ kết quả trên 1 trang",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Trang _PAGE_ của _PAGES_",
+                "infoEmpty": "Không tìm thấy dữ liệu",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp tục",
+                    "previous": "Trở về"
+                },
+                "search": "Tìm kiếm:",
+                "loadingRecords": "Đang tải...",
+                "processing": "Đang xử lí..."
+            },
+         
+            "lengthMenu": [[5, 10, 25, 50, 100, - 1], [5, 10, 25, 50, 100, "Tất cả"]],
+            pageLength: 5
+
         });
     });
 </script>

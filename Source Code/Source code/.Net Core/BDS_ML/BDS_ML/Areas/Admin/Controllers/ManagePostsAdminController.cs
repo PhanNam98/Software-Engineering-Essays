@@ -103,6 +103,15 @@ namespace BDS_ML.Areas.Admin.Controllers
             return View(listpost);
 
         }
+        public async Task<IActionResult> ListFavoritePost()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            var listpost = _context.Post_Favorite.Include(p => p.ID_PostNavigation).ThenInclude(p=>p.PostTypeNavigation).Include(p => p.ID_PostNavigation).ThenInclude(p=> p.RealEstateTypeNavigation).Include(p => p.ID_UserNavigation)
+               .Where(p => p.ID_User==user.Id).ToList();
+            return View(listpost);
+
+        }
 
         // GET: Admin/ManagePostsAdmin/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -131,13 +140,13 @@ namespace BDS_ML.Areas.Admin.Controllers
             ViewData["ID_Account"] = post.ID_Account;
             ViewData["ID_Account_Post"] = post.ID_Account==user.Id?true:false;
             string nameuser = "";
-            if (user.IsAdmin == 1)
+            if (post.ID_AccountNavigation.IsAdmin == 1)
             {
-                nameuser += "Admin " + _context.Admin.Where(p => p.Account_ID == user.Id).SingleOrDefault().FullName;
+                nameuser += "Admin " + _context.Admin.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault().FullName;
             }
             else
             {
-                var cus = _context.Customer.Where(p => p.Account_ID == user.Id).SingleOrDefault();
+                var cus = _context.Customer.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault();
                 nameuser += cus.FirstName + " " + cus.LastName;
             }
             ViewData["Name_Account"] = nameuser;
@@ -357,38 +366,38 @@ namespace BDS_ML.Areas.Admin.Controllers
             return View(post);
         }
 
-        // GET: Admin/ManagePostsAdmin/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Admin/ManagePostsAdmin/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var post = await _context.Post
-                .Include(p => p.ID_AccountNavigation)
-                .Include(p => p.PostTypeNavigation)
-                .Include(p => p.ProjectNavigation)
-                .Include(p => p.RealEstateTypeNavigation)
-                .FirstOrDefaultAsync(m => m.ID_Post == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
+        //    var post = await _context.Post
+        //        .Include(p => p.ID_AccountNavigation)
+        //        .Include(p => p.PostTypeNavigation)
+        //        .Include(p => p.ProjectNavigation)
+        //        .Include(p => p.RealEstateTypeNavigation)
+        //        .FirstOrDefaultAsync(m => m.ID_Post == id);
+        //    if (post == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(post);
-        }
+        //    return View(post);
+        //}
 
-        // POST: Admin/ManagePostsAdmin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var post = await _context.Post.FindAsync(id);
-            _context.Post.Remove(post);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: Admin/ManagePostsAdmin/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var post = await _context.Post.FindAsync(id);
+        //    _context.Post.Remove(post);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool PostExists(int id)
         {
