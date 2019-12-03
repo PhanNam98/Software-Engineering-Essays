@@ -1,0 +1,341 @@
+﻿/*------------------
+  Feature section
+---------------------*/
+.notavailable {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.sale-notic,
+.rent-notic {
+    color: #fff;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: #ff8700;
+    padding: 7px 13px;
+    display: inline-block;
+    border-radius: 2px;
+    position: relative;
+    z-index: 3;
+}
+
+.rent-notic {
+    background: #4BB92F;
+}
+
+.feature-section .container {
+    margin-bottom: -50px;
+}
+
+.feature-item {
+    margin-bottom: 50px;
+}
+
+    .feature-item .room-price {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        background: #fff;
+        text-align: center;
+        padding: 13px;
+        background: #30caa0;
+        color: #fff;
+    }
+
+.feature-pic {
+    height: 250px;
+}
+
+    .feature-pic .sale-notic,
+    .feature-pic .rent-notic {
+        margin: 20px;
+    }
+
+.feature-text {
+    border-left: 1px solid #ebebeb;
+    border-right: 1px solid #ebebeb;
+}
+
+.feature-title {
+    padding-top: 20px;
+}
+
+    .feature-title h5 {
+        font-weight: 400;
+        margin-bottom: 5px;
+    }
+
+    .feature-title p {
+        margin-bottom: 0;
+    }
+
+        .feature-title p i {
+            color: #30caa0;
+        }
+
+.room-info-warp {
+    padding: 25px;
+    padding-bottom: 0;
+}
+
+.room-info {
+    border-top: 1px solid #ebebeb;
+    padding-top: 15px;
+    overflow: hidden;
+}
+
+    .room-info p {
+        margin-bottom: 15px;
+    }
+
+        .room-info p i {
+            color: #30caa0;
+            margin-right: 10px;
+        }
+
+    .room-info:last-child .rf-right {
+        padding-right: 14px;
+    }
+
+    .room-info .rf-left {
+        float: left;
+    }
+
+    .room-info .rf-right {
+        float: right;
+    }
+
+/*-----------------------------
+  Feature category section
+-----------------------------*/
+
+.feature-category-section {
+    background: #f7f7f7;
+}
+
+.f-cata {
+    text-align: center;
+}
+
+    .f-cata img {
+        margin-bottom: 20px;
+    }
+
+    .f-cata h5 {
+        font-weight: 400;
+    }
+
+.gallery {
+    margin-right: -20px;
+}
+
+    .gallery:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+.grid-sizer {
+    width: calc(25% - 20px);
+}
+
+.gallery-item {
+    width: calc(25% - 20px);
+    height: 285px;
+    display: table;
+    position: relative;
+    float: left;
+    margin-bottom: 20px;
+}
+
+    .gallery-item.grid-long {
+        width: calc(50% - 20px);
+    }
+
+    .gallery-item.grid-wide {
+        width: calc(50% - 10px);
+    }
+
+    .gallery-item:after {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: #000;
+        opacity: 0.4;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        transition: all 0.4s;
+    }
+
+    .gallery-item:before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,30caa0+70 */
+        background: black;
+        /* Old browsers */
+        /* FF3.6-15 */
+        /* Chrome10-25,Safari5.1-6 */
+        background: -webkit-gradient(linear, left top, left bottom, from(black), color-stop(70%, #30caa0));
+        background: -o-linear-gradient(top, black 0%, #30caa0 70%);
+        background: linear-gradient(to bottom, black 0%, #30caa0 70%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#30caa0', GradientType=0);
+        /* IE6-9 */
+        opacity: 0;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        transition: all 0.4s;
+    }
+
+    .gallery-item:hover:before {
+        opacity: 0.6;
+    }
+
+    .gallery-item:hover:after {
+        opacity: 0;
+    }
+
+    .gallery-item .gi-info {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+        .gallery-item .gi-info h3 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #fff;
+        }
+
+        .gallery-item .gi-info p {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 0;
+        }
+
+/*------------------
+  Review section
+---------------------*/
+
+.review-section {
+    padding-top: 68px;
+    padding-bottom: 50px;
+}
+
+.review-item {
+    text-align: center;
+}
+
+    .review-item .rating {
+        margin-bottom: 20px;
+    }
+
+        .review-item .rating i {
+            color: #ffca04;
+            font-size: 20px;
+        }
+
+    .review-item p {
+        font-size: 18px;
+        margin-bottom: 30px;
+    }
+
+    .review-item h5 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .review-item span {
+        color: #cccccc;
+    }
+
+    .review-item .clint-pic {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin: 35px auto 0;
+    }
+
+.review-slider .owl-dots {
+    text-align: center;
+    padding-top: 30px;
+}
+
+    .review-slider .owl-dots .owl-dot {
+        width: 20px;
+        height: 4px;
+        border-radius: 4px;
+        background: #fff;
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+        .review-slider .owl-dots .owl-dot.active {
+            background: #30caa0;
+        }
+
+/*------------------
+  Blog section
+---------------------*/
+
+.blog-item img {
+    margin-bottom: 25px;
+}
+
+.blog-item h5 {
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+
+    .blog-item h5 a {
+        color: #252525;
+    }
+
+.blog-item p {
+    margin-bottom: 0;
+}
+
+.blog-item .blog-meta {
+    margin-bottom: 10px;
+}
+
+    .blog-item .blog-meta span {
+        font-size: 12px;
+        color: #cccccc;
+        margin-right: 10px;
+    }
+
+        .blog-item .blog-meta span i {
+            color: #30caa0;
+            margin-right: 5px;
+        }
+
+/*------------------
+  Clients section
+---------------------*/
+
+.clients-section {
+    position: relative;
+    margin-bottom: -60px;
+}
+
+.clients-slider {
+    background: #30caa0;
+    padding: 27px 40px;
+    border-radius: 3px;
+}
+
+    .clients-slider a {
+        display: block;
+        text-align: center;
+        padding: 0 30px;
+    }
