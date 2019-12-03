@@ -14,7 +14,7 @@ namespace BDS_ML.Controllers
         public PublicController() {
             _context = new BDT_MLDBContext();
         }
-
+        [AllowAnonymous]
         public JsonResult Get_district(int province_id)
         {
             var list = _context.district.Where(p => p._province_id == province_id);

@@ -2,8 +2,20 @@
 
 @{
     ViewData["Title"] = "Danh sách bài đã ẩn";
-    Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    //Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
 }
+@{
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    }
+
+    else
+    {
+        Layout = "~/Views/Shared/_Layout_custom_customer.cshtml";
+    }
+}
+
 <style type="text/css">
 
 
@@ -27,7 +39,7 @@
             <div class="page-title">
                 <ol class="breadcrumb text-right">
                     <li>Bài đăng</li>
-                    <li><a asp-action="ListPost" class="text-right">Danh sách bài đăng của bạn</a></li>
+                    <li><a asp-action="Index" class="text-right">Danh sách bài đăng của bạn</a></li>
                     <li class="active">Danh sách bài đã ẩn của bạn</li>
                 </ol>
             </div>
@@ -72,8 +84,8 @@
                                     @Html.DisplayName("Loại bài")
                                 </th>
                                 @*<th>
-            @Html.DisplayName("Dự án")
-        </th>*@
+                                        @Html.DisplayName("Dự án")
+                                    </th>*@
                                 <th>
                                     @Html.DisplayName("Loại")
                                 </th>
@@ -87,7 +99,7 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ID_Post)
                                     </td>
-                                  
+
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Tittle)
                                     </td>

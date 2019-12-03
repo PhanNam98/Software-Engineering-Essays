@@ -100,28 +100,17 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             }
 
             var user = _context.AspNetUsers.Where(p => p.UserName == info.Principal.FindFirstValue(ClaimTypes.Email)).SingleOrDefault();
+            BDS_ML.Models.ModelDB.Admin admin = new Models.ModelDB.Admin();
+            Customer cus = new Customer();
             if (user != null)
             {
                 isExist = true;
-                BDS_ML.Models.ModelDB.Admin admin = new Models.ModelDB.Admin();
-                Customer cus = new Customer();
-                string urlavatar = "";
-                if (user.IsAdmin == 1)
-                {
-                    admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-                    urlavatar += admin.Avatar_URL;
-                }
-                else
-                {
-                    cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-                    urlavatar += cus.Avatar_URL;
-                }
-                HttpContext.Session.SetString("AvatarImage", urlavatar);
+                
                 if (user.IsBlock != 0)
                 {
                     if (user.IsAdmin == 0)
                     {
-                        //var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                        cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
                         var block = _context.Block.Where(b => b.ID_User == cus.ID_User).OrderBy(p => p.ModifiedDate).LastOrDefault();
                         if (block.UnLockDate <= DateTime.Now)
                         {
@@ -148,7 +137,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                     }
                     if (user.IsAdmin == 1)
                     {
-                        //admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                        admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
                         var block = _context.Block.Where(b => b.ID_User == admin.ID_Admin).OrderBy(p => p.ModifiedDate).LastOrDefault();
                         if (block.UnLockDate <= DateTime.Now)
                         {
@@ -181,6 +170,19 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+               
+                string urlavatar = "";
+                if (user.IsAdmin == 1)
+                {
+                    admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    urlavatar += admin.Avatar_URL;
+                }
+                else
+                {
+                    cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    urlavatar += cus.Avatar_URL;
+                }
+                HttpContext.Session.SetString("AvatarImage", urlavatar);
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }

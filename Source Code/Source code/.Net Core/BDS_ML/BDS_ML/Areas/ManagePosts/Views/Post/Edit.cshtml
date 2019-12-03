@@ -2,9 +2,24 @@
 @using BDS_ML.Models.Common
 @{
     ViewData["Title"] = "Chỉnh sửa";
-    Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    //Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
 }
+@{
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    }
+
+    else
+    {
+        Layout = "~/Views/Shared/_Layout_custom_customer.cshtml";
+    }
+}
+
 <style>
+    hr.style1 {
+        border-top: 1px solid #8c8b8b;
+    }
     .row > .column {
         padding: 0 8px;
     }
@@ -160,7 +175,7 @@
             <div class="page-title">
                 <ol class="breadcrumb text-right">
                     <li>Bài đăng</li>
-                    <li><a asp-action="Index" class="text-right">Danh sách bài đăng</a></li>
+                    <li><a asp-action="Index" asp-area="ManagePosts" asp-controller="Post" class="text-right">Danh sách bài đăng của bạn</a></li>
                     <li><a asp-action="Details" asp-route-id="@Model.ID_Post" class="text-right">Chi tiết bài đăng</a></li>
                     <li class="active">Chỉnh sửa bài đăng</li>
                 </ol>
@@ -172,268 +187,314 @@
 <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Edit" id="frmEdit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID_Post" />
+        <div class="card">
+            <div class="card-header">Chi tiết bài đăng</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Edit" id="frmEdit" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="ID_Post" />
 
-            <div class="form-group" hidden="hidden">
-                <label class="control-label">Người đăng</label>
-                <input class="form-control" asp-items="ViewBag.Name_Account" />
-            </div>
-            <div class="form-group">
-                <label class="control-label">Tiêu đề<span style="color:red"> *</span></label>
-                <input asp-for="Tittle" class="form-control" id="tittle" />
-                <span asp-validation-for="Tittle" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label class="control-label">Id</label>
-                <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" readonly="readonly" />
-                <span asp-validation-for="ID_Account" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Ngày tạo</label>
-                <input asp-for="PostTime" class="form-control" readonly="readonly" />
-                <span asp-validation-for="PostTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Loại bài đăng</label>
-                <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType"></select>
-                <span asp-validation-for="PostType" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Diện tích</label>
-                <div class="input-group">
-                    <input type="number" asp-for="Size" class="form-control" min="0" />
-                    <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
-                </div>
-                <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Dự án</label>
-                <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"> <option disabled selected>--- Không ---</option></select>
-                <span asp-validation-for="Project" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Giá</label>
-                <div class="input-group">
-
-                    <input type="number" asp-for="Price" class="form-control" placeholder="Giá" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
-                </div>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Loại bất động sản</label>
-                <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
-                <span asp-validation-for="RealEstateType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Miêu tả bất động sản</label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Tầng</label>
-                <div class="input-group">
-                    <input type="number" id="floor" name="floor" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Floor" min="0" max="20" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Phòng ngủ</label>
-                <div class="input-group">
-                    <input type="number" id="bedroom" name="bedroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bedroom" min="0" max="100" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Phòng vệ sinh</label>
-                <div class="input-group">
-                    <input type="number" id="bathroom" name="bathroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bathroom" min="0" max="100" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Sân</label>
-                <input type="number" id="yard" name="yard" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Yard" min="0" max="10" />
-
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearHospital" name="nearHospital" checked="@Model.Post_Detail.SingleOrDefault().NearHospital" value="true" /> Gần bệnh viện
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearMarket" name="nearMarket" checked="@Model.Post_Detail.SingleOrDefault().NearMarket" value="true" /> Gần chợ/siêu thị
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearAirport" name="nearAirport" checked="@Model.Post_Detail.SingleOrDefault().NearAirport" value="true" /> Gần sân bay
-                </label>
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearSchool" name="nearSchool" checked="@Model.Post_Detail.SingleOrDefault().NearSchool" value="true" /> Gần trường học
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    <input type="checkbox" id="alley" name="alley" checked="@Model.Post_Detail.SingleOrDefault().Alley" value="true" /> Trong Hẻm
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label class="control-label">Miêu tả cụ thể vị trí</label>
-                <textarea id="descriptiondetail" name="descriptiondetail" class="form-control">@Model.Post_Detail.SingleOrDefault().Description</textarea>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
-                    <select  id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
-                    <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Post_Location.SingleOrDefault().Quan_Huyen" class="control-label"></label>
-                    <select id="district" name="district" class="form-control"></select>
-                    <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
-                </div>*@
-
-            <div class="form-group">
-                <label class="control-label">Tỉnh/Thành phố</label>
-                <select id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
-                <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Quận/Huyện</label><br />
-                <select id="district" name="district" class="form-control" asp-items="ViewBag.District"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
-                <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Phường/Xã</label>
-                <select asp-for="Post_Location.SingleOrDefault().Phuong_Xa" id="ward" name="ward" class="form-control" asp-items="ViewBag.Ward"><option disabled selected>---Chọn Phường/Xã---</option></select>
-                <span asp-validation-for="Post_Location.SingleOrDefault().Phuong_Xa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Đường</label>
-                <select asp-for="Post_Location.SingleOrDefault().Duong_Pho" id="street" name="street" class="form-control" asp-items="ViewBag.Street"><option disabled selected>---Chọn Tên Đường---</option></select>
-                <span asp-validation-for="Post_Location.SingleOrDefault().Duong_Pho" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Số nhà, tên hẻm</label>
-                <div class="input-group">
-                    <input id="diachi" name="diachi" class="form-control" value="@Model.Post_Location.SingleOrDefault().DiaChi" />
-                    <span asp-validation-for="Post_Location.SingleOrDefault().DiaChi" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <!-- Slideshow container -->
-            <div class="form-group">
-                <label class="control-label">Ảnh bất động sản</label>
-
-
-
-                @if (Model.Post_Image.ToList().Count > 0)
-                {
-                    <div class="row">
-                        @{
-                            var count = 0;
-
-                            @foreach (var item in Model.Post_Image.ToList())
-                            {
-                                var idImage = item.ID_Post + "image" + item.ID_Image;
-                                count++;
-
-                                <div class="column" id="@idImage">
-
-                                    <img src="@(Constants.POST_IMG_URL + @item.url)" onclick="openModal();currentSlide(@count)" class="hover-shadow" style="width: 200px;height: 150px;">
-
-                                </div>
-
-                            }
-                        }
-                    </div>
-                }
-                else
-                {
-                    <span>Không có ảnh</span>
-                }
-
-
-
-                <br />
-            </div>
-            <div id="myModal" class="modal">
-
-                <span class="close cursor" onclick="closeModal()">Đóng</span>
-
-                <div class="modal-content">
-                    @{
-                        var count1 = 0;
-                        @foreach (var item in Model.Post_Image.ToList())
-                        {
-                            var idImage = item.ID_Post.ToString() + "image" + item.ID_Image.ToString();
-                            count1++;
-                            <div class="mySlides">
-                                <div class="numbertext">@count1/@Model.Post_Image.Count()</div>
-                                <img src="@(Constants.POST_IMG_URL + @item.url)" style="width:100%">
-                                <a class="numbertextdelete" onclick="deleteItem(@item.ID_Post,@item.ID_Image)">Xóa</a>
+                            <div class="form-group" hidden="hidden">
+                                <label class="control-label">Người đăng</label>
+                                <input class="form-control" asp-items="ViewBag.Name_Account" />
                             </div>
-                        }
-                    }
-
-                    <!-- Next/previous controls -->
-                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                    <div class="row">
-                        <!-- Thumbnail image controls -->
-                        @{
-                            var count2 = 0;
-                            @foreach (var item in Model.Post_Image.ToList())
-                            {
-                                count2++;
-                                <div class="column">
-                                    <img class="demo" src="@(Constants.POST_IMG_URL + @item.url)" onclick="currentSlide(@count2)" alt="@item.url" style="width: 200px;height: 150px;">
+                            <div class="form-group" hidden="hidden">
+                                <label class="control-label">Id</label>
+                                <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" readonly="readonly" />
+                                <span asp-validation-for="ID_Account" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" hidden="hidden">
+                                <label class="control-label">Ngày tạo</label>
+                                <input asp-for="PostTime" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="PostTime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label h4"><strong>Thông tin về bài đăng</strong></label>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label class="control-label">Tiêu đề<span style="color:red"> *</span></label>
+                                    <input asp-for="Tittle" class="form-control" id="tittle" />
+                                    <span asp-validation-for="Tittle" class="text-danger"></span>
                                 </div>
 
-                            }
-                        }
+                                <div class="form-group col-3">
+                                    <label class="control-label">Loại bài đăng</label>
+                                    <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType"></select>
+                                    <span asp-validation-for="PostType" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Loại bất động sản</label>
+                                    <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
+                                    <span asp-validation-for="RealEstateType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <hr class="style1">
+                            <div class="form-group">
+                                <label class="control-label h4"><strong>Thông tin về bất động sản</strong></label>
+                            </div>
+                            <div class="row">
+
+
+                                <div class="form-group col-3">
+                                    <label class="control-label">Diện tích</label>
+                                    <div class="input-group">
+                                        <input type="number" asp-for="Size" class="form-control" min="0" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
+                                    </div>
+                                    <span asp-validation-for="Size" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Giá</label>
+                                    <div class="input-group">
+
+                                        <input type="number" asp-for="Price" class="form-control" placeholder="Giá" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                                    </div>
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="control-label">Dự án</label>
+                                    <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"> <option disabled selected>--- Không ---</option></select>
+                                    <span asp-validation-for="Project" class="text-danger"></span>
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <label class="control-label">Tầng</label>
+                                    <div class="input-group">
+                                        <input type="number" id="floor" name="floor" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Floor" min="0" max="20" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Phòng ngủ</label>
+                                    <div class="input-group">
+                                        <input type="number" id="bedroom" name="bedroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bedroom" min="0" max="100" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Phòng vệ sinh</label>
+                                    <div class="input-group">
+                                        <input type="number" id="bathroom" name="bathroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bathroom" min="0" max="100" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Sân</label>
+                                    <input type="number" id="yard" name="yard" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Yard" min="0" max="10" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Miêu tả bất động sản</label>
+                                <textarea asp-for="Description" class="form-control"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            <hr class="style1">
+                            <div class="form-group">
+                                <label class="control-label h4"><strong>Thông tin về vị trí</strong></label>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-4">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Tỉnh/Thành phố</label>
+                                        <select id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Quận/Huyện</label><br />
+                                        <select id="district" name="district" class="form-control" asp-items="ViewBag.District"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Phường/Xã</label>
+                                        <select asp-for="Post_Location.SingleOrDefault().Phuong_Xa" id="ward" name="ward" class="form-control" asp-items="ViewBag.Ward"><option disabled selected>---Chọn Phường/Xã---</option></select>
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Phuong_Xa" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Đường</label>
+                                        <select asp-for="Post_Location.SingleOrDefault().Duong_Pho" id="street" name="street" class="form-control" asp-items="ViewBag.Street"><option disabled selected>---Chọn Tên Đường---</option></select>
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Duong_Pho" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Số nhà, tên hẻm</label>
+                                        <div class="input-group">
+                                            <input id="diachi" name="diachi" class="form-control" value="@Model.Post_Location.SingleOrDefault().DiaChi" />
+                                            <span asp-validation-for="Post_Location.SingleOrDefault().DiaChi" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2"></div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label h4"><strong>Chi tiết về vị trí</strong></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearHospital" name="nearHospital" checked="@Model.Post_Detail.SingleOrDefault().NearHospital" value="true" /> Gần bệnh viện
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearMarket" name="nearMarket" checked="@Model.Post_Detail.SingleOrDefault().NearMarket" value="true" /> Gần chợ/siêu thị
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearAirport" name="nearAirport" checked="@Model.Post_Detail.SingleOrDefault().NearAirport" value="true" /> Gần sân bay
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearSchool" name="nearSchool" checked="@Model.Post_Detail.SingleOrDefault().NearSchool" value="true" /> Gần trường học
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <input type="checkbox" id="alley" name="alley" checked="@Model.Post_Detail.SingleOrDefault().Alley" value="true" /> Trong Hẻm
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"><strong>Miêu tả cụ thể vị trí</strong></label>
+                                        <textarea id="descriptiondetail" name="descriptiondetail" class="form-control">@Model.Post_Detail.SingleOrDefault().Description</textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="form-group" hidden="hidden">
+                                <label asp-for="Status" class="control-label"></label>
+                                <input asp-for="Status" class="form-control" />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <hr class="style1">
+
+                            <!-- Slideshow container -->
+                            <div class="form-group">
+                                <label class="control-label h4"><strong>Ảnh bất động sản</strong></label>
+
+
+
+                                @if (Model.Post_Image.ToList().Count > 0)
+                                {
+                                    <div class="row">
+                                        @{
+                                            var count = 0;
+
+                                            @foreach (var item in Model.Post_Image.ToList())
+                                            {
+                                                var idImage = item.ID_Post + "image" + item.ID_Image;
+                                                count++;
+
+                                                <div class="column col" id="@idImage">
+
+                                                    <img src="@(Constants.POST_IMG_URL + @item.url)" onclick="openModal();currentSlide(@count)" class="hover-shadow" style="width: 200px;height: 150px;">
+
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span>Không có ảnh</span>
+                                }
+
+
+
+                                <br />
+                            </div>
+                            <div id="myModal" class="modal">
+
+                                <span class="close cursor" onclick="closeModal()">Đóng</span>
+
+                                <div class="modal-content">
+                                    @{
+                                        var count1 = 0;
+                                        @foreach (var item in Model.Post_Image.ToList())
+                                        {
+                                            var idImage = item.ID_Post.ToString() + "image" + item.ID_Image.ToString();
+                                            count1++;
+                                            <div class="mySlides">
+                                                <div class="numbertext">@count1/@Model.Post_Image.Count()</div>
+                                                <img src="@(Constants.POST_IMG_URL + @item.url)" style="width:100%">
+                                                <a class="numbertextdelete" onclick="deleteItem(@item.ID_Post,@item.ID_Image)">Xóa</a>
+                                            </div>
+                                        }
+                                    }
+
+                                    <!-- Next/previous controls -->
+                                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                                    <div class="row">
+                                        <!-- Thumbnail image controls -->
+                                        @{
+                                            var count2 = 0;
+                                            @foreach (var item in Model.Post_Image.ToList())
+                                            {
+                                                count2++;
+                                                <div class="column">
+                                                    <img class="demo" src="@(Constants.POST_IMG_URL + @item.url)" onclick="currentSlide(@count2)" alt="@item.url" style="width: 200px;height: 150px;">
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="file-input" class=" form-control-label">Thêm ảnh</label>
+                                <input type="file" id="images" name="images" accept="image/*" class="form-control-file" multiple />
+                            </div>
+
+
+
+
+
+                            <div class="card-footer">
+                                <div class="form-group">
+                                    <br />
+                                    <input type="submit" value="Lưu" class="btn btn-primary" onclick="return IsEmpty();" />
+                                    @Html.ActionLink("Hủy", "Details", new { @id = Model.ID_Post }, new { @class = "btn btn-info" })
+                                    <a asp-action="Index" class="text-right">Quay trở lại danh sách</a>
+                                    @* <button class="btn btn-md btn-info" onclick="location.href='@Url.Action("Details",new { @id= Model.ID_Post}))'">Xem chi tiết</button>*@
+                                </div>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="file-input" class=" form-control-label">Thêm ảnh</label>
-                <input type="file" id="images" name="images" accept="image/*" class="form-control-file" multiple />
-            </div>
-
-
-
-
-            <div class="form-group">
-                <br />
-                <input type="submit" value="Lưu" class="btn btn-primary" onclick="return IsEmpty();" />
-                @Html.ActionLink("Xem chi tiết", "Details", new { @id = Model.ID_Post }, new { @class = "btn btn-info" })
-                @* <button class="btn btn-md btn-info" onclick="location.href='@Url.Action("Details",new { @id= Model.ID_Post}))'">Xem chi tiết</button>*@
-            </div>
-        </form>
-    </div>
-
-</div>
-<div class="row">
-    <div>
-        <a asp-action="Index" class="text-right">Quay trở lại danh sách</a>
-    </div>
-</div>
-<script>
+                @*<div class="row">
+                    <div>
+                        <a asp-action="Index" class="text-right">Quay trở lại danh sách</a>
+                    </div>
+                </div>*@
+                </div>
+                </div>
+                </div>
+                </div>
+                <script>
 
 
     function IsEmpty() {
@@ -584,4 +645,4 @@
 
 
 
-</script>
+                </script>

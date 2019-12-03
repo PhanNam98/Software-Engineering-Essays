@@ -161,14 +161,14 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             int Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id;
             ViewData["ID_Account"] = post.ID_Account;
             string nameuser = "";
-            if (user.IsAdmin == 1)
+            if (post.ID_AccountNavigation.IsAdmin == 1)
             {
-                nameuser = "Admin" + _context.Admin.Where(p => p.Account_ID == user.Id).SingleOrDefault().FullName;
+                nameuser += "Admin " + _context.Admin.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault().FullName;
             }
             else
             {
-                var cus = _context.Customer.Where(p => p.Account_ID == user.Id).SingleOrDefault();
-                nameuser = cus.FirstName + " " + cus.LastName;
+                var cus = _context.Customer.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault();
+                nameuser += cus.FirstName + " " + cus.LastName;
             }
             ViewData["Name_Account"] = nameuser;
             ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description", post.PostType);
