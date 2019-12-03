@@ -1,81 +1,113 @@
 ﻿@model IEnumerable<BDS_ML.Models.ModelDB.Post_Favorite>
 
-    @{
-        ViewData["Title"] = "ListFavoritePost";
+@{
+    ViewData["Title"] = "Bài đăng đã thích";
+    //Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+}
+@{
+    if (User.IsInRole("Admin"))
+    {
         Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
     }
 
-    <h1>ListFavoritePost</h1>
-    <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="exam" class="table table-striped table-condensed table-hover table-bordered">
-                            <thead>
+    else
+    {
+        Layout = "~/Views/Shared/_Layout_custom_customer.cshtml";
+    }
+}
+
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Bài đăng</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li>Bài đăng</li>
+                    <li><a asp-action="Index" class="text-right">Danh sách bài đăng của bạn</a></li>
+                    <li class="active">Danh sách bài đã ẩn của bạn</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Danh sách bài đăng đã thích</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="exam" class="table table-striped table-condensed table-hover table-bordered">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @Html.DisplayName("Tiêu đề")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Loại bài")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Loại bất động sản")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Giá")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Ngày thích")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
                                 <tr>
 
-                                    <th>
-                                        @Html.DisplayName("Tiêu đề")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Loại bài")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Loại bất động sản")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Giá")
-                                    </th>
-                                    <th>
-                                        @Html.DisplayName("Ngày thích")
-                                    </th>
-                                    <th></th>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_PostNavigation.Tittle)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_PostNavigation.PostTypeNavigation.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_PostNavigation.RealEstateTypeNavigation.Description)
+                                    </td>
+                                    <td>
+                                        @if (item.ID_PostNavigation.Price >= 1000)
+                                        {
+                                            @Html.Raw((Math.Round(item.ID_PostNavigation.Price / 1000, 2)) + " tỉ")
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(item.ID_PostNavigation.Price + " triệu")
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MortifiedDate)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Chi tiết", "", "Post", new { area = "" }) |
+
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ID_PostNavigation.Tittle)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ID_PostNavigation.PostTypeNavigation.Description)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ID_PostNavigation.RealEstateTypeNavigation.Description)
-                                        </td>
-                                        <td>
-                                            @if (item.ID_PostNavigation.Price >= 1000)
-                                            {
-                                                @Html.Raw((Math.Round(item.ID_PostNavigation.Price / 1000, 2)) + " tỉ")
-                                            }
-                                            else
-                                            {
-                                                @Html.Raw(item.ID_PostNavigation.Price + " triệu")
-                                            }
-
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.MortifiedDate)
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Chi tiết", "", "Post", new { area = "" }) |
-
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <script>
+</div>
+<script>
 
     $(document).ready(function () {
 
@@ -101,4 +133,4 @@
         });
     });
 
-    </script>
+</script>

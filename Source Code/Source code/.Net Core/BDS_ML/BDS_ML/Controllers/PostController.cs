@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 namespace BDS_ML.Controllers
 {
-    [Authorize]
+
     public class PostController : Controller
     {
         private readonly BDT_MLDBContext _context;
@@ -22,8 +22,8 @@ namespace BDS_ML.Controllers
         {
             _context = new BDT_MLDBContext();
             _userManager = userManager;
-           
-             listPrice = new List<priceFromToPost>();
+
+            listPrice = new List<priceFromToPost>();
             listPrice.Add(new priceFromToPost { key = 0, PriceFrom = 0, PriceTo = 100 });
             listPrice.Add(new priceFromToPost { key = 1, PriceFrom = 101, PriceTo = 500 });
             listPrice.Add(new priceFromToPost { key = 2, PriceFrom = 5001, PriceTo = 1000 });
@@ -42,7 +42,7 @@ namespace BDS_ML.Controllers
         }
         [TempData]
         public string StatusMessage { get; set; }
-       
+
         public class priceFromToPost
         {
             public int key { get; set; }
@@ -55,6 +55,7 @@ namespace BDS_ML.Controllers
         {
             return View();
         }
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -73,6 +74,7 @@ namespace BDS_ML.Controllers
         // POST: Admin/ManagePostsAdmin/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post, string id
@@ -81,7 +83,7 @@ namespace BDS_ML.Controllers
         {
 
             var user = await _userManager.GetUserAsync(User);
-           
+
             post.PostTime = DateTime.Now;
             post.ID_Account = user.Id;
             Post a = post;
@@ -282,7 +284,7 @@ namespace BDS_ML.Controllers
              .
               Include(image => image.Post_Image)
               .Include(p => p.Post_Status)
-              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p =>p.Post_Status.OrderBy(c=>c.ModifiedDate).LastOrDefault().Status==1 && p.PostType == postType && p.RealEstateType == realestateType
+              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == postType && p.RealEstateType == realestateType
               && p.Tittle.Contains(searchkey)
               && p.Post_Location.SingleOrDefault().Tinh_TP.Value == province
               && p.Post_Location.SingleOrDefault().Quan_Huyen.Value == district
@@ -418,12 +420,44 @@ namespace BDS_ML.Controllers
             catch
             {
                 ViewData["StatusResult"] = "Error Tìm không thành công";
-               
+
             }
 
 
             ViewData["StatusResult"] = "Error Không tìm thấy kết quả phù hợp";
             return View();
         }
+        //Thêm bài đăng vào danh sách yêu thích
+        [Authorize]
+        [HttpPost]
+        public async Task<JsonResult> AddFavorite(int idpost)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var post_Favoritecount = _context.Post_Favorite.Where(p => p.ID_Post == idpost && p.ID_User == user.Id).Count();
+            if (post_Favoritecount > 0)
+            {
+                return Json(new { Result = "ERROR", Message = "Đã có trong danh sách yêu thích" });
+            }
+            try
+            {
+                Post_Favorite post_Favorite = new Post_Favorite();
+                post_Favorite.ID_Post = idpost;
+                post_Favorite.ID_User = user.Id;
+                post_Favorite.MortifiedDate = DateTime.Now;
+                _context.Post_Favorite.Add(post_Favorite);
+                _context.SaveChanges();
+                return Json(new { Result = "OK", Message = "Đã thêm vào danh sách yêu thích" });
+          
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+
+
+        }
+
     }
 }

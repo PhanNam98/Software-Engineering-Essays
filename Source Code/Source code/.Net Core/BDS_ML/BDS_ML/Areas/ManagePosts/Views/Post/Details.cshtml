@@ -1,8 +1,29 @@
 ﻿@model BDS_ML.Models.ModelDB.Post
+@using Microsoft.AspNetCore.Identity
+@using BDS_ML.Models.Common
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Chi tiết";
     Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
 }
+@{
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    }
+
+    else
+    {
+        Layout = "~/Views/Shared/_Layout_custom_customer.cshtml";
+    }
+}
+
+<style>
+    hr.style1 {
+        border-top: 1px solid #8c8b8b;
+    }
+
+</style>
 <div class="breadcrumbs">
     <div class="col-sm-4">
         <div class="page-header float-left">
@@ -16,8 +37,18 @@
             <div class="page-title">
                 <ol class="breadcrumb text-right">
                     <li>Bài đăng</li>
-                    <li><a asp-action="Index" class="text-right">Danh sách bài đăng</a></li>
-                    <li class="active">Chi tiết bài đắng</li>
+                    @{
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li><a asp-action="Index" asp-area="Admin" asp-controller="ManagePostsAdmin" class="text-right">Danh sách bài đăng</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-action="Index" asp-area="ManagePosts" asp-controller="Post" class="text-right">Danh sách bài đăng</a></li>
+                        }
+                    }
+
+                    <li class="active">Chi tiết bài đăng</li>
                 </ol>
             </div>
         </div>
@@ -25,225 +56,350 @@
 </div>
 <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-9">
-        <form id="frmDetail">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID_Post" />
-            <div class="form-group" hidden>
-                <label class="control-label">Id người đăng</label>
-                <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" readonly="readonly" />
-                <span asp-validation-for="ID_Account" class="text-danger"></span>
-            </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Chi tiết bài đăng</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="frmDetail">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="ID_Post" />
+                            <div class="form-group" hidden>
+                                <label class="control-label">Id người đăng</label>
+                                <input asp-for="ID_Account" class="form-control" asp-items="ViewBag.ID_Account" readonly="readonly" />
+                                <span asp-validation-for="ID_Account" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label"><strong>Thông tin về bài đăng</strong></label>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label class="control-label">Tiêu đề<span style="color:red">*</span></label>
+                                    <textarea asp-for="Tittle" class="form-control" id="tittle" readonly="readonly" disabled></textarea>
+                                    <span asp-validation-for="Tittle" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label class="control-label">Người đăng</label>
+                                    <input class="form-control" value="@ViewBag.Name_Account" readonly="readonly" />
+                                </div>
 
-            <div class="form-group">
-                <label class="control-label">Người đăng</label>
-                <input class="form-control" value="@ViewBag.Name_Account" readonly="readonly" />
+                                <div class="form-group col-4">
+                                    <label class="control-label">Ngày tạo</label>
+                                    <input asp-for="PostTime" class="form-control" readonly="readonly" />
+                                    <span asp-validation-for="PostTime" class="text-danger"></span>
+                                </div>
+                            </div>
 
-            </div>
-            <div class="form-group">
-                <label class="control-label">Tiêu đề<span style="color:red">*</span></label>
-                <input asp-for="Tittle" class="form-control" id="tittle" readonly="readonly" />
-                <span asp-validation-for="Tittle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Ngày tạo</label>
-                <input asp-for="PostTime" class="form-control" readonly="readonly" />
-                <span asp-validation-for="PostTime" class="text-danger"></span>
-            </div>
-            @{
-                if (Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 1)
-                {
-                    <div class="form-group">
-                        <label class="control-label">Ngày đăng</label>
-                        <input value="@Model.Post_Status.LastOrDefault().ModifiedDate" class="form-control" readonly="readonly" />
+                            <div class="row">
+                                @{
 
+
+                                    <div class="form-group col-4">
+                                        <label class="control-label">Tình trạng</label>
+                                        <input asp-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().StatusNavigation.Description" class="form-control" readonly="readonly" />
+                                        <span asp-validation-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().StatusNavigation.Description" class="text-danger"></span>
+                                    </div>
+                                    if (Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 1)
+                                    {
+                                        <div class="form-group col-4">
+                                            <label class="control-label">Ngày đăng</label>
+                                            <input value="@Model.Post_Status.LastOrDefault().ModifiedDate" class="form-control" readonly="readonly" />
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label class="control-label">Bởi</label>
+                                            <input asp-for="@Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_AccountNavigation.Admin.SingleOrDefault().FullName" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="@Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_AccountNavigation.Admin.SingleOrDefault().FullName" class="text-danger"></span>
+                                        </div>
+                                    }
+                                    else
+                                    if (Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 3)
+                                    {
+                                        <div class="form-group col-4">
+                                            <label class="control-label">Lí do</label>
+                                            <input asp-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().Reason" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().Reason" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label class="control-label">Bởi</label>
+                                            <input asp-for="@Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_AccountNavigation.Admin.SingleOrDefault().FullName" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="@Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().ID_AccountNavigation.Admin.SingleOrDefault().FullName" class="text-danger"></span>
+                                        </div>
+                                    }
+
+                                }
+                            </div>
+                            <hr class="style1">
+                            <div class="form-group">
+                                <label class="control-label"><strong>Thông tin về bất động sản</strong></label>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label class="control-label">Diện tích</label>
+                                    <div class="input-group">
+                                        <input type="number" asp-for="Size" class="form-control" min="0" readonly="readonly" disabled />
+                                        <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
+                                    </div>
+                                    <span asp-validation-for="Size" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label class="control-label">Dự án</label>
+                                    <select asp-for="Project" class="form-control" asp-items="ViewBag.Project" readonly="readonly" disabled> <option disabled selected>--- Không ---</option></select>
+                                    <span asp-validation-for="Project" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label class="control-label">Giá</label>
+                                    <div class="input-group">
+                                        @{
+                                            if (Model.Price >= 1000)
+                                            {
+                                                var price = (Math.Round(Model.Price / 1000, 2));
+                                                <input type="number" value="@price" class="form-control" placeholder="Giá" readonly="readonly" />
+                                                <div class="input-group-btn"><span class="btn btn-primary">Tỉ VNĐ</span></div>
+                                            }
+                                            else
+                                            {
+                                                <input type="number" asp-for="Price" class="form-control" placeholder="Giá" readonly="readonly" />
+
+                                                <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                                            }
+                                        }
+
+                                    </div>
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label class="control-label">Loại bài đăng</label>
+                                    <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType" readonly="readonly" disabled></select>
+                                    <span asp-validation-for="PostType" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label class="control-label">Loại bất động sản</label>
+                                    <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType" readonly="readonly" disabled></select>
+                                    <span asp-validation-for="RealEstateType" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label class="control-label">Miêu tả bất động sản</label>
+                                    <textarea asp-for="Description" class="form-control" readonly="readonly"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-3">
+                                    <label class="control-label">Tầng</label>
+                                    <div class="input-group">
+                                        <input type="number" id="floor" name="floor" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Floor" min="0" max="20" readonly="readonly" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Phòng ngủ</label>
+                                    <div class="input-group">
+                                        <input type="number" id="bedroom" name="bedroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bedroom" min="0" max="100" readonly="readonly" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Phòng vệ sinh</label>
+                                    <div class="input-group">
+                                        <input type="number" id="bathroom" name="bathroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bathroom" min="0" max="100" readonly="readonly" />
+                                        <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label class="control-label">Sân</label>
+                                    <input type="number" id="yard" name="yard" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Yard" min="0" max="10" readonly="readonly" />
+
+                                </div>
+                            </div>
+                            <hr class="style1">
+                            <div class="form-group">
+                                <label class="control-label"><strong>Thông tin về vị trí</strong></label>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-4">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Tỉnh/Thành phố</label>
+                                        <select id="province" name="province" class="form-control" asp-items="ViewBag.Province" readonly="readonly" disabled></select>
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Quận/Huyện</label><br />
+                                        <select id="district" name="district" class="form-control" asp-items="ViewBag.District" readonly="readonly" disabled><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Phường/Xã</label>
+                                        <select asp-for="Post_Location.SingleOrDefault().Phuong_Xa" id="ward" name="ward" class="form-control" disabled asp-items="ViewBag.Ward" readonly="readonly"><option disabled selected>---Chọn Phường/Xã---</option></select>
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Phuong_Xa" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Đường</label>
+                                        <select asp-for="Post_Location.SingleOrDefault().Duong_Pho" id="street" name="street" class="form-control" asp-items="ViewBag.Street" disabled readonly="readonly"><option disabled selected>---Chọn Tên Đường---</option></select>
+                                        <span asp-validation-for="Post_Location.SingleOrDefault().Duong_Pho" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Số nhà, tên hẻm</label>
+                                        <div class="input-group">
+                                            <input id="diachi" name="diachi" class="form-control" value="@Model.Post_Location.SingleOrDefault().DiaChi" readonly="readonly" />
+                                            <span asp-validation-for="Post_Location.SingleOrDefault().DiaChi" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2"></div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><strong>Chi tiết về vị trí</strong></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearHospital" name="nearHospital" checked="@Model.Post_Detail.SingleOrDefault().NearHospital" value="true" onclick="return false;" /> Gần bệnh viện
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearMarket" name="nearMarket" checked="@Model.Post_Detail.SingleOrDefault().NearMarket" value="true" onclick="return false;" /> Gần chợ/siêu thị
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label readonly="readonly">
+                                            <input type="checkbox" id="nearAirport" name="nearAirport" checked="@Model.Post_Detail.SingleOrDefault().NearAirport" value="true" onclick="return false;" /> Gần sân bay
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            <input type="checkbox" id="nearSchool" name="nearSchool" checked="@Model.Post_Detail.SingleOrDefault().NearSchool" value="true" onclick="return false;"> Gần trường học
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            <input type="checkbox" id="alley" name="alley" checked="@Model.Post_Detail.SingleOrDefault().Alley" value="true" onclick="return false;" /> Trong Hẻm
+                                        </label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label"><strong>Miêu tả cụ thể vị trí</strong></label>
+                                        <textarea id="descriptiondetail" name="descriptiondetail" class="form-control" readonly="readonly" disabled>@Model.Post_Detail.SingleOrDefault().Description</textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr class="style1">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label class="control-label"><strong>Ảnh về bất động sản</strong></label>
+                                </div>
+                                @if (Model.Post_Image.ToList().Count > 0)
+                                {
+                                    <div class="row">
+                                        @{
+                                            var count = 0;
+
+                                            @foreach (var item in Model.Post_Image.ToList())
+                                            {
+                                                var idImage = item.ID_Post + "image" + item.ID_Image;
+                                                count++;
+
+                                                <div class="column col" id="@idImage">
+
+                                                    <img src="@(Constants.POST_IMG_URL + @item.url)" onclick="openModal();currentSlide(@count)" class="hover-shadow" style="width: 200px;height: 150px;">
+
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span>Không có ảnh</span>
+                                }
+
+
+
+                                <br />
+                            </div>
+                            <div id="myModal" class="modal">
+
+                                <span class="close cursor" onclick="closeModal()">Đóng</span>
+
+                                <div class="modal-content">
+                                    @{
+                                        var count1 = 0;
+                                        @foreach (var item in Model.Post_Image.ToList())
+                                        {
+                                            var idImage = item.ID_Post.ToString() + "image" + item.ID_Image.ToString();
+                                            count1++;
+                                            <div class="mySlides">
+                                                <div class="numbertext">@count1/@Model.Post_Image.Count()</div>
+                                                <img src="@(Constants.POST_IMG_URL + @item.url)" style="width:100%">
+                                                <a class="numbertextdelete" onclick="deleteItem(@item.ID_Post,@item.ID_Image)">Xóa</a>
+                                            </div>
+                                        }
+                                    }
+
+                                    <!-- Next/previous controls -->
+                                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                                    <div class="row">
+                                        <!-- Thumbnail image controls -->
+                                        @{
+                                            var count2 = 0;
+                                            @foreach (var item in Model.Post_Image.ToList())
+                                            {
+                                                count2++;
+                                                <div class="column">
+                                                    <img class="demo" src="@(Constants.POST_IMG_URL + @item.url)" onclick="currentSlide(@count2)" alt="@item.url" style="width: 200px;height: 150px;">
+                                                </div>
+
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+            <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
+            <select  id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
+            <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Post_Location.SingleOrDefault().Quan_Huyen" class="control-label"></label>
+            <select id="district" name="district" class="form-control"></select>
+            <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
+        </div>*@
+
+
+                            <div class="form-group" hidden="hidden">
+                                <label asp-for="Status" class="control-label"></label>
+                                <input asp-for="Status" class="form-control" />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="form-group">
+                                    @{
+                                        if (ViewBag.ID_Account_Post)
+                                        {
+                                            @Html.ActionLink("Chỉnh sửa", "Edit", new { @id = Model.ID_Post }, new { @class = "btn btn-primary" })
+                                        }
+                                    }
+
+                                    @Html.ActionLink("Quay trở lại danh sách", "Index", new { @id = Model.ID_Post }, new { @class = "btn btn-default" })
+
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                }
-
-                <div class="form-group">
-                    <label class="control-label">Tình trạng</label>
-                    <input asp-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().StatusNavigation.Description" class="form-control" readonly="readonly" />
-                    <span asp-validation-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().StatusNavigation.Description" class="text-danger"></span>
-                </div>
-                if (Model.Post_Status.OrderBy(p => p.ModifiedDate).LastOrDefault().Status == 3)
-                {
-                    <div class="form-group">
-                        <label class="control-label">Lí do</label>
-                        <input asp-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().Reason" class="form-control" readonly="readonly" />
-                        <span asp-validation-for="@Model.Post_Status.OrderBy(p=>p.ModifiedDate).LastOrDefault().Reason" class="text-danger"></span>
-                    </div>
-                }
-
-            }
-
-
-            <div class="form-group">
-                <label class="control-label">Loại bài đăng</label>
-                <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType" readonly="readonly"></select>
-                <span asp-validation-for="PostType" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Diện tích</label>
-                <div class="input-group">
-                    <input type="number" asp-for="Size" class="form-control" min="0" readonly="readonly" />
-                    <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
-                </div>
-                <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Dự án</label>
-                <select asp-for="Project" class="form-control" asp-items="ViewBag.Project" readonly="readonly"> <option disabled selected>--- Không ---</option></select>
-                <span asp-validation-for="Project" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Giá</label>
-                <div class="input-group">
-                    @{
-                        if (Model.Price >= 1000)
-                        {
-                            var price = (Math.Round(Model.Price / 1000, 2));
-                            <input type="number" value="@price" class="form-control" placeholder="Giá" readonly="readonly" />
-                            <div class="input-group-btn"><span class="btn btn-primary">Tỉ VNĐ</span></div>
-                        }
-                        else
-                        {
-                            <input type="number" asp-for="Price" class="form-control" placeholder="Giá" readonly="readonly" />
-
-                            <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
-                        }
-                    }
-
-                </div>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Loại bất động sản</label>
-                <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType" readonly="readonly"></select>
-                <span asp-validation-for="RealEstateType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Miêu tả bất động sản</label>
-                <textarea asp-for="Description" class="form-control" readonly="readonly"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Tầng</label>
-                <div class="input-group">
-                    <input type="number" id="floor" name="floor" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Floor" min="0" max="20" readonly="readonly" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="control-label">Phòng ngủ</label>
-                <div class="input-group">
-                    <input type="number" id="bedroom" name="bedroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bedroom" min="0" max="100" readonly="readonly" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Phòng vệ sinh</label>
-                <div class="input-group">
-                    <input type="number" id="bathroom" name="bathroom" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Bathroom" min="0" max="100" readonly="readonly" />
-                    <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Sân</label>
-                <input type="number" id="yard" name="yard" class="form-control" value="@Model.Post_Detail.SingleOrDefault().Yard" min="0" max="10" readonly="readonly" />
-
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearHospital" name="nearHospital" checked="@Model.Post_Detail.SingleOrDefault().NearHospital" value="true" onclick="return false;" /> Gần bệnh viện
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearMarket" name="nearMarket" checked="@Model.Post_Detail.SingleOrDefault().NearMarket" value="true" onclick="return false;" /> Gần chợ/siêu thị
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label readonly="readonly">
-                    <input type="checkbox" id="nearAirport" name="nearAirport" checked="@Model.Post_Detail.SingleOrDefault().NearAirport" value="true" onclick="return false;" /> Gần sân bay
-                </label>
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="nearSchool" name="nearSchool" checked="@Model.Post_Detail.SingleOrDefault().NearSchool" value="true" onclick="return false;"> Gần trường học
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label class="control-label">
-                    <input type="checkbox" id="alley" name="alley" checked="@Model.Post_Detail.SingleOrDefault().Alley" value="true" onclick="return false;" /> Trong Hẻm
-                </label>
-
-            </div>
-            <div class="form-group">
-                <label class="control-label">Miêu tả cụ thể vị trí</label>
-                <textarea id="descriptiondetail" name="descriptiondetail" class="form-control" readonly="readonly">@Model.Post_Detail.SingleOrDefault().Description</textarea>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="Post_Location.SingleOrDefault().Tinh_TP" class="control-label"></label>
-                    <select  id="province" name="province" class="form-control" asp-items="ViewBag.Province"></select>
-                    <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Post_Location.SingleOrDefault().Quan_Huyen" class="control-label"></label>
-                    <select id="district" name="district" class="form-control"></select>
-                    <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
-                </div>*@
-
-            <div class="form-group">
-                <label class="control-label">Tỉnh/Thành phố</label>
-                <select id="province" name="province" class="form-control" asp-items="ViewBag.Province" readonly="readonly"></select>
-                <span asp-validation-for="Post_Location.SingleOrDefault().Tinh_TP" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Quận/Huyện</label><br />
-                <select id="district" name="district" class="form-control" asp-items="ViewBag.District" readonly="readonly"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
-                <span asp-validation-for="Post_Location.SingleOrDefault().Quan_Huyen" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Phường/Xã</label>
-                <select asp-for="Post_Location.SingleOrDefault().Phuong_Xa" id="ward" name="ward" class="form-control" asp-items="ViewBag.Ward" readonly="readonly"><option disabled selected>---Chọn Phường/Xã---</option></select>
-                <span asp-validation-for="Post_Location.SingleOrDefault().Phuong_Xa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Đường</label>
-                <select asp-for="Post_Location.SingleOrDefault().Duong_Pho" id="street" name="street" class="form-control" asp-items="ViewBag.Street" readonly="readonly"><option disabled selected>---Chọn Tên Đường---</option></select>
-                <span asp-validation-for="Post_Location.SingleOrDefault().Duong_Pho" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Số nhà, tên hẻm</label>
-                <div class="input-group">
-                    <input id="diachi" name="diachi" class="form-control" value="@Model.Post_Location.SingleOrDefault().DiaChi" readonly="readonly" />
-                    <span asp-validation-for="Post_Location.SingleOrDefault().DiaChi" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                @{
-                    if (ViewBag.ID_Account_Post)
-                    {
-                        @Html.ActionLink("Chỉnh sửa", "Edit", new { @id = Model.ID_Post }, new { @class = "btn btn-primary" })
-                    }
-                }
-
-                @Html.ActionLink("Quay trở lại danh sách", "Index", new { @id = Model.ID_Post }, new { @class = "btn btn-default" })
-
-            </div>
-        </form>
+        </div>
     </div>
-
 </div>
 @*<div class="row">
         <div>
@@ -331,7 +487,51 @@
 
         });
 
+
     });
+    // Open the Modal
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+
+
+    // Close the Modal
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        var captionText = document.getElementById("caption");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        captionText.innerHTML = dots[slideIndex - 1].alt;
+    }
+
 
 </script>
 

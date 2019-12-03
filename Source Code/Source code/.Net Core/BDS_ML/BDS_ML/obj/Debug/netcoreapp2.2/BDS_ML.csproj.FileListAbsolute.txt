@@ -64,8 +64,6 @@ D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Co
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Identity\Pages\_ViewImports.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Identity\Pages\Account\ConfirmationEmailRegister.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Identity\Pages\Account\ConfirmEmailExpire.g.cshtml.cs
-D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\ManageCustomers\Create.g.cshtml.cs
-D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\ManageCustomers\Delete.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\ManageCustomers\Details.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\ManageCustomers\Edit.g.cshtml.cs
 D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\ManageCustomers\Index.g.cshtml.cs
