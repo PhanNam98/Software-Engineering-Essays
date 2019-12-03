@@ -1,136 +1,366 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using BDS_ML.Models.Data
+@using BDS_ML.Models.ModelDB
+@using BDS_ML.Models.Common
+@using Microsoft.EntityFrameworkCore;
+@model Home_Index
+
+@{
+    ViewData["Title"] = "Trang Chủ | Bất Động Sản REAL HOUSE";
+    BDT_MLDBContext db = new BDT_MLDBContext();
 }
 
-<div class="text-center">
-    <h2 class="display-4">BẤT ĐỘNG SẢN <span style="color:orangered">HOT</span> NHẤT!</h2>
-    <p>Bất động sản được đăng tải bởi các khách hàng <span style="color:orangered">VIP</span></p>
+<div class="section section-grey">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="display-4">BẤT ĐỘNG SẢN <span style="color:orangered">HOT</span> NHẤT!</h2>
+            <p>Bất động sản được đăng tải bởi các khách hàng <span style="color:orangered">VIP</span></p>
+        </div>
+
+        <div class="row">
+            @foreach (var post in Model.lst3HotPosts)
+            {
+                var _Images = post.Post_Image.ToList();
+                var image = "";
+                foreach (var i in _Images)
+                {
+                    image = i.url;
+                    break;
+                }
+                var author = "";
+                if (db.Customer.FirstOrDefault(c => c.Account_ID == post.ID_Account) == null)
+                {
+                    author = db.Admin.First(c => c.Account_ID == post.ID_Account).FullName;
+                }
+                else
+                {
+                    author = db.Customer.First(c => c.Account_ID == post.ID_Account).FirstName + ' ' + db.Customer.First(c => c.Account_ID == post.ID_Account).LastName;
+                }
+
+                <div class="col-lg-4 col-md-6">
+                    <!-- hot post -->
+                    <div class="feature-item">
+                        <a href="@Url.Action("PostDetail", "Post", new { ID_Post = post.ID_Post })">
+                            <div class="feature-pic set-bg" style="background-image:url(@(Constants.POST_IMG_URL + image))">
+                                @if (post.PostType == 1)
+                                {
+                                    <div class="sale-notic">Cần bán</div>
+                                }
+                                @if (post.PostType == 2)
+                                {
+                                    <div class="sale-notic">Cần Cho Thuê</div>
+                                }
+                                @if (post.PostType == 3)
+                                {
+                                    <div class="rent-notic">Cần Mua</div>
+                                }
+                                @if (post.PostType == 4)
+                                {
+                                    <div class="rent-notic">Cần Thuê</div>
+                                }
+                            </div>
+                        </a>
+                        <div class="feature-text">
+                            <div class="text-center feature-title">
+                                <h5>@post.Tittle</h5>
+                                <p><i class="fa fa-map-marker"></i> @post.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @post.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
+                            </div>
+                            <div class="room-info-warp">
+                                <div class="room-info">
+                                    <div class="rf-left">
+                                        <p><i class="fa fa-th-large"></i>@string.Format("{0:0 m²}", post.Size)</p>
+                                        <p><i class="fa fa-building-o"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Floor lầu</p>
+                                        <p><i class="fa fa-bed"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Bedroom phòng ngủ</p>
+                                        <p><i class="fa fa-bath"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Bathroom phòng tắm</p>
+                                    </div>
+                                    <div class="rf-right">
+                                        @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearHospital == true)
+                                        {
+                                            <p><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                        }
+
+                                        @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearMarket == true)
+                                        {
+                                            <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="notavailable"><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                        }
+
+                                        @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearSchool == true)
+                                        {
+                                            <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="notavailable"><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+                                        }
+
+                                        @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearAirport == true)
+                                        {
+                                            <p><i class="fa fa-plane"></i>gần Sân Bay</p>
+
+                                        }
+                                        else
+                                        {
+                                            <p class="notavailable"><i class="fa fa-plane"></i>gần Sân Bay</p>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="room-info">
+                                    <div class="rf-left">
+                                        <p><i class="fa fa-user"></i>@author</p>
+                                    </div>
+                                    <div class="rf-right">
+                                        <p><i class="fa fa-clock-o"></i>@Functions.getTime(post.PostTime)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (post.PostType == 1)
+                            {
+                                @Html.ActionLink(string.Format("{0:0,0 Triệu VND}", post.Price), "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink(string.Format("{0:0,0 VND}", post.Price) + " / tháng", "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
-
-<div class="row">
-    <div class="col-lg-4 col-md-6">
-        <!-- feature -->
-        <div class="feature-item">
-            <a href="#">
-                <div class="feature-pic set-bg" style="background-image: url(&quot;webmag/img/post-1.jpg&quot;);">
-                    <div class="rent-notic">Cần Mua</div>
-                </div>
-            </a>
-            <div class="feature-text">
-                <div class="text-center feature-title">
-                    <h5>Nhà mới xây 100% chưa ở</h5>
-                    <p><i class="fa fa-map-marker"></i>  Hòa Bình, Đà Nẵng</p>
-                </div>
-                <div class="room-info-warp">
-                    <div class="room-info">
-                        <div class="rf-left">
-                            <p><i class="fa fa-th-large"></i> 100 m²</p>
-                            <p><i class="fa fa-bed"></i> 4 phòng ngủ</p>
-                            <p><i class="fa fa-building-o"></i> 2 lầu</p>
-                            <p><i class="fa fa-bath"></i> 3 phòng tắm</p>
-                        </div>
-                        <div class="rf-right">
-                            <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
-                            <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
-                            <p class="notavailable"><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
-                            <p><i class="fa fa-plane"></i>gần Sân Bay</p>
-
-                        </div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="section-title">
+                        <h2>BÀI ĐĂNG GẦN ĐÂY</h2>
                     </div>
-                    <div class="room-info">
-                        <div class="rf-left">
-                            <p><i class="fa fa-user"></i> Đào Xuân Thủy</p>
+                    @foreach (var post in Model.lst6PopularPosts)
+                    {
+                        var _Images = post.Post_Image.ToList();
+                        var image = "";
+                        foreach (var i in _Images)
+                        {
+                            image = i.url;
+                            break;
+                        }
+                        var author = "";
+                        if (db.Customer.FirstOrDefault(c => c.Account_ID == post.ID_Account) == null)
+                        {
+                            author = db.Admin.First(c => c.Account_ID == post.ID_Account).FullName;
+                        }
+                        else
+                        {
+                            author = db.Customer.First(c => c.Account_ID == post.ID_Account).FirstName + ' ' + db.Customer.First(c => c.Account_ID == post.ID_Account).LastName;
+                        }
+                        <!-- post -->
+                        <div class="col-md-6">
+                            <div class="feature-item">
+                                <div class="post">
+                                    <a class="post-img" href="#"><img src="@(Constants.POST_IMG_URL + image)" alt="post-img"></a>
+                                    <div class="propertie-info text-white">
+                                        <div class="room-info-warp">
+                                            <div class="room-info">
+                                                <div class="rf-left">
+                                                    <p><i class="fa fa-th-large"></i>@string.Format("{0:0 m²}", post.Size)</p>
+                                                    <p><i class="fa fa-building-o"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Floor lầu</p>
+                                                    <p><i class="fa fa-bed"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Bedroom phòng ngủ</p>
+                                                    <p><i class="fa fa-bath"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Bathroom phòng tắm</p>
+                                                </div>
+                                                <div class="rf-right">
+                                                    @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearHospital == true)
+                                                    {
+                                                        <p><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                                    }
+
+                                                    @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearMarket == true)
+                                                    {
+                                                        <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="notavailable"><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                                    }
+
+                                                    @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearSchool == true)
+                                                    {
+                                                        <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="notavailable"><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+                                                    }
+
+                                                    @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearAirport == true)
+                                                    {
+                                                        <p><i class="fa fa-plane"></i>gần Sân Bay</p>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="notavailable"><i class="fa fa-plane"></i>gần Sân Bay</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="room-info text-center">
+                                                <p><i class="fa fa-map-marker"></i> @post.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @post.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
+                                                @if (post.PostType == 1)
+                                                {
+                                                    @Html.ActionLink(string.Format("{0:0,0 Triệu VND}", post.Price), "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.ActionLink(string.Format("{0:0,0 VND}", post.Price) + " / tháng", "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-body">
+                                        <div class="post-meta">
+                                            @if (post.PostType == 1)
+                                            {
+                                                <a class="post-category cat-2" href="#">Cần Bán</a>
+                                            }
+                                            @if (post.PostType == 2)
+                                            {
+                                                <a class="post-category cat-2" href="#">Cần Cho Thuê</a>
+                                            }
+                                            @if (post.PostType == 3)
+                                            {
+                                                <a class="post-category cat-1" href="#">Cần Mua</a>
+                                            }
+                                            @if (post.PostType == 4)
+                                            {
+                                                <a class="post-category cat-1" href="#">Cần Thuê</a>
+                                            }
+                                            <span class="post-date"><i class="fa fa-clock-o"></i> @Functions.getTime(post.PostTime) | <i class="fa fa-user"></i> @author </span>
+                                        </div>
+                                        <h3 class="post-title"><a href="#">@post.Tittle</a></h3>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="rf-right">
-                            <p><i class="fa fa-clock-o"></i> 11 tháng trước</p>
-                        </div>
-                    </div>
+                    }
                 </div>
-                <a class="room-price" href="#">2,300,000,000 VND</a>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-        <!-- feature -->
-        <div class="feature-item">
-            <a href="#">
-                <div class="feature-pic set-bg" style="background-image: url(&quot;webmag/img/post-1.jpg&quot;);">
-                    <div class="sale-notic">Cần bán</div>
+            <div class="col-md-4">
+                <!-- ad -->
+                <div class="aside-widget text-center">
+                    <a href="#" style="display: inline-block;margin: auto;">
+                        <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                    </a>
                 </div>
-            </a>
-            <div class="feature-text">
-                <div class="text-center feature-title">
-                    <h5>Nhà mới xây 100% chưa ở</h5>
-                    <p><i class="fa fa-map-marker"></i>  Hòa Bình, Đà Nẵng</p>
+                <!-- /ad -->
+                <!-- catagories -->
+                <div class="aside-widget">
+                    <div class="section-title">
+                        <h2>Danh Mục</h2>
+                    </div>
+                    <div class="category-widget">
+                        <ul>
+                            <li><a href="#" class="cat-1">Cần Mua<span>340</span></a></li>
+                            <li><a href="#" class="cat-2">Cần Bán<span>74</span></a></li>
+                            <li><a href="#" class="cat-1">Cần Thuê<span>41</span></a></li>
+                            <li><a href="#" class="cat-2">Cần Cho Thuê<span>35</span></a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="room-info-warp">
-                    <div class="room-info">
-                        <div class="rf-left">
-                            <p><i class="fa fa-th-large"></i> 100 m²</p>
-                            <p><i class="fa fa-bed"></i> 4 phòng ngủ</p>
-                            <p><i class="fa fa-building-o"></i> 2 lầu</p>
-                            <p><i class="fa fa-bath"></i> 3 phòng tắm</p>
-                        </div>
-                        <div class="rf-right">
-                            <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
-                            <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
-                            <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
-                            <p class="notavailable"><i class="fa fa-plane"></i>gần Sân Bay</p>
+                <!-- /catagories -->
+                <!-- tags -->
+                <div class="aside-widget">
+                    <div class="tags-widget">
+                        <ul>
+                            <li><a href="#">Quận 1</a></li>
+                            <li><a href="#">Bến Nghé</a></li>
+                            <li><a href="#">Landmark</a></li>
+                            <li><a href="#">Vinhomes</a></li>
+                            <li><a href="#">Khu vực Đà Nẵng</a></li>
+                            <li><a href="#">Nha Trang</a></li>
+                            <li><a href="#">Quận 10</a></li>
+                            <li><a href="#">Miền Bắc</a></li>
+                            <li><a href="#">Miền Trung</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /tags -->
+                <!-- favorite post-->
+                <div class="aside-widget">
+                    <div class="section-title text-right">
+                        <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
+                        <p>Bài viết được bạn yêu thích</p>
+                    </div>
 
+                    <div class="post post-widget">
+                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                        <div class="post-body">
+                            <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
                         </div>
                     </div>
-                    <div class="room-info">
-                        <div class="rf-left">
-                            <p><i class="fa fa-user"></i> Đào Xuân Thủy</p>
-                        </div>
-                        <div class="rf-right">
-                            <p><i class="fa fa-clock-o"></i> 11 tháng trước</p>
-                        </div>
-                    </div>
-                </div>
-                <a class="room-price" href="#">2,300,000,000 VND</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-        <!-- feature -->
-        <div class="feature-item">
-            <a href="#">
-                <div class="feature-pic set-bg" style="background-image: url(&quot;webmag/img/post-1.jpg&quot;);">
-                    <div class="sale-notic">Cần bán</div>
-                </div>
-            </a>
-            <div class="feature-text">
-                <div class="text-center feature-title">
-                    <h5>Nhà mới xây 100% chưa ở</h5>
-                    <p><i class="fa fa-map-marker"></i>  Hòa Bình, Đà Nẵng</p>
-                </div>
-                <div class="room-info-warp">
-                    <div class="room-info">
-                        <div class="rf-left">
-                            <p><i class="fa fa-th-large"></i> 100 m²</p>
-                            <p><i class="fa fa-bed"></i> 4 phòng ngủ</p>
-                            <p><i class="fa fa-building-o"></i> 2 lầu</p>
-                            <p><i class="fa fa-bath"></i> 3 phòng tắm</p>
-                        </div>
-                        <div class="rf-right">
-                            <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
-                            <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
-                            <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
-                            <p><i class="fa fa-plane"></i>gần Sân Bay</p>
 
+                    <div class="post post-widget">
+                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                        <div class="post-body">
+                            <h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
                         </div>
                     </div>
-                    <div class="room-info">
-                        <div class="rf-left">
-                            <p><i class="fa fa-user"></i> Đào Xuân Thủy</p>
-                        </div>
-                        <div class="rf-right">
-                            <p><i class="fa fa-clock-o"></i> 11 tháng trước</p>
+
+                    <div class="post post-widget">
+                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                        <div class="post-body">
+                            <h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
                         </div>
                     </div>
+
+                    <div class="post post-widget">
+                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                        <div class="post-body">
+                            <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+                        </div>
+                    </div>
+                    <!-- /favorite post-->
+
+                    <!-- locaion -->
+                    <div class="aside-widget text-center">
+                        <div class="section-title">
+                            <h2>Khu vực <i class="fa fa-map-pin"></i></h2>
+                            <p>Tìm kiếm theo khu vực</p>
+                        </div>
+                        <div class="post post-thumb">
+                            <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                            <div class="post-body">
+                                <h3 class="post-title"><a href="blog-post.html">Location</a></h3>
+                            </div>
+                        </div>
+                        <div class="post post-thumb">
+                            <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                            <div class="post-body">
+                                <h3 class="post-title"><a href="blog-post.html">Location</a></h3>
+                            </div>
+                        </div>
+                        <div class="post post-thumb">
+                            <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                            <div class="post-body">
+                                <h3 class="post-title"><a href="blog-post.html">Location</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /locaion -->
                 </div>
-                <a class="room-price" href="#">2,300,000,000 VND</a>
             </div>
         </div>
     </div>

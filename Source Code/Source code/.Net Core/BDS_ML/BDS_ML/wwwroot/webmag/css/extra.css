@@ -1,6 +1,26 @@
 ﻿/*------------------
   Feature section
 ---------------------*/
+.gi-info {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.gi-info h3 {
+    font-size: 28px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.gi-info p {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 0;
+}
+
 .notavailable {
     opacity: 0.5;
     text-decoration: line-through;
@@ -17,6 +37,12 @@
     border-radius: 2px;
     position: relative;
     z-index: 3;
+}
+
+.set-bg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top center;
 }
 
 .rent-notic {

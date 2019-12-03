@@ -89,9 +89,14 @@
                         @*<li class="cat-2"><a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Search">Lọc bài đăng</a></li>*@
                         <li class="cat-1"><a href="#">Cần Mua/Cần Thuê</a></li>
                         <li class="cat-2"><a href="#">Cần Bán/Cho Thuê</a></li>
-                        <li><a href="#">Dự Đoán<span style="position: absolute; top: 50%; left: 50%; margin-top: -30px; margin-left: 10px;
+                        <li>
+                            <a href="#">
+                                Dự Đoán<span style="position: absolute; top: 50%; left: 50%; margin-top: -30px; margin-left: 10px;
                                                 padding-right: 0.6em; padding-left: 0.6em; border-radius: 10rem; color: #fff; background-color: #f86c6b; font-size: 0.6em;">
-                            beta</span></a></li>
+                                    beta
+                                </span>
+                            </a>
+                        </li>
                         <partial name="_LoginPartial" />
                     </ul>
                     <!-- /nav -->
@@ -100,10 +105,10 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Search"><i class="fa fa-search"></i> Tìm Kiếm Ngay!</a>
                         <button class="aside-btn"><i class="fa fa-bars"></i></button>
                         @*<button class="search-btn"><i class="fa fa-search"></i></button>
-                        <div class="search-form">
-                            <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
-                            <button class="search-close"><i class="fa fa-times"></i></button>
-                        </div>*@
+                            <div class="search-form">
+                                <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
+                                <button class="search-close"><i class="fa fa-times"></i></button>
+                            </div>*@
                     </div>
                     <!-- /search & aside toggle -->
                 </div>
@@ -153,15 +158,12 @@
     <!-- /Header -->
     <!--Main Thing Should Be Here-->
     <!-- section -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-            <partial name="_CookieConsentPartial" />
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
-    </div>
+
+    <partial name="_CookieConsentPartial" />
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
 
     @*<footer class="border-top footer text-muted">
             <div class="container">
