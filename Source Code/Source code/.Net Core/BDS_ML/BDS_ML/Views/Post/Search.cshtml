@@ -127,15 +127,30 @@
 
             <div class="form-group">
                 <label class="control-label">Quận/Huyện</label><br />
-                <select id="district" name="district" class="form-control"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
+                @Html.DropDownList("District", (SelectList)ViewBag.District, "---Chọn Quận/Huyện---", new { @class = "form-control" ,@id= "district" })
+                @*<select id="district" name="district" class="form-control">
+                    <option disabled selected>---Chọn Quận/Huyện---</option>
+                    @{
+                        if (ViewBag.District != null)
+                        {
+                            foreach (var d in ViewBag.District as IEnumerable<SelectListItem>)
+                            {
+                                <option value="@d.Value">@d.Text</option>
+                            }
+                        }
+                    }
+                </select>*@
+                <br />
             </div>
             <div class="form-group">
                 <label class="control-label">Khu vực</label><br />
-                <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />
+                @Html.DropDownList("Ward", (SelectList)ViewBag.Ward, "---Chọn Phường/Xã---", new { @class = "form-control", @id = "ward" })
+                @* <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />*@
             </div>
             <div class="form-group">
                 <label class="control-label">Đường</label><br />
-                <select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />
+                @Html.DropDownList("Street", (SelectList)ViewBag.Street, "---Chọn Đường---", new { @class = "form-control", @id = "street" })
+                @*<select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />*@
             </div>
             <div class="form-group">
                 <label class="control-label">Từ khóa</label>
@@ -230,7 +245,7 @@
             var id_p = $("#province").val();
             $("#ward").empty();
 
-            $.get("Get_ward", { province_id: id_p, district_id: id }, function (data) {
+            $.get("/Public/Get_ward", { province_id: id_p, district_id: id }, function (data) {
 
                 var v = "<option disabled selected>---Chọn Phường/Xã---</option>";
 
@@ -254,7 +269,7 @@
 
             $("#district").empty();
 
-            $.get("Get_district", { province_id: id }, function (data) {
+            $.get("/Public/Get_district", { province_id: id }, function (data) {
 
                 var v = "<option disabled selected>---Chọn Quận/Huyện---</option>";
 
@@ -275,7 +290,7 @@
             var id_p = $("#province").val();
             $("#street").empty();
 
-            $.get("Get_street", { province_id: id_p, district_id: id }, function (data) {
+            $.get("/Public/Get_street", { province_id: id_p, district_id: id }, function (data) {
 
                 var v = "<option disabled selected>---Chọn Đường---</option>";
 
