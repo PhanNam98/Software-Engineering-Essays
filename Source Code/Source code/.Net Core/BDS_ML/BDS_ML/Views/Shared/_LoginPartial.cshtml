@@ -2,53 +2,52 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="nav-menu nav navbar-nav">
-    @{
+@{
 
-        if (SignInManager.IsSignedIn(User))
+    if (SignInManager.IsSignedIn(User))
+    {
+        var name = "";
+        if (User.Identity.Name.Length > 15)
         {
-            var name = "";
-            if (User.Identity.Name.Length > 15)
-            {
-                name = User.Identity.Name.Substring(0, 15) + "...";
-            }
-            else
-            {
-                name = User.Identity.Name;
-            }
+            name = User.Identity.Name.Substring(0, 15) + "...";
+        }
+        else
+        {
+            name = User.Identity.Name;
+        }
 
-            if (User.IsInRole("Admin"))
-            {
-            <li class="nav-item">
+        if (User.IsInRole("Admin"))
+        {
+            <li>
                 @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello Admin @User.Identity.Name!</a>*@
-                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index" title="@User.Identity.Name">Hello Admin @name!</a>
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" title="Hello @User.Identity.Name">Admin Dashboard</a>
             </li>
 
-            }
-            else
-            {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="User" asp-controller="Dashboard" asp-action="Index" title="@User.Identity.Name">Hello @name!</a>
+        }
+        else
+        {
+            <li>
+                <a asp-area="User" asp-controller="Dashboard" asp-action="Index" title="Hello @User.Identity.Name">My Account</a>
             </li>
             @*<li class="nav-item">
                     <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
                 </li>*@
 
-            }
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
+        }
+        <li>
+            <form id="logout" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                @*<button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>*@
             </form>
+                <a href="#" onclick="document.getElementById('logout').submit()">Đăng xuất</a>
         </li>
-        }
-        else
-        {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
+    }
+    else
+    {
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Login">Đăng nhập</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Đăng kí</a>
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Register">Đăng kí</a>
         </li>
-            }
-        }
-</ul>
+    }
+}

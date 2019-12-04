@@ -7,6 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <title>@ViewData["Title"] - BDS_ML</title>
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
 
     <environment include="Development">
         <!-- Bootstrap -->
@@ -27,17 +28,16 @@
     </environment>
     <!-- Custom stlylesheet -->
     <link href="~/webmag/css/style.css" rel="stylesheet" />
+    <link href="~/webmag/css/extra.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
     @*sufeeadmin*@
-    
-    
+
+
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -78,31 +78,38 @@
                 <div class="container">
                     <!-- logo -->
                     <div class="nav-logo">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="logo"><img src="~/webmag/img/logo.png" alt="WebMag"></a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/logo/logo.png" alt="WebMag" height="64"></a>
                     </div>
                     <!-- /logo -->
                     <!-- nav -->
                     <ul class="nav-menu nav navbar-nav">
-                        <li><a href="#">News</a></li>
+                        @*<li><a href="#">News</a></li>*@
                         @*<li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>*@
-                        <li class="cat-1"><a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Create">Đăng bài</a></li>
-                        <li class="cat-2"><a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Search">Lọc bài đăng</a></li>
-                        <li class="cat-1"><a href="#">Web Design</a></li>
-                        <li class="cat-2"><a href="#">JavaScript</a></li>
-                        <li class="cat-3"><a href="#">Css</a></li>
-                        <li class="cat-4"><a href="#">Jquery</a></li>
+                        <li><a asp-area="" asp-controller="Post" asp-action="Create">Đăng bài</a></li>
+                        @*<li class="cat-2"><a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Search">Lọc bài đăng</a></li>*@
+                        <li class="cat-1"><a href="#">Cần Mua/Cần Thuê</a></li>
+                        <li class="cat-2"><a href="#">Cần Bán/Cho Thuê</a></li>
+                        <li>
+                            <a href="#">
+                                Dự Đoán<span style="position: absolute; top: 50%; left: 50%; margin-top: -30px; margin-left: 10px;
+                                                padding-right: 0.6em; padding-left: 0.6em; border-radius: 10rem; color: #fff; background-color: #f86c6b; font-size: 0.6em;">
+                                    beta
+                                </span>
+                            </a>
+                        </li>
                         <partial name="_LoginPartial" />
                     </ul>
                     <!-- /nav -->
                     <!-- search & aside toggle -->
-                    @*<div class="nav-btns">
-                            <button class="aside-btn"><i class="fa fa-bars"></i></button>
-                            <button class="search-btn"><i class="fa fa-search"></i></button>
+                    <div class="nav-btns">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Search"><i class="fa fa-search"></i> Tìm Kiếm Ngay!</a>
+                        <button class="aside-btn"><i class="fa fa-bars"></i></button>
+                        @*<button class="search-btn"><i class="fa fa-search"></i></button>
                             <div class="search-form">
                                 <input class="search-input" type="text" name="search" placeholder="Enter Your Search ...">
                                 <button class="search-close"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div>*@
+                            </div>*@
+                    </div>
                     <!-- /search & aside toggle -->
                 </div>
             </div>
@@ -113,10 +120,13 @@
                 <div class="section-row">
                     <ul class="nav-aside-menu">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Join Us</a></li>
-                        <li><a href="#">Advertisement</a></li>
-                        <li><a href="#">Contacts</a></li>
+                        <li><hr /></li>
+                        <partial name="_LoginPartial" />
+                        <li><hr /></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">About Us</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Join">Join Us</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Advertisement">Advertisement</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacts</a></li>
                     </ul>
                 </div>
                 <!-- /nav -->
@@ -148,15 +158,12 @@
     <!-- /Header -->
     <!--Main Thing Should Be Here-->
     <!-- section -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-            <partial name="_CookieConsentPartial" />
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
-    </div>
+
+    <partial name="_CookieConsentPartial" />
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
 
     @*<footer class="border-top footer text-muted">
             <div class="container">
@@ -173,17 +180,19 @@
                 <div class="col-md-5">
                     <div class="footer-widget">
                         <div class="footer-logo">
-                            <a asp-area="" asp-controller="Home" asp-action="Index" class="logo"><img src="~/webmag/img/logo.png" alt="WebMag"></a>
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="logo"><img src="~/logo/Group.png" alt="WebMag"></a>
                         </div>
                         <ul class="footer-nav">
-                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
-                            <li><a href="#">Advertisement</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Advertisement">Advertisement</a></li>
                         </ul>
                         <div class="footer-copyright">
                             <span>
                                 &copy; <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                 Copyright &copy;
                                 <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <br>
+                                Tiểu Luận Chuyên Ngành CNTT | <a href="https://fb.com/quocnguyen.kristoff" target="_blank">Quốc Nguyễn</a> | <a href="https://fb.com/jokernamphan" target="_blank">Nam Phan</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             </span>
                         </div>
@@ -196,9 +205,9 @@
                             <div class="footer-widget">
                                 <h3 class="footer-title">About Us</h3>
                                 <ul class="footer-links">
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Join Us</a></li>
-                                    <li><a href="#">Contacts</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="About">About Us</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="Join">Join Us</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacts</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -206,10 +215,10 @@
                             <div class="footer-widget">
                                 <h3 class="footer-title">Catagories</h3>
                                 <ul class="footer-links">
-                                    <li><a href="#">Web Design</a></li>
-                                    <li><a href="#">JavaScript</a></li>
-                                    <li><a href="#">Css</a></li>
-                                    <li><a href="#">Jquery</a></li>
+                                    <li><a href="#">Cần Mua</a></li>
+                                    <li><a href="#">Cần Thuê</a></li>
+                                    <li><a href="#">Cần Bán</a></li>
+                                    <li><a href="#">Cần Cho Thuê</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -264,7 +273,7 @@
         </script>
     </environment>
     @*<script src="~/js/site.js" asp-append-version="true"></script>*@
-    @*<script src="~/webmag/js/main.js" asp-append-version="true"></script>*@
+    <script src="~/webmag/js/main.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BDS_ML.Models;
 using Microsoft.AspNetCore.Authorization;
+using BDS_ML.Models.Data;
 
 namespace BDS_ML.Controllers
 {
@@ -15,10 +16,32 @@ namespace BDS_ML.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            Home_Index data = new Home_Index();
+            PostIndex postIndex = new PostIndex();
+
+            data.lst3HotPosts = postIndex.get3HotPosts();
+            data.lst6PopularPosts = postIndex.get6PopularPosts();
+
+            return View(data);
         }
         //[Authorize(Roles = "Admin")]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        public IActionResult Join()
+        {
+            return View();
+        }
+        public IActionResult Advertisement()
         {
             return View();
         }
