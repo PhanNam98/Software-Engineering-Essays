@@ -57,16 +57,19 @@ namespace BDS_ML.Areas.Admin.Controllers
                
                 int Pending = 0;
                 int Sold = 0;
+                int Posted = 0;
                 foreach (var p in list)
                 {
                     if (p.Post_Status.OrderBy(c=>c.ModifiedDate).LastOrDefault().Status == 5)
                         Pending++;
                     if (p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 2)
                         Sold++;
+                    if (p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1)
+                        Posted++;
                 }
                 dboard.PostPendingApprovalNumber = Pending;
                 dboard.PostSoldNumber = Sold;
-
+                dboard.PostedNumber = Posted;
                 HttpContext.Session.SetString("PedingPost", Pending.ToString());
                 StatusMessage = "Lấy dữ liệu thành công";
             }

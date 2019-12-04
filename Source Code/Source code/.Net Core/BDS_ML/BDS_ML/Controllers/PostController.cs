@@ -121,17 +121,29 @@ namespace BDS_ML.Controllers
                 NearMarket = nearMarket,
             };
             //}
-            Post_Location postlocation = new Post_Location()
-            {
-                ID_Post = post.ID_Post,
-                Tinh_TP = province,
-                Quan_Huyen = district,
-                Phuong_Xa = ward,
-                Duong_Pho = street,
-                DuAn = post.Project,
-                DiaChi = diachi
 
-            };
+
+            Post_Location postlocation = new Post_Location();
+
+            postlocation.ID_Post = post.ID_Post;
+            postlocation.Tinh_TP = province;
+            postlocation.Quan_Huyen = district;
+            if (ward == 0)
+            {
+                postlocation.Phuong_Xa = null;
+            }
+            else
+                postlocation.Phuong_Xa = ward;
+
+            if (street == 0)
+            {
+                postlocation.Duong_Pho = null;
+            }
+            else
+                postlocation.Duong_Pho = street;
+            postlocation.DuAn = post.Project;
+            postlocation.DiaChi = diachi;
+
 
             _context.Post_Location.Add(postlocation);
 
@@ -175,31 +187,18 @@ namespace BDS_ML.Controllers
 
             }
 
-            //if (post.RealEstateType == 1)
-            //{
-
-            //_context.SaveChanges();
-            //post.Status = poststatus.ID_PostStatus;
+        
             try
             {
-                //_context.Post.Attach(post);
-                //_context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                //await _context.SaveChangesAsync();
+              
                 await _context.SaveChangesAsync();
-                if (user.IsAdmin == 1)
-                {
-                    StatusMessage = "Đăng bài thành công!";
-                    return RedirectToAction("Index", "ManagePostsAdmin", new { area = "Admin" });
-                }
-                else
+                StatusMessage = "Đăng bài thành công!";
+                return RedirectToAction("Index", "Post", new { area = "ManagePosts" });
 
-                {
-                    StatusMessage = "Đăng bài thành công! Xin chờ admin duyệt";
-                    return RedirectToAction("Index", "ManagePostsAdmin", new { area = "User" });
-                }
             }
-            catch
+            catch (Exception e)
             {
+                string m = e.Message;
                 StatusMessage = "Error Đăng bài không thành công";
             }
 
@@ -250,7 +249,7 @@ namespace BDS_ML.Controllers
             ViewData["SearchKey"] = "";
             ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description");
             ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description");
-            ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name",1);
+            ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name", 1);
             ViewData["PriceFromTo"] = new SelectList(listprice, "Value", "Text");
             ViewData["District"] = new SelectList(_context.district.Where(p => p._province_id == 1).OrderBy(p => p._name), "id", "_name");
             ViewData["Ward"] = new SelectList(_context.ward.Where(p => p._province_id == 1 && p._district_id == 10).OrderBy(p => p._name), "id", "_name");
@@ -270,9 +269,9 @@ namespace BDS_ML.Controllers
             ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description", postType);
             ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description", realestateType);
             ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name");
-            ViewData["District"] = new SelectList(_context.district.Where(p=>p._province_id == province).OrderBy(p => p._name), "id", "_name",district);
-            ViewData["Ward"] = new SelectList(_context.ward.Where(p=>p._province_id==province && p._district_id==district).OrderBy(p => p._name), "id", "_name",ward);
-            ViewData["Street"] = new SelectList(_context.street.Where(p => p._province_id == province && p._district_id == district).OrderBy(p => p._name), "id", "_name",street);
+            ViewData["District"] = new SelectList(_context.district.Where(p => p._province_id == province).OrderBy(p => p._name), "id", "_name", district);
+            ViewData["Ward"] = new SelectList(_context.ward.Where(p => p._province_id == province && p._district_id == district).OrderBy(p => p._name), "id", "_name", ward);
+            ViewData["Street"] = new SelectList(_context.street.Where(p => p._province_id == province && p._district_id == district).OrderBy(p => p._name), "id", "_name", street);
             ViewData["PriceFromTo"] = new SelectList(listprice, "Value", "Text", priceFromTo);
             try
             {
@@ -294,13 +293,13 @@ namespace BDS_ML.Controllers
               .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == postType && p.RealEstateType == realestateType
               && p.Tittle.Contains(searchkey)
               //&& p.Post_Location.LastOrDefault().Tinh_TP.Value.ToString() == province.ToString()
-             // && p.Post_Location.LastOrDefault().Quan_Huyen.Value == district
-             // && p.Post_Location.LastOrDefault().Phuong_Xa.Value == ward && p.Post_Location.SingleOrDefault().Duong_Pho.Value == street
+              // && p.Post_Location.LastOrDefault().Quan_Huyen.Value == district
+              // && p.Post_Location.LastOrDefault().Phuong_Xa.Value == ward && p.Post_Location.SingleOrDefault().Duong_Pho.Value == street
               && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo
               ).ToListAsync();
                                 List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Phuong_Xa == ward
                                && p.Post_Location.SingleOrDefault().Quan_Huyen == district && p.Post_Location.SingleOrDefault().Duong_Pho == street).ToList();
-                            
+
                                 ViewData["StatusResult"] = "Tìm thấy " + a.Count() + " kết quả";
                                 return View(a);
                             }
@@ -336,11 +335,11 @@ namespace BDS_ML.Controllers
              Include(image => image.Post_Image)
              .Include(p => p.Post_Status)
              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == postType && p.RealEstateType == realestateType
-             && p.Tittle.Contains(searchkey) 
-             //&& p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Quan_Huyen == district
+             && p.Tittle.Contains(searchkey)
+              //&& p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Quan_Huyen == district
               && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo).ToListAsync();
                             List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province
-                             && p.Post_Location.SingleOrDefault().Quan_Huyen == district ).ToList();
+                             && p.Post_Location.SingleOrDefault().Quan_Huyen == district).ToList();
                             ViewData["StatusResult"] = "Tìm thấy " + a.Count() + " kết quả";
                             return View(a);
                         }
@@ -355,7 +354,7 @@ namespace BDS_ML.Controllers
              Include(image => image.Post_Image)
              .Include(p => p.Post_Status)
              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == postType && p.RealEstateType == realestateType
-             && p.Tittle.Contains(searchkey) 
+             && p.Tittle.Contains(searchkey)
              //&& p.Post_Location.SingleOrDefault().Tinh_TP == province 
              && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo).ToListAsync();
                         List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province).ToList();
@@ -382,11 +381,11 @@ namespace BDS_ML.Controllers
 
               //&& p.Post_Location.Single().Tinh_TPNavigation.id == province
               //&& p.Post_Location.SingleOrDefault().Quan_Huyen.Value == district
-             //&& p.Post_Location.SingleOrDefault().Phuong_Xa.Value == ward && p.Post_Location.SingleOrDefault().Duong_Pho.Value == street
+              //&& p.Post_Location.SingleOrDefault().Phuong_Xa.Value == ward && p.Post_Location.SingleOrDefault().Duong_Pho.Value == street
               && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo
               ).ToListAsync();
-                                List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Phuong_Xa==ward
-                                && p.Post_Location.SingleOrDefault().Quan_Huyen==district && p.Post_Location.SingleOrDefault().Duong_Pho==street).ToList();
+                                List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Phuong_Xa == ward
+                                && p.Post_Location.SingleOrDefault().Quan_Huyen == district && p.Post_Location.SingleOrDefault().Duong_Pho == street).ToList();
                                 ViewData["StatusResult"] = "Tìm thấy " + a.Count() + " kết quả";
                                 return View(a);
                             }
@@ -404,7 +403,7 @@ namespace BDS_ML.Controllers
              //&& p.Post_Location.SingleOrDefault().Phuong_Xa == ward 
              && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo).ToListAsync();
                                 List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Phuong_Xa == ward
-                               && p.Post_Location.SingleOrDefault().Quan_Huyen == district ).ToList();
+                               && p.Post_Location.SingleOrDefault().Quan_Huyen == district).ToList();
                                 ViewData["StatusResult"] = "Tìm thấy " + a.Count() + " kết quả";
                                 return View(a);
                             }
@@ -420,10 +419,10 @@ namespace BDS_ML.Controllers
              Include(image => image.Post_Image)
              .Include(p => p.Post_Status)
              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == postType && p.RealEstateType == realestateType
-           //&& p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Quan_Huyen == district
+              //&& p.Post_Location.SingleOrDefault().Tinh_TP == province && p.Post_Location.SingleOrDefault().Quan_Huyen == district
               && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo).ToListAsync();
-                            List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province 
-                               && p.Post_Location.SingleOrDefault().Quan_Huyen == district ).ToList();
+                            List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province
+                               && p.Post_Location.SingleOrDefault().Quan_Huyen == district).ToList();
                             ViewData["StatusResult"] = "Tìm thấy " + a.Count() + " kết quả";
                             return View(a);
                         }
@@ -440,14 +439,14 @@ namespace BDS_ML.Controllers
              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == postType && p.RealEstateType == realestateType
             //&& p.Post_Location.SingleOrDefault().Tinh_TP == province
             && p.Price >= listPrice[priceFromTo].PriceFrom && p.Price <= listPrice[priceFromTo].PriceTo).ToListAsync();
-                        List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province ).ToList();
+                        List<Post> a = posts.Where(p => p.Post_Location.SingleOrDefault().Tinh_TP == province).ToList();
                         ViewData["StatusResult"] = "Tìm thấy " + a.Count() + " kết quả";
                         return View(a);
                     }
                 }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 string a = e.Message;
                 ViewData["StatusResult"] = "Error Tìm không thành công";
@@ -479,8 +478,8 @@ namespace BDS_ML.Controllers
                 _context.Post_Favorite.Add(post_Favorite);
                 _context.SaveChanges();
                 return Json(new { Result = "OK", Message = "Đã thêm vào danh sách yêu thích" });
-          
-               
+
+
             }
             catch (Exception ex)
             {

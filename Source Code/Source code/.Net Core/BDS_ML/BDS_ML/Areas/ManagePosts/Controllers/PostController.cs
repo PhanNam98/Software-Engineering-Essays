@@ -67,8 +67,8 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             return View(listpost);
 
         }
-       
-      
+
+
         public async Task<IActionResult> ListFavoritePost()
         {
 
@@ -100,9 +100,34 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             }
             var user = await _userManager.GetUserAsync(User);
             int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
-            int District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
-            int Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
-            int Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id;
+            int District;
+            try
+            {
+                District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
+
+            }
+            catch
+            {
+                District = 0;
+            }
+
+            int Ward;
+            try
+            {
+                Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
+            }
+            catch
+            {
+                Ward = 0;
+            }
+
+            int Street;
+            try { Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id; }
+            catch
+            {
+                Street = 0;
+            }
+
             ViewData["ID_Account"] = post.ID_Account;
             ViewData["ID_Account_Post"] = post.ID_Account == user.Id ? true : false;
             string nameuser = "";
@@ -127,9 +152,9 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             return View(post);
         }
 
-       
 
-   
+
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -156,9 +181,33 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             }
 
             int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
-            int District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
-            int Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
-            int Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id;
+            int District;
+            try
+            {
+                District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
+
+            }
+            catch
+            {
+                District = 0;
+            }
+
+            int Ward;
+            try
+            {
+                Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
+            }
+            catch
+            {
+                Ward = 0;
+            }
+
+            int Street;
+            try { Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id; }
+            catch
+            {
+                Street = 0;
+            }
             ViewData["ID_Account"] = post.ID_Account;
             string nameuser = "";
             if (post.ID_AccountNavigation.IsAdmin == 1)
@@ -241,9 +290,20 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             postdetail.Yard = yard;
             Post_Location post_Location = _context.Post_Location.Where(p => p.ID_Post == id).SingleOrDefault();
             post_Location.DiaChi = diachi;
-            post_Location.Duong_Pho = street;
-            post_Location.Phuong_Xa = ward;
-            post_Location.Quan_Huyen = district;
+            if (street == 0)
+            {
+                post_Location = null;
+            }
+            else
+                post_Location.Duong_Pho = street;
+            if (ward == 0)
+                post_Location.Phuong_Xa = null;
+            else
+                post_Location.Phuong_Xa = ward;
+            if (district == 0)
+                post_Location.Quan_Huyen = null;
+            else
+                post_Location.Quan_Huyen = district;
             post_Location.Tinh_TP = province;
             post_Location.DuAn = post.Project;
             var user = await _userManager.GetUserAsync(User);
@@ -304,7 +364,7 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             return View(post);
         }
 
-     
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int idpost, string reasonDeletePost)
@@ -384,7 +444,7 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> ShownPost(int idpost)
         {
@@ -411,7 +471,7 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
                 _context.Post.Attach(post);
                 _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 _context.SaveChanges();
-                var Pending = Int32.Parse(HttpContext.Session.GetString("PedingPost"))+1;
+                var Pending = Int32.Parse(HttpContext.Session.GetString("PedingPost")) + 1;
                 HttpContext.Session.SetString("PedingPost", Pending.ToString());
                 StatusMessage = "Hiện bài đăng thành công";
             }
@@ -422,7 +482,7 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> SoldPost(int idpost)
         {

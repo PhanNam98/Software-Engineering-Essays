@@ -120,7 +120,31 @@
         </div>
     </div>
 </div>
-<!--/.col-->
+<div class="col-sm-6 col-lg-3">
+    <div class="card text-white bg-flat-color-1">
+        <div class="card-body pb-0">
+            <div class="dropdown float-right">
+                <button class="btn bg-transparent dropdown-toggle theme-toggle text-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                    <i class="fa fa-cog"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu-content">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="Index">Đến danh sách bài đăng</a>
+
+                    </div>
+                </div>
+            </div>
+            <h4 class="mb-0">
+                <span class="count">@Model.PostedNumber</span>
+            </h4>
+            <p class="text-light">Số bài đang đăng</p>
+            <div class="chart-wrapper px-0" style="height:70px;" height="70">
+                <canvas id="widgetChart1"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+@*<!--/.col-->
 <div class="col-lg-3 col-md-6">
     <div class="social-box facebook">
         <i class="fa fa-facebook"></i>
@@ -187,7 +211,7 @@
         </ul>
     </div>
     <!--/social-box-->
-</div><!--/.col-->
+</div><!--/.col-->*@
 <script>
     
 
