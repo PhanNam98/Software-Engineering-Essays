@@ -5,8 +5,172 @@
     ViewData["Title"] = "Chi tiết | Bất động sản REAL HOUSE";
     BDT_MLDBContext db = new BDT_MLDBContext();
 }
+<style>
+    hr.style1 {
+        border-top: 1px solid #8c8b8b;
+    }
+
+    .row > .column {
+        padding: 0 8px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Create four equal columns that floats next to eachother */
+    .column {
+        float: left;
+        width: 25%;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: black;
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        width: 52%;
+        max-width: 1200px;
+    }
+
+    /* The Close Button */
+    .close {
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #999;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* Hide the slides by default */
+    .mySlides {
+        display: none;
+    }
+
+    /* Next & previous buttons */
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -50px;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+        color: #f2f2f2;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+    }
+
+    .numbertextdelete {
+        color: #f2f2f2;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+        .numbertextdelete:hover,
+        .numbertextdelete:focus {
+            color: wheat;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* Caption text */
+    .caption-container {
+        text-align: center;
+        background-color: black;
+        padding: 2px 16px;
+        color: white;
+    }
+
+    img.demo {
+        opacity: 0.6;
+    }
+
+    .active,
+    .demo:hover {
+        opacity: 1;
+    }
+
+    img.hover-shadow {
+        transition: 0.3s;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+@{ 
+    var _Images = Model.Post_Image.ToList();
+    var picture = "";
+    foreach (var i in _Images)
+    {
+        picture = i.url;
+        break;
+    }
+}
+ <!-- Breadcrumb -->
+<div class="site-breadcrumb">
+    <div class="container">
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+        <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
+    </div>
+</div>
+
 <div id="post-header" class="page-header">
-    <div class="background-img" style="background-image: url('@(Constants.POST_IMG_URL + Model.Post_Image.SingleOrDefault().url)');"></div>
+    <div class="background-img" style="background-image: url('@(Constants.POST_IMG_URL + picture)');"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-10">
@@ -38,16 +202,9 @@
     <div class="container">
         <div class="row">
 
-            <!-- Breadcrumb -->
-            <div class="site-breadcrumb">
-                <div class="container">
-                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
-                    <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
-                </div>
-            </div>
 
             <!-- Page -->
-            <div class="col-lg-8 single-list-page">
+            <div class="col-md-8">
                 <div class="single-list-slider owl-carousel" id="sl-slider">
 
                     @{ List<Post_Image> lstImage = db.Post_Image.Where(n => n.ID_Post == Model.ID_Post).ToList();}
@@ -62,45 +219,25 @@
                             author = db.Customer.First(c => c.Account_ID == Model.ID_Account).FirstName + ' ' + db.Customer.First(c => c.Account_ID == Model.ID_Account).LastName;
                         }
                     }
-                    @*@if (Model.PostType == 1)
-                    {
-                        foreach (var image in lstImage)
-                        {
-                            <div class="sl-item set-bg" data-setbg="@(Constants.POST_IMG_URL + image.url)">
-                                <div class="sale-notic">Cần bán</div>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        foreach (var image in lstImage)
-                        {
-                            <div class="sl-item set-bg" data-setbg="@(Constants.POST_IMG_URL + image.url)">
-                                <div class="rent-notic">Cần cho thuê</div>
-                            </div>
-                        }
-                    }*@
                 </div>
-                <div class="owl-carousel sl-thumb-slider" id="sl-slider-thumb">
-                    @foreach (var image in lstImage)
-                    {
-                        <div class="sl-thumb set-bg" data-setbg="@(Constants.POST_IMG_URL + image.url)"></div>
-                    }
-                </div>
+                
                 <div class="section">
                     <div class="row">
-                        <div class="col-xl-8 sl-title">
+                        <div class="col-md-4">
                             <h3>@Model.Post_Location.SingleOrDefault().DiaChi @Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
                             <p><i class="fa fa-map-marker"></i>@Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                         </div>
-                        <div class="col-xl-4">
+                        <div class="col-md-4 feature-item">
+                            <a href="#" class="room-price1">Thích</a>
+                        </div>
+                        <div class="col-md-4 feature-item">
                             @if (Model.PostType == 1)
                             {
-                                <a href="#" class="price-btn">@string.Format("{0:0,0 VND}", Model.Price)</a>
+                                <a href="#" class="room-price">@string.Format("{0:0,0 Triệu VND}", Model.Price)</a>
                             }
                             else
                             {
-                                <a href="#" class="price-btn">@string.Format("{0:0,0 VND / tháng}", Model.Price)</a>
+                                <a href="#" class="room-price">@string.Format("{0:0,0 Triệu VND / tháng}", Model.Price)</a>
                             }
                         </div>
                         @*favorite*@
@@ -181,32 +318,147 @@
                         <p>@Model.Description</p>
                     </div>
 
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="control-label"><strong>Ảnh về bất động sản</strong></label>
+                        </div>
+                        @if (Model.Post_Image.ToList().Count > 0)
+                        {
+                            <div class="row">
+                                @{
+                                    var count = 0;
+
+                                    @foreach (var item in Model.Post_Image.ToList())
+                                    {
+                                        var idImage = item.ID_Post + "image" + item.ID_Image;
+                                        count++;
+
+                                        <div class="column col" id="@idImage">
+
+                                            <img src="@(Constants.POST_IMG_URL + @item.url)" onclick="openModal();currentSlide(@count)" class="hover-shadow" style="width: 200px;height: 150px;">
+
+                                        </div>
+
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <span>Không có ảnh</span>
+                        }
+
+
+
+                        <br />
+                    </div>
+                    <div id="myModal" class="modal">
+
+                        <span class="close cursor" onclick="closeModal()">Đóng</span>
+
+                        <div class="modal-content">
+                            @{
+                                var count1 = 0;
+                                @foreach (var item in Model.Post_Image.ToList())
+                                {
+                                    var idImage = item.ID_Post.ToString() + "image" + item.ID_Image.ToString();
+                                    count1++;
+                                    <div class="mySlides">
+                                        <div class="numbertext">@count1/@Model.Post_Image.Count()</div>
+                                        <img src="@(Constants.POST_IMG_URL + @item.url)" style="width:100%">
+                                    </div>
+                                }
+                            }
+
+                            <!-- Next/previous controls -->
+                            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                            <div class="row">
+                                <!-- Thumbnail image controls -->
+                                @{
+                                    var count2 = 0;
+                                    @foreach (var item in Model.Post_Image.ToList())
+                                    {
+                                        count2++;
+                                        <div class="column">
+                                            <img class="demo" src="@(Constants.POST_IMG_URL + @item.url)" onclick="currentSlide(@count2)" alt="@item.url" style="width: 200px;height: 150px;">
+                                        </div>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
                     @*<h3 class="sl-sp-title bd-no">Location</h3>
-                <div id="map"></div>*@
+                        <div id="map"></div>*@
                 </div>
             </div>
-            @*sidebar
-            <div class="col-lg-4 col-md-7 sidebar">
+
+            @*sidebar*@
+            <div class="col-md-4">
                 <div class="author-card">
-                    @{ string imgName = Model.Author.AvatarUrl; }
-                    <div class="author-img set-bg" data-setbg="@(Constants.AVATAR_URL + imgName)"></div>
+                    <div class="author-img set-bg" style="background-image: url('@(Constants.AVATAR_URL+ViewBag.image)')"></div>
                     <div class="author-info">
-                        <h5>@(Model.Author.LastName + " " + Model.Author.Firstname)</h5>
+                        <h5>@author</h5>
                         <p>Real Estate Agent</p>
                     </div>
                     <div class="author-contact">
-                        <p><i class="fa fa-phone"></i> @(String.Format("{0:0### ### ###}", Model.Author.PhoneNumber))</p>
-                        <p><i class="fa fa-envelope"></i>@Model.Author.Email</p>
+                        <p><i class="fa fa-phone"></i> @(String.Format("{0:0### ### ###}", Model.ID_AccountNavigation.PhoneNumber))</p>
+                        <p><i class="fa fa-envelope"></i>@Model.ID_AccountNavigation.Email</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-8 single-list-page">
-                <div class="fb-comments" data-href="http://realestate-ute.azurewebsites.net/@Model.PostId" data-width="" data-numposts="10"></div>
-            </div>
-        </div>*@
-        </div>
+
     </div>
+
 </section>
 <!-- Page end -->
+
+<script>
+    // Open the Modal
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+
+
+    // Close the Modal
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        var captionText = document.getElementById("caption");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        captionText.innerHTML = dots[slideIndex - 1].alt;
+    }
+
+
+</script>

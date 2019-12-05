@@ -123,11 +123,11 @@
                             </div>
                             @if (post.PostType == 1)
                             {
-                                @Html.ActionLink(string.Format("{0:0,0 Triệu VND}", post.Price), "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                                <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 Triệu VND}", post.Price)</a>
                             }
                             else
                             {
-                                @Html.ActionLink(string.Format("{0:0,0 VND}", post.Price) + " / tháng", "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                                <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 Triệu VND}", post.Price) / tháng</a>
                             }
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                         <div class="col-md-6">
                             <div class="feature-item">
                                 <div class="post">
-                                    <a class="post-img" href="@Url.Action("PostDetail", "Post", new { ID_Post = post.ID_Post })"><img src="@(Constants.POST_IMG_URL + image)" alt="post-img"></a>
+                                    <a class="post-img" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail"><img src="@(Constants.POST_IMG_URL + image)" alt="post-img"></a>
                                     <div class="propertie-info text-white">
                                         <div class="room-info-warp">
                                             <div class="room-info">
@@ -220,11 +220,11 @@
                                                 <p><i class="fa fa-map-marker"></i> @post.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @post.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                                                 @if (post.PostType == 1)
                                                 {
-                                                    @Html.ActionLink(string.Format("{0:0,0 Triệu VND}", post.Price), "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 Triệu VND}", post.Price)</a>
                                                 }
                                                 else
                                                 {
-                                                    @Html.ActionLink(string.Format("{0:0,0 VND}", post.Price) + " / tháng", "PostDetail", "Post", new { postId = post.ID_Post }, new { @class = "room-price" })
+                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 VND}", post.Price) + " / tháng"</a>
                                                 }
                                             </div>
                                         </div>
@@ -249,7 +249,7 @@
                                             }
                                             <span class="post-date"><i class="fa fa-clock-o"></i> @Functions.getTime(post.PostTime) | <i class="fa fa-user"></i> @author </span>
                                         </div>
-                                        <h3 class="post-title"><a href="#">@post.Tittle</a></h3>
+                                        <h3 class="post-title"><a asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@post.Tittle</a></h3>
                                         <hr />
                                     </div>
                                 </div>

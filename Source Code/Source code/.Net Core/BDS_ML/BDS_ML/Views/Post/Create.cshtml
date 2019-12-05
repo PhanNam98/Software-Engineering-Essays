@@ -5,17 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<!-- Breadcrumb -->
+<div class="site-breadcrumb">
+    <div class="container">
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+        <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
+    </div>
+</div>
+
 <section class="section">
     <div class="container">
         <div class="row">
-
-            <!-- Breadcrumb -->
-            <div class="site-breadcrumb">
-                <div class="container">
-                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
-                    <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
-                </div>
-            </div>
 
             <h1>Tạo bài đăng mới</h1>
 
