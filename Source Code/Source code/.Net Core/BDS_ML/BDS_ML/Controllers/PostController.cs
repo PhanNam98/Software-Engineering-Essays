@@ -26,7 +26,7 @@ namespace BDS_ML.Controllers
             listPrice = new List<priceFromToPost>();
             listPrice.Add(new priceFromToPost { key = 0, PriceFrom = 0, PriceTo = 100 });
             listPrice.Add(new priceFromToPost { key = 1, PriceFrom = 101, PriceTo = 500 });
-            listPrice.Add(new priceFromToPost { key = 2, PriceFrom = 5001, PriceTo = 1000 });
+            listPrice.Add(new priceFromToPost { key = 2, PriceFrom = 501, PriceTo = 1000 });
             listPrice.Add(new priceFromToPost { key = 3, PriceFrom = 1001, PriceTo = 3000 });
             listPrice.Add(new priceFromToPost { key = 4, PriceFrom = 3001, PriceTo = 10000 });
             listPrice.Add(new priceFromToPost { key = 5, PriceFrom = 10001, PriceTo = 1000000 });
@@ -208,6 +208,80 @@ namespace BDS_ML.Controllers
             ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description");
             ViewData["IDAccount"] = user.Id;
             ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name");
+            return View(post);
+        }
+
+        [HttpGet("/{id}")]
+        public async Task<IActionResult> PostDetail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+                          .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
+                          .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
+                          .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
+                          .Include(d => d.Post_Detail).
+                          Include(image => image.Post_Image)
+                          .Include(p => p.Post_Status)
+                          .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.ID_Post == id).SingleOrDefaultAsync();
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            //var user = await _userManager.GetUserAsync(User);
+            //int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
+            //int District;
+            //try
+            //{
+            //    District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
+
+            //}
+            //catch
+            //{
+            //    District = 0;
+            //}
+
+            //int Ward;
+            //try
+            //{
+            //    Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
+            //}
+            //catch
+            //{
+            //    Ward = 0;
+            //}
+
+            //int Street;
+            //try { Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id; }
+            //catch
+            //{
+            //    Street = 0;
+            //}
+
+            //ViewData["ID_Account"] = post.ID_Account;
+            //ViewData["ID_Account_Post"] = post.ID_Account == user.Id ? true : false;
+            //string nameuser = "";
+            //if (post.ID_AccountNavigation.IsAdmin == 1)
+            //{
+            //    nameuser += "Admin " + _context.Admin.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault().FullName;
+            //}
+            //else
+            //{
+            //    var cus = _context.Customer.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault();
+            //    nameuser += cus.FirstName + " " + cus.LastName;
+            //}
+            //ViewData["Name_Account"] = nameuser;
+            //ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description", post.PostType);
+            //ViewData["Project"] = new SelectList(_context.project, "id", "_name", post.Project);
+            //ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description", post.RealEstateType);
+            //ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name", Province);
+            //ViewData["District"] = new SelectList(_context.district.OrderBy(p => p._name).Where(p => p._province_id == Province), "id", "_name", District);
+            //ViewData["Ward"] = new SelectList(_context.ward.OrderBy(p => p._name).Where(p => p._province_id == Province && p._district_id == District), "id", "_name", Ward);
+            //ViewData["Street"] = new SelectList(_context.street.OrderBy(p => p._name).Where(p => p._province_id == Province && p._district_id == District), "id", "_name", Street);
+
             return View(post);
         }
         //[AllowAnonymous]

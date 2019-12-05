@@ -1,0 +1,212 @@
+﻿@using BDS_ML.Models.ModelDB
+@using BDS_ML.Models.Common
+@model BDS_ML.Models.ModelDB.Post
+@{
+    ViewData["Title"] = "Chi tiết | Bất động sản REAL HOUSE";
+    BDT_MLDBContext db = new BDT_MLDBContext();
+}
+<div id="post-header" class="page-header">
+    <div class="background-img" style="background-image: url('@(Constants.POST_IMG_URL + Model.Post_Image.SingleOrDefault().url)');"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="post-meta">
+                    @if (Model.PostType == 1)
+                    {
+                        <a class="post-category cat-2" href="#">Cần Bán</a>
+                    }
+                    @if (Model.PostType == 2)
+                    {
+                        <a class="post-category cat-2" href="#">Cần Cho Thuê</a>
+                    }
+                    @if (Model.PostType == 3)
+                    {
+                        <a class="post-category cat-1" href="#">Cần Mua</a>
+                    }
+                    @if (Model.PostType == 4)
+                    {
+                        <a class="post-category cat-1" href="#">Cần Thuê</a>
+                    }
+                    <span class="post-date">@Model.PostTime</span>
+                </div>
+                <h1>@Model.Tittle</h1>
+            </div>
+        </div>
+    </div>
+</div>   
+<section class="section">
+    <div class="container">
+        <div class="row">
+
+            <!-- Breadcrumb -->
+            <div class="site-breadcrumb">
+                <div class="container">
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+                    <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
+                </div>
+            </div>
+
+            <!-- Page -->
+            <div class="col-lg-8 single-list-page">
+                <div class="single-list-slider owl-carousel" id="sl-slider">
+
+                    @{ List<Post_Image> lstImage = db.Post_Image.Where(n => n.ID_Post == Model.ID_Post).ToList();}
+                    @{
+                        var author = "";
+                        if (db.Customer.FirstOrDefault(c => c.Account_ID == Model.ID_Account) == null)
+                        {
+                            author = db.Admin.First(c => c.Account_ID == Model.ID_Account).FullName;
+                        }
+                        else
+                        {
+                            author = db.Customer.First(c => c.Account_ID == Model.ID_Account).FirstName + ' ' + db.Customer.First(c => c.Account_ID == Model.ID_Account).LastName;
+                        }
+                    }
+                    @*@if (Model.PostType == 1)
+                    {
+                        foreach (var image in lstImage)
+                        {
+                            <div class="sl-item set-bg" data-setbg="@(Constants.POST_IMG_URL + image.url)">
+                                <div class="sale-notic">Cần bán</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        foreach (var image in lstImage)
+                        {
+                            <div class="sl-item set-bg" data-setbg="@(Constants.POST_IMG_URL + image.url)">
+                                <div class="rent-notic">Cần cho thuê</div>
+                            </div>
+                        }
+                    }*@
+                </div>
+                <div class="owl-carousel sl-thumb-slider" id="sl-slider-thumb">
+                    @foreach (var image in lstImage)
+                    {
+                        <div class="sl-thumb set-bg" data-setbg="@(Constants.POST_IMG_URL + image.url)"></div>
+                    }
+                </div>
+                <div class="section">
+                    <div class="row">
+                        <div class="col-xl-8 sl-title">
+                            <h3>@Model.Post_Location.SingleOrDefault().DiaChi @Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
+                            <p><i class="fa fa-map-marker"></i>@Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
+                        </div>
+                        <div class="col-xl-4">
+                            @if (Model.PostType == 1)
+                            {
+                                <a href="#" class="price-btn">@string.Format("{0:0,0 VND}", Model.Price)</a>
+                            }
+                            else
+                            {
+                                <a href="#" class="price-btn">@string.Format("{0:0,0 VND / tháng}", Model.Price)</a>
+                            }
+                        </div>
+                        @*favorite*@
+                    </div>
+                    @if (Model.Post_Detail != null)
+                    {
+                        <h3 class="sl-sp-title">Thông tin chi tiết</h3>
+                        <div class="row property-details-list">
+                            <div class="col-md-4 col-sm-6">
+                                <p><i class="fa fa-car"></i> @(db.Post_Detail.First(c => c.ID_Post == Model.ID_Post).Alley == true ? "Trong hẻm" : "Mặt đường lớn")</p>
+                                <p><i class="fa fa-trophy"></i> @(Model.PostType == 1 ? "Nhà bán" : "Nhà cho thuê")</p>
+                                <p><i class="fa fa-user"></i> @author</p>
+                                <p><i class="fa fa-clock-o"></i> @Functions.getTime(Model.PostTime)</p>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <p><i class="fa fa-th-large"></i>@Model.Size</p>
+                                <p><i class="fa fa-bed"></i> @Model.Post_Detail.SingleOrDefault().Bedroom phòng ngủ</p>
+                                <p><i class="fa fa-bath"></i> @db.Post_Detail.First(c => c.ID_Post == Model.ID_Post).Bathroom phòng tắm</p>
+                                <p><i class="fa fa-building-o"></i> @db.Post_Detail.First(c => c.ID_Post == Model.ID_Post).Floor lầu</p>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                @if (Model.Post_Detail.SingleOrDefault().NearHospital == true)
+                                {
+                                    <p><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                }
+                                else
+                                {
+                                    <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                }
+
+                                @if (Model.Post_Detail.SingleOrDefault().NearMarket == true)
+                                {
+                                    <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                }
+                                else
+                                {
+                                    <p class="notavailable"><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                }
+
+                                @if (Model.Post_Detail.SingleOrDefault().NearSchool == true)
+                                {
+                                    <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+
+                                }
+                                else
+                                {
+                                    <p class="notavailable"><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+                                }
+
+                                @if (Model.Post_Detail.SingleOrDefault().NearAirport == true)
+                                {
+                                    <p><i class="fa fa-plane"></i>gần Sân Bay</p>
+
+                                }
+                                else
+                                {
+                                    <p class="notavailable"><i class="fa fa-plane"></i>gần Sân Bay</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <h3 class="sl-sp-title">Thông tin chi tiết</h3>
+                        <div class="row property-details-list">
+                            <div class="col-md-6 col-sm-6">
+                                <p><i class="fa fa-building-o"></i> @db.RealEstate_Type.First(n => n.ID_RealEstateType == Model.RealEstateType).Description</p>
+                                <p><i class="fa fa-user"></i> @author</p>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <p><i class="fa fa-th-large"></i>@Model.Size;</p>
+                                <p><i class="fa fa-clock-o"></i> @Functions.getTime(Model.PostTime)</p>
+                            </div>
+                        </div>
+                    }
+                    <h3 class="sl-sp-title">Mô tả</h3>
+                    <div class="description">
+                        <p>@Model.Description</p>
+                    </div>
+
+                    @*<h3 class="sl-sp-title bd-no">Location</h3>
+                <div id="map"></div>*@
+                </div>
+            </div>
+            @*sidebar
+            <div class="col-lg-4 col-md-7 sidebar">
+                <div class="author-card">
+                    @{ string imgName = Model.Author.AvatarUrl; }
+                    <div class="author-img set-bg" data-setbg="@(Constants.AVATAR_URL + imgName)"></div>
+                    <div class="author-info">
+                        <h5>@(Model.Author.LastName + " " + Model.Author.Firstname)</h5>
+                        <p>Real Estate Agent</p>
+                    </div>
+                    <div class="author-contact">
+                        <p><i class="fa fa-phone"></i> @(String.Format("{0:0### ### ###}", Model.Author.PhoneNumber))</p>
+                        <p><i class="fa fa-envelope"></i>@Model.Author.Email</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 single-list-page">
+                <div class="fb-comments" data-href="http://realestate-ute.azurewebsites.net/@Model.PostId" data-width="" data-numposts="10"></div>
+            </div>
+        </div>*@
+        </div>
+    </div>
+</section>
+<!-- Page end -->

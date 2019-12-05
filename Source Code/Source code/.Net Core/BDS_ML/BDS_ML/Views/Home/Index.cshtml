@@ -39,7 +39,7 @@
                 <div class="col-lg-4 col-md-6">
                     <!-- hot post -->
                     <div class="feature-item">
-                        <a href="@Url.Action("PostDetail", "Post", new { ID_Post = post.ID_Post })">
+                        <a asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">
                             <div class="feature-pic set-bg" style="background-image:url(@(Constants.POST_IMG_URL + image))">
                                 @if (post.PostType == 1)
                                 {
@@ -166,7 +166,7 @@
                         <div class="col-md-6">
                             <div class="feature-item">
                                 <div class="post">
-                                    <a class="post-img" href="#"><img src="@(Constants.POST_IMG_URL + image)" alt="post-img"></a>
+                                    <a class="post-img" href="@Url.Action("PostDetail", "Post", new { ID_Post = post.ID_Post })"><img src="@(Constants.POST_IMG_URL + image)" alt="post-img"></a>
                                     <div class="propertie-info text-white">
                                         <div class="room-info-warp">
                                             <div class="room-info">
