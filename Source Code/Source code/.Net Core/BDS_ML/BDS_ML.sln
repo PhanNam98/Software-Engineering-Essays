@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BDS_ML", "BDS_ML\BDS_ML.csproj", "{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BDS_MLML.Model", "BDS_MLML.Model\BDS_MLML.Model.csproj", "{CEBC8FFA-068E-418A-A3B0-61A80F58FF6B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BDS_MLML.ConsoleApp", "BDS_MLML.ConsoleApp\BDS_MLML.ConsoleApp.csproj", "{708728EE-B0FA-4F4D-A0A1-FE190625A854}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{495F31E5-AD4B-466D-9D1C-1FA6FC18225A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEBC8FFA-068E-418A-A3B0-61A80F58FF6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEBC8FFA-068E-418A-A3B0-61A80F58FF6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEBC8FFA-068E-418A-A3B0-61A80F58FF6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEBC8FFA-068E-418A-A3B0-61A80F58FF6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{708728EE-B0FA-4F4D-A0A1-FE190625A854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708728EE-B0FA-4F4D-A0A1-FE190625A854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708728EE-B0FA-4F4D-A0A1-FE190625A854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708728EE-B0FA-4F4D-A0A1-FE190625A854}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

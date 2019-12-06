@@ -231,56 +231,17 @@ namespace BDS_ML.Controllers
                 return NotFound();
             }
 
-            //var user = await _userManager.GetUserAsync(User);
-            //int Province = post.Post_Location.SingleOrDefault().Tinh_TPNavigation.id;
-            //int District;
-            //try
-            //{
-            //    District = post.Post_Location.SingleOrDefault().Quan_HuyenNavigation.id;
-
-            //}
-            //catch
-            //{
-            //    District = 0;
-            //}
-
-            //int Ward;
-            //try
-            //{
-            //    Ward = post.Post_Location.SingleOrDefault().Phuong_XaNavigation.id;
-            //}
-            //catch
-            //{
-            //    Ward = 0;
-            //}
-
-            //int Street;
-            //try { Street = post.Post_Location.SingleOrDefault().Duong_PhoNavigation.id; }
-            //catch
-            //{
-            //    Street = 0;
-            //}
-
-            //ViewData["ID_Account"] = post.ID_Account;
-            //ViewData["ID_Account_Post"] = post.ID_Account == user.Id ? true : false;
-            //string nameuser = "";
-            //if (post.ID_AccountNavigation.IsAdmin == 1)
-            //{
-            //    nameuser += "Admin " + _context.Admin.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault().FullName;
-            //}
-            //else
-            //{
-            //    var cus = _context.Customer.Where(p => p.Account_ID == post.ID_Account).SingleOrDefault();
-            //    nameuser += cus.FirstName + " " + cus.LastName;
-            //}
-            //ViewData["Name_Account"] = nameuser;
-            //ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description", post.PostType);
-            //ViewData["Project"] = new SelectList(_context.project, "id", "_name", post.Project);
-            //ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description", post.RealEstateType);
-            //ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name", Province);
-            //ViewData["District"] = new SelectList(_context.district.OrderBy(p => p._name).Where(p => p._province_id == Province), "id", "_name", District);
-            //ViewData["Ward"] = new SelectList(_context.ward.OrderBy(p => p._name).Where(p => p._province_id == Province && p._district_id == District), "id", "_name", Ward);
-            //ViewData["Street"] = new SelectList(_context.street.OrderBy(p => p._name).Where(p => p._province_id == Province && p._district_id == District), "id", "_name", Street);
+            var user = await _userManager.GetUserAsync(User);
+            if (user.IsAdmin == 1)
+            {
+                ViewData["image"] = _context.Admin.Where(p => p.Account_ID == user.Id).SingleOrDefault().Avatar_URL;
+            }
+            else
+            {
+                ViewData["image"] = _context.Customer.Where(p => p.Account_ID == user.Id).SingleOrDefault().Avatar_URL;
+            }
+            if (ViewData["image"] == null)
+                ViewData["image"] = "avatar_common.png";
 
             return View(post);
         }
