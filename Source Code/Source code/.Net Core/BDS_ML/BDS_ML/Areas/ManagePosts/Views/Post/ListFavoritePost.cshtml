@@ -69,7 +69,7 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
+                                <tr id="@item.ID_Post">
 
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ID_PostNavigation.Tittle)
@@ -95,8 +95,9 @@
                                         @Html.DisplayFor(modelItem => item.MortifiedDate)
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Chi tiết", "", "Post", new { area = "" }) |
-
+                                        @* @Html.ActionLink("Chi tiết", "PostDetail", "Post", new { @id = item.ID_Post, area = "", @class = "btn btn-secondary" })*@
+                                        <a class="btn btn-info" asp-area="" asp-controller="Post" asp-action="PostDetail" asp-route-id="@item.ID_Post" title="Xem chi tiết">Chi tiết</a>
+                                        <a class="btn btn-danger" id="removefavorite" title="Bỏ yêu thích" onclick="removefavorite(@item.ID_Post)">Bỏ yêu thích</a>
                                     </td>
                                 </tr>
                             }
@@ -132,5 +133,25 @@
 
         });
     });
+    function removefavorite() {
 
+        var idp = arguments[0];
+            $.ajax({
+                url: '@Url.Action("RemoveFavorite", "Post")',
+                type: 'POST',
+                data: { id:idp}
+            }).done(function (data) {
+                if (data.result == "OK") {
+                    alert(data.message);
+                    document.getElementById(data.id).remove();
+                }
+                else if (data.message) {
+                    alert(data.message);
+                }
+            }).fail(function () {
+                alert("Đã có lỗi. Hãy thử lại.");
+            })
+
+
+    }
 </script>

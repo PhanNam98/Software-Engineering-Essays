@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 namespace BDS_ML.Controllers
 {
-
+    [Authorize]
     public class PostController : Controller
     {
         private readonly BDT_MLDBContext _context;
@@ -210,7 +210,7 @@ namespace BDS_ML.Controllers
             ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name");
             return View(post);
         }
-
+        [AllowAnonymous]
         [HttpGet("/{id}")]
         public async Task<IActionResult> PostDetail(int? id)
         {
@@ -231,7 +231,7 @@ namespace BDS_ML.Controllers
                 return NotFound();
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _context.AspNetUsers.Where(p => p.Id == post.ID_Account).SingleOrDefaultAsync();
             if (user.IsAdmin == 1)
             {
                 ViewData["image"] = _context.Admin.Where(p => p.Account_ID == user.Id).SingleOrDefault().Avatar_URL;
@@ -493,7 +493,7 @@ namespace BDS_ML.Controllers
             return View();
         }
         //Thêm bài đăng vào danh sách yêu thích
-        [Authorize]
+       
         [HttpPost]
         public async Task<JsonResult> AddFavorite(int idpost)
         {
@@ -513,6 +513,32 @@ namespace BDS_ML.Controllers
                 _context.Post_Favorite.Add(post_Favorite);
                 _context.SaveChanges();
                 return Json(new { Result = "OK", Message = "Đã thêm vào danh sách yêu thích" });
+
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+
+
+        }
+        [HttpPost]
+        public async Task<JsonResult> RemoveFavorite(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var post_Favoritecount = _context.Post_Favorite.Where(p => p.ID_Post == id && p.ID_User == user.Id).Count();
+            if (post_Favoritecount == 0)
+            {
+                return Json(new { Result = "ERROR", Message = "Bài đăng không có trong danh sách yêu thích" });
+            }
+            try
+            {
+                Post_Favorite post_Favorite = _context.Post_Favorite.Where(p => p.ID_Post == id && p.ID_User == user.Id).SingleOrDefault();
+                _context.Post_Favorite.Remove(post_Favorite);
+                _context.SaveChanges();
+                return Json(new { Result = "OK", Message = "Đã xóa bài ra khỏi danh sách yêu thích",Id=id });
 
 
             }

@@ -152,7 +152,7 @@
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 </style>
-@{ 
+@{
     var _Images = Model.Post_Image.ToList();
     var picture = "";
     foreach (var i in _Images)
@@ -161,7 +161,7 @@
         break;
     }
 }
- <!-- Breadcrumb -->
+<!-- Breadcrumb -->
 <div class="site-breadcrumb">
     <div class="container">
         <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
@@ -197,7 +197,7 @@
             </div>
         </div>
     </div>
-</div>   
+</div>
 <section class="section">
     <div class="container">
         <div class="row">
@@ -220,7 +220,7 @@
                         }
                     }
                 </div>
-                
+
                 <div class="section">
                     <div class="row">
                         <div class="col-md-4">
@@ -228,7 +228,7 @@
                             <p><i class="fa fa-map-marker"></i>@Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                         </div>
                         <div class="col-md-4 feature-item">
-                            <a href="#" class="room-price1">Thích</a>
+                            <a href="#" class="room-price1" onclick="addfavorite(@Model.ID_Post)">Thích</a>
                         </div>
                         <div class="col-md-4 feature-item">
                             @if (Model.PostType == 1)
@@ -460,5 +460,24 @@
         captionText.innerHTML = dots[slideIndex - 1].alt;
     }
 
+    function addfavorite() {
 
+        var idp = arguments[0];
+            $.ajax({
+                url: '@Url.Action("AddFavorite","Post")',
+                type: 'POST',
+                data: { idpost:idp}
+            }).done(function (data) {
+                if (data.result == "OK") {
+                    alert(data.message);
+                }
+                else if (data.message) {
+                    alert(data.message);
+                }
+            }).fail(function () {
+                alert("Đã có lỗi. Hãy thử lại.");
+            })
+
+
+    }
 </script>
