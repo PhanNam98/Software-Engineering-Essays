@@ -7,9 +7,7 @@ namespace BDS_ML.Models.ModelDB
 {
     public partial class AspNetUserLogins
     {
-        [StringLength(128)]
         public string LoginProvider { get; set; }
-        [StringLength(128)]
         public string ProviderKey { get; set; }
         public string ProviderDisplayName { get; set; }
         [Required]

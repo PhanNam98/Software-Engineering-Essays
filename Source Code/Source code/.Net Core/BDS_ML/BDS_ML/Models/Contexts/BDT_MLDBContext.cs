@@ -23,6 +23,7 @@ namespace BDS_ML.Models.ModelDB
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Block> Block { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<Delete_Account> Delete_Account { get; set; }
         public virtual DbSet<Post> Post { get; set; }
         public virtual DbSet<Post_Comment> Post_Comment { get; set; }
         public virtual DbSet<Post_Detail> Post_Detail { get; set; }
@@ -32,6 +33,7 @@ namespace BDS_ML.Models.ModelDB
         public virtual DbSet<Post_Status> Post_Status { get; set; }
         public virtual DbSet<Post_Type> Post_Type { get; set; }
         public virtual DbSet<RealEstate_Type> RealEstate_Type { get; set; }
+        public virtual DbSet<Report_Post> Report_Post { get; set; }
         public virtual DbSet<Status> Status { get; set; }
         public virtual DbSet<Vip_Status> Vip_Status { get; set; }
         public virtual DbSet<district> district { get; set; }
@@ -47,6 +49,7 @@ namespace BDS_ML.Models.ModelDB
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=(local);Database=BDT_MLDB;Trusted_Connection=True");
             }
         }
@@ -106,8 +109,7 @@ namespace BDS_ML.Models.ModelDB
 
                 entity.HasIndex(e => e.NormalizedUserName)
                     .HasName("UserNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+                    .IsUnique();
 
                 entity.Property(e => e.Id).ValueGeneratedNever();
             });
@@ -144,6 +146,24 @@ namespace BDS_ML.Models.ModelDB
                     .HasForeignKey(d => d.Account_ID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Customer_AspNetUsers");
+            });
+
+            modelBuilder.Entity<Delete_Account>(entity =>
+            {
+                entity.HasKey(e => new { e.ID_Delete, e.ID_User });
+
+                entity.Property(e => e.ID_Delete).ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.ID_AdminNavigation)
+                    .WithMany(p => p.Delete_Account)
+                    .HasForeignKey(d => d.ID_Admin)
+                    .HasConstraintName("FK_Delete_Account_Admin");
+
+                entity.HasOne(d => d.ID_UserNavigation)
+                    .WithMany(p => p.Delete_Account)
+                    .HasForeignKey(d => d.ID_User)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Delete_Account_Customer");
             });
 
             modelBuilder.Entity<Post>(entity =>
@@ -281,6 +301,25 @@ namespace BDS_ML.Models.ModelDB
                     .HasForeignKey(d => d.Status)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Post_Status_Status");
+            });
+
+            modelBuilder.Entity<Report_Post>(entity =>
+            {
+                entity.HasKey(e => new { e.ID_Report, e.ID_Account_Report, e.ID_Post });
+
+                entity.Property(e => e.ID_Report).ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.ID_Account_ReportNavigation)
+                    .WithMany(p => p.Report_Post)
+                    .HasForeignKey(d => d.ID_Account_Report)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Report_Post_AspNetUsers");
+
+                entity.HasOne(d => d.ID_PostNavigation)
+                    .WithMany(p => p.Report_Post)
+                    .HasForeignKey(d => d.ID_Post)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Report_Post_Post");
             });
 
             modelBuilder.Entity<Status>(entity =>

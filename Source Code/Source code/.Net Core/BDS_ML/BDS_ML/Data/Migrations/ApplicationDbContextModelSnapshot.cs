@@ -62,6 +62,8 @@ namespace BDS_ML.Data.Migrations
 
                     b.Property<int>("IsBlock");
 
+                    b.Property<int>("IsDelete");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");

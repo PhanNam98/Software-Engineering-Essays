@@ -56,18 +56,17 @@
                         <label>Email xác thực</label>
                     </div>
                     <div class="col-12 col-md-9">
-                        @if (Model.IsEmailConfirmed)
-                        {
-                            <div class="input-group">
-                                <input asp-for="Input.Email" class="form-control" />
-                                <span class="input-group-addon" aria-hidden="true"><span class="fa fa-check text-success"></span></span>
-                            </div>
-                        }
-                        else
-                        {
+                        <div class="input-group">
                             <input asp-for="Input.Email" class="form-control" />
-                            <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link" title="Xác minh địa chỉ email">Xác minh email</button>
-                        }
+                            @if (Model.IsEmailConfirmed)
+                            {
+                                <span class="input-group-addon" aria-hidden="true"><span class="fa fa-check text-success"></span></span>
+                            }
+                            else
+                            {
+                                <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link" title="Xác minh địa chỉ email">Xác minh email</button>
+                            }
+                        </div>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                 </div>

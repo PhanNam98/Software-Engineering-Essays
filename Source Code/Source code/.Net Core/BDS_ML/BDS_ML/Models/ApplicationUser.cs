@@ -12,6 +12,7 @@ namespace BDS_ML.Models
 
         public int IsBlock { get; set; }
         public int IsAdmin { get; set; }
+        public int IsDelete { get; set; }
 
     }
 }

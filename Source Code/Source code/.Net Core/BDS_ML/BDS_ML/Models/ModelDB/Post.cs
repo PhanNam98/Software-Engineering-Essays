@@ -15,6 +15,7 @@ namespace BDS_ML.Models.ModelDB
             Post_Image = new HashSet<Post_Image>();
             Post_Location = new HashSet<Post_Location>();
             Post_Status = new HashSet<Post_Status>();
+            Report_Post = new HashSet<Report_Post>();
         }
 
         [Key]
@@ -60,5 +61,7 @@ namespace BDS_ML.Models.ModelDB
         public virtual ICollection<Post_Location> Post_Location { get; set; }
         [InverseProperty("ID_PostNavigation")]
         public virtual ICollection<Post_Status> Post_Status { get; set; }
+        [InverseProperty("ID_PostNavigation")]
+        public virtual ICollection<Report_Post> Report_Post { get; set; }
     }
 }

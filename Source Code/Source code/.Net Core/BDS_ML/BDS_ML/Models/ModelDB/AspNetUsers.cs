@@ -17,6 +17,7 @@ namespace BDS_ML.Models.ModelDB
             Post_Comment = new HashSet<Post_Comment>();
             Post_Favorite = new HashSet<Post_Favorite>();
             Post_Status = new HashSet<Post_Status>();
+            Report_Post = new HashSet<Report_Post>();
             Vip_Status = new HashSet<Vip_Status>();
         }
 
@@ -42,6 +43,7 @@ namespace BDS_ML.Models.ModelDB
         public int AccessFailedCount { get; set; }
         public int IsAdmin { get; set; }
         public int IsBlock { get; set; }
+        public int IsDelete { get; set; }
 
         [InverseProperty("Account_")]
         public virtual ICollection<Admin> Admin { get; set; }
@@ -59,6 +61,8 @@ namespace BDS_ML.Models.ModelDB
         public virtual ICollection<Post_Favorite> Post_Favorite { get; set; }
         [InverseProperty("ID_AccountNavigation")]
         public virtual ICollection<Post_Status> Post_Status { get; set; }
+        [InverseProperty("ID_Account_ReportNavigation")]
+        public virtual ICollection<Report_Post> Report_Post { get; set; }
         [InverseProperty("ID_UserNavigation")]
         public virtual ICollection<Vip_Status> Vip_Status { get; set; }
     }

@@ -10,6 +10,7 @@ namespace BDS_ML.Models.ModelDB
         public Admin()
         {
             Block = new HashSet<Block>();
+            Delete_Account = new HashSet<Delete_Account>();
         }
 
         [Key]
@@ -42,5 +43,7 @@ namespace BDS_ML.Models.ModelDB
         public virtual AspNetUsers Account_ { get; set; }
         [InverseProperty("ID_AdminNavigation")]
         public virtual ICollection<Block> Block { get; set; }
+        [InverseProperty("ID_AdminNavigation")]
+        public virtual ICollection<Delete_Account> Delete_Account { get; set; }
     }
 }
