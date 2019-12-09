@@ -11,6 +11,7 @@ namespace BDS_ML.Models.ModelDB
         [StringLength(400)]
         public string ID_Account_Report { get; set; }
         public int ID_Post { get; set; }
+        public bool? IsRead { get; set; }
         [Required]
         [StringLength(256)]
         public string Reason { get; set; }

@@ -3,9 +3,14 @@
 @{
     ViewData["Title"] = "Tài khoản bị khóa";
 }
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="text-center">
+                <h1 class="text-danger">@ViewData["Title"]</h1>
+                <p class="text-danger">Tài khoản này đã bị khóa do đăng nhập sai nhiều lần, vui lòng thử lại sau 10 phút.</p>
+            </div>
+        </div>
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">Tài khoản này đã bị khóa do đăng nhập sai nhiều lần, vui lòng thử lại sau 10 phút.</p>
- 
-</header>
+    </div>
+</div>
