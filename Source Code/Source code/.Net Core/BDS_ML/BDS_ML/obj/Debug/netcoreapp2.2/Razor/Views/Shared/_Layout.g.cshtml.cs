@@ -13,12 +13,12 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
-#line 1 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Views\_ViewImports.cshtml"
+#line 1 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Views\_ViewImports.cshtml"
 using BDS_ML;
 
 #line default
 #line hidden
-#line 2 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Views\_ViewImports.cshtml"
+#line 2 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Views\_ViewImports.cshtml"
 using BDS_ML.Models;
 
 #line default
@@ -123,7 +123,7 @@ using BDS_ML.Models;
     <title>");
                 EndContext();
                 BeginContext(343, 17, false);
-#line 9 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Views\Shared\_Layout.cshtml"
+#line 9 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Views\Shared\_Layout.cshtml"
       Write(ViewData["Title"]);
 
 #line default

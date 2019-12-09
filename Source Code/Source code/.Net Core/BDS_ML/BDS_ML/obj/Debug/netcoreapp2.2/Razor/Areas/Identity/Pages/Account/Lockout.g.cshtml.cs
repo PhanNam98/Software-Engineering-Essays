@@ -13,22 +13,22 @@ namespace BDS_ML.Areas.Identity.Pages.Account
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
-#line 1 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\_ViewImports.cshtml"
+#line 1 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\_ViewImports.cshtml"
 using Microsoft.AspNetCore.Identity;
 
 #line default
 #line hidden
-#line 2 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\_ViewImports.cshtml"
+#line 2 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\_ViewImports.cshtml"
 using BDS_ML.Areas.Identity;
 
 #line default
 #line hidden
-#line 3 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\_ViewImports.cshtml"
+#line 3 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\_ViewImports.cshtml"
 using BDS_ML.Models;
 
 #line default
 #line hidden
-#line 1 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\Account\_ViewImports.cshtml"
+#line 1 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\Account\_ViewImports.cshtml"
 using BDS_ML.Areas.Identity.Pages.Account;
 
 #line default
@@ -41,7 +41,7 @@ using BDS_ML.Areas.Identity.Pages.Account;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
-#line 3 "D:\1.NAM JOKER\Bai tap\TieuLuanChuyenNganh\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\Account\Lockout.cshtml"
+#line 3 "C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\.Net Core\BDS_ML\BDS_ML\Areas\Identity\Pages\Account\Lockout.cshtml"
   
     ViewData["Title"] = "Tài khoản bị khóa";
 

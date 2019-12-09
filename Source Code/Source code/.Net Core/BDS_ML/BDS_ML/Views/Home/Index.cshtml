@@ -224,7 +224,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 VND}", post.Price) + " / tháng"</a>
+                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@(string.Format("{0:0,0 Triệu VND}", post.Price)) / tháng</a>
                                                 }
                                             </div>
                                         </div>
