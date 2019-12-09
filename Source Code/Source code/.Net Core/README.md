@@ -5,3 +5,6 @@ Nên chạy trên trình duyệt Opera
 +Cần thay đổi
  -Thêm header cho login
  -Sửa ảnh trong index
+ -chỉnh layout cho search
+ -add list cần mua, cần bán
+ -...
