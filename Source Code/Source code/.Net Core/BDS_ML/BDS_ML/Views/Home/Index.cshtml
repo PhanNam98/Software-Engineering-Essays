@@ -1,4 +1,6 @@
-﻿@using BDS_ML.Models.Data
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@using BDS_ML.Models.Data
 @using BDS_ML.Models.ModelDB
 @using BDS_ML.Models.Common
 @using Microsoft.EntityFrameworkCore;
@@ -123,11 +125,11 @@
                             </div>
                             @if (post.PostType == 1)
                             {
-                                <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 Triệu VND}", post.Price)</a>
+                                <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price)</a>
                             }
                             else
                             {
-                                <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 Triệu VND}", post.Price) / tháng</a>
+                                <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price) / tháng</a>
                             }
                         </div>
                     </div>
@@ -220,11 +222,11 @@
                                                 <p><i class="fa fa-map-marker"></i> @post.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @post.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                                                 @if (post.PostType == 1)
                                                 {
-                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0,0 Triệu VND}", post.Price)</a>
+                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price)</a>
                                                 }
                                                 else
                                                 {
-                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@(string.Format("{0:0,0 Triệu VND}", post.Price)) / tháng</a>
+                                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@(string.Format("{0:0 Triệu VND}", post.Price)) / tháng</a>
                                                 }
                                             </div>
                                         </div>
@@ -266,6 +268,7 @@
                     </a>
                 </div>
                 <!-- /ad -->
+
                 <!-- catagories -->
                 <div class="aside-widget">
                     <div class="section-title">
@@ -281,6 +284,7 @@
                     </div>
                 </div>
                 <!-- /catagories -->
+
                 <!-- tags -->
                 <div class="aside-widget">
                     <div class="tags-widget">
@@ -298,42 +302,55 @@
                     </div>
                 </div>
                 <!-- /tags -->
+
                 <!-- favorite post-->
                 <div class="aside-widget">
                     <div class="section-title text-right">
                         <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
                         <p>Bài viết được bạn yêu thích</p>
                     </div>
+                    @{
+                        if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="post post-widget">
+                                <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+                                </div>
+                            </div>
 
-                    <div class="post post-widget">
-                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
-                        <div class="post-body">
-                            <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
-                        </div>
-                    </div>
+                            <div class="post post-widget">
+                                <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
+                                </div>
+                            </div>
 
-                    <div class="post post-widget">
-                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
-                        <div class="post-body">
-                            <h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
-                        </div>
-                    </div>
+                            <div class="post post-widget">
+                                <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
+                                </div>
+                            </div>
 
-                    <div class="post post-widget">
-                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
-                        <div class="post-body">
-                            <h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
-                        </div>
-                    </div>
+                            <div class="post post-widget">
+                                <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="post post-widget">
+                                <div class="post-body">
+                                    <p><i>Hãy đăng nhập để sử dụng tính năng này!</i></p>
+                                </div>
+                            </div>
+                        }
+                    }
 
-                    <div class="post post-widget">
-                        <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
-                        <div class="post-body">
-                            <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
-                        </div>
-                    </div>
                     <!-- /favorite post-->
-
                     <!-- locaion -->
                     <div class="aside-widget text-center">
                         <div class="section-title">
@@ -341,21 +358,21 @@
                             <p>Tìm kiếm theo khu vực</p>
                         </div>
                         <div class="post post-thumb">
-                            <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                            <a class="post-img" href="#"><img src="~/images/anhthuy1202-180520020532-du-lich-phan-thiet-mui-ne.jpg" alt=""></a>
                             <div class="post-body">
-                                <h3 class="post-title"><a href="blog-post.html">Location</a></h3>
+                                <h3 class="post-title"><a href="blog-post.html">Múi Né, Phan Thiết</a></h3>
                             </div>
                         </div>
                         <div class="post post-thumb">
-                            <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                            <a class="post-img" href="blog-post.html"><img src="~/images/cover-tour-dalat2.jpg" alt=""></a>
                             <div class="post-body">
-                                <h3 class="post-title"><a href="blog-post.html">Location</a></h3>
+                                <h3 class="post-title"><a href="blog-post.html">Đà Lạt</a></h3>
                             </div>
                         </div>
                         <div class="post post-thumb">
-                            <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
+                            <a class="post-img" href="blog-post.html"><img src="~/images/image002_1.jpg" alt=""></a>
                             <div class="post-body">
-                                <h3 class="post-title"><a href="blog-post.html">Location</a></h3>
+                                <h3 class="post-title"><a href="blog-post.html">Đà Nẵng</a></h3>
                             </div>
                         </div>
                     </div>

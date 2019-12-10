@@ -1,4 +1,6 @@
-﻿@using BDS_ML.Models.ModelDB
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@using BDS_ML.Models.ModelDB
 @using BDS_ML.Models.Common
 @model BDS_ML.Models.ModelDB.Post
 @{
@@ -161,15 +163,15 @@
         break;
     }
 }
-<!-- Breadcrumb -->
-<div class="site-breadcrumb">
-    <div class="container">
-        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
-        <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
-    </div>
-</div>
 
+<div class="breadcrumb" style="margin-bottom: 0;">
+    <!-- Breadcrumb -->
+    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+    <span><i class="fa fa-angle-right"></i> <i class="fa fa-sticky-note"></i>Chi Tiết Bài Đăng: @Model.Tittle</span>
+</div>
+<!-- info header-->
 <div id="post-header" class="page-header">
+
     <div class="background-img" style="background-image: url('@(Constants.POST_IMG_URL + picture)');"></div>
     <div class="container">
         <div class="row">
@@ -198,34 +200,33 @@
         </div>
     </div>
 </div>
+
+<!-- info body-->
 <section class="section">
     <div class="container">
         <div class="row">
-
-
             <!-- Page -->
             <div class="col-md-8">
-                <div class="single-list-slider owl-carousel" id="sl-slider">
-
-                    @{ List<Post_Image> lstImage = db.Post_Image.Where(n => n.ID_Post == Model.ID_Post).ToList();}
-                    @{
-                        var author = "";
-                        if (db.Customer.FirstOrDefault(c => c.Account_ID == Model.ID_Account) == null)
-                        {
-                            author = db.Admin.First(c => c.Account_ID == Model.ID_Account).FullName;
-                        }
-                        else
-                        {
-                            author = db.Customer.First(c => c.Account_ID == Model.ID_Account).FirstName + ' ' + db.Customer.First(c => c.Account_ID == Model.ID_Account).LastName;
-                        }
+                @{ List<Post_Image> lstImage = db.Post_Image.Where(n => n.ID_Post == Model.ID_Post).ToList();}
+                @{
+                    var author = "";
+                    var typeuser = "";
+                    if (db.Customer.FirstOrDefault(c => c.Account_ID == Model.ID_Account) == null)
+                    {
+                        author = db.Admin.First(c => c.Account_ID == Model.ID_Account).FullName;
+                        typeuser = "Admin";
                     }
-                </div>
-
+                    else
+                    {
+                        author = db.Customer.First(c => c.Account_ID == Model.ID_Account).FirstName + ' ' + db.Customer.First(c => c.Account_ID == Model.ID_Account).LastName;
+                        typeuser = "User";
+                    }
+                }
                 <div class="section">
                     <div class="row">
                         <div class="col-md-4">
-                            <h3>@Model.Post_Location.SingleOrDefault().DiaChi @Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
-                            <p><i class="fa fa-map-marker"></i>@Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
+                            <h3>@Model.Post_Location.SingleOrDefault().DiaChi, Đường: @Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name, @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
+                            <p><i class="fa fa-map-marker"></i> @Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                         </div>
                         <div class="col-md-4 feature-item">
                             <a href="#" class="room-price1" onclick="addfavorite(@Model.ID_Post)">Thích</a>
@@ -233,14 +234,13 @@
                         <div class="col-md-4 feature-item">
                             @if (Model.PostType == 1)
                             {
-                                <a href="#" class="room-price">@string.Format("{0:0,0 Triệu VND}", Model.Price)</a>
+                                <a href="#" class="room-price">@string.Format("{0:0 Triệu VND}", Model.Price)</a>
                             }
                             else
                             {
-                                <a href="#" class="room-price">@string.Format("{0:0,0 Triệu VND / tháng}", Model.Price)</a>
+                                <a href="#" class="room-price">@string.Format("{0:0 Triệu VND / tháng}", Model.Price)</a>
                             }
                         </div>
-                        @*favorite*@
                     </div>
                     @if (Model.Post_Detail != null)
                     {
@@ -253,7 +253,7 @@
                                 <p><i class="fa fa-clock-o"></i> @Functions.getTime(Model.PostTime)</p>
                             </div>
                             <div class="col-md-4 col-sm-6">
-                                <p><i class="fa fa-th-large"></i>@Model.Size</p>
+                                <p><i class="fa fa-th-large"></i> @Model.Size m²</p>
                                 <p><i class="fa fa-bed"></i> @Model.Post_Detail.SingleOrDefault().Bedroom phòng ngủ</p>
                                 <p><i class="fa fa-bath"></i> @db.Post_Detail.First(c => c.ID_Post == Model.ID_Post).Bathroom phòng tắm</p>
                                 <p><i class="fa fa-building-o"></i> @db.Post_Detail.First(c => c.ID_Post == Model.ID_Post).Floor lầu</p>
@@ -261,40 +261,40 @@
                             <div class="col-md-4 col-sm-6">
                                 @if (Model.Post_Detail.SingleOrDefault().NearHospital == true)
                                 {
-                                    <p><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                    <p><i class="fa fa-hospital-o"></i> gần Bệnh Viện</p>
                                 }
                                 else
                                 {
-                                    <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
+                                    <p class="notavailable"><i class="fa fa-hospital-o"></i> gần Bệnh Viện</p>
                                 }
 
                                 @if (Model.Post_Detail.SingleOrDefault().NearMarket == true)
                                 {
-                                    <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                    <p><i class="fa fa-shopping-cart"></i> gần Chợ</p>
                                 }
                                 else
                                 {
-                                    <p class="notavailable"><i class="fa fa-shopping-cart"></i>gần Chợ</p>
+                                    <p class="notavailable"><i class="fa fa-shopping-cart"></i> gần Chợ</p>
                                 }
 
                                 @if (Model.Post_Detail.SingleOrDefault().NearSchool == true)
                                 {
-                                    <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+                                    <p><i class="fa fa-graduation-cap"></i> gần Trường Học</p>
 
                                 }
                                 else
                                 {
-                                    <p class="notavailable"><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
+                                    <p class="notavailable"><i class="fa fa-graduation-cap"></i> gần Trường Học</p>
                                 }
 
                                 @if (Model.Post_Detail.SingleOrDefault().NearAirport == true)
                                 {
-                                    <p><i class="fa fa-plane"></i>gần Sân Bay</p>
+                                    <p><i class="fa fa-plane"></i> gần Sân Bay</p>
 
                                 }
                                 else
                                 {
-                                    <p class="notavailable"><i class="fa fa-plane"></i>gần Sân Bay</p>
+                                    <p class="notavailable"><i class="fa fa-plane"></i> gần Sân Bay</p>
                                 }
                             </div>
                         </div>
@@ -320,7 +320,7 @@
 
                     <div class="form-group">
                         <div class="form-group">
-                            <label class="control-label"><strong>Ảnh về bất động sản</strong></label>
+                            <h3>Ảnh về bất động sản</h3>
                         </div>
                         @if (Model.Post_Image.ToList().Count > 0)
                         {
@@ -347,9 +347,6 @@
                         {
                             <span>Không có ảnh</span>
                         }
-
-
-
                         <br />
                     </div>
                     <div id="myModal" class="modal">
@@ -397,17 +394,88 @@
 
             @*sidebar*@
             <div class="col-md-4">
+                <!-- contact-->
                 <div class="author-card">
                     <div class="author-img set-bg" style="background-image: url('@(Constants.AVATAR_URL+ViewBag.image)')"></div>
                     <div class="author-info">
                         <h5>@author</h5>
-                        <p>Real Estate Agent</p>
+                        <p>@typeuser</p>
                     </div>
                     <div class="author-contact">
                         <p><i class="fa fa-phone"></i> @(String.Format("{0:0### ### ###}", Model.ID_AccountNavigation.PhoneNumber))</p>
                         <p><i class="fa fa-envelope"></i>@Model.ID_AccountNavigation.Email</p>
                     </div>
                 </div>
+
+                @{
+                    if (!SignInManager.IsSignedIn(User))
+                    {
+                        <!-- ad -->
+                        <div class="aside-widget text-center">
+                            <a href="#" style="display: inline-block;margin: auto;">
+                                <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                            </a>
+                        </div>
+                        <!-- /ad -->
+
+                        <!-- catagories -->
+                        <div class="aside-widget">
+                            <div class="section-title">
+                                <h2 class="text-center">Danh Mục</h2>
+                            </div>
+                            <div class="category-widget">
+                                <ul>
+                                    <li><a href="#" class="cat-1">Cần Mua<span>340</span></a></li>
+                                    <li><a href="#" class="cat-2">Cần Bán<span>74</span></a></li>
+                                    <li><a href="#" class="cat-1">Cần Thuê<span>41</span></a></li>
+                                    <li><a href="#" class="cat-2">Cần Cho Thuê<span>35</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /catagories -->
+                    }
+                    else
+                    {
+                        <!-- ad -->
+                        <div class="aside-widget text-center">
+                            <a href="#" style="display: inline-block;margin: auto;">
+                                <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                            </a>
+                        </div>
+                        <!-- /ad -->
+
+                        <!-- favorite post-->
+                        <div class="aside-widget">
+                            <div class="section-title text-right">
+                                <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
+                                <p>Bài viết được bạn yêu thích</p>
+                            </div>
+
+                            <div class="post post-widget">
+                                <a class="post-img" href="#"><img src="/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+                                </div>
+                            </div>
+
+                            <div class="post post-widget">
+                                <a class="post-img" href="#"><img src="/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
+                                </div>
+                            </div>
+
+                            <div class="post post-widget">
+                                <a class="post-img" href="#"><img src="/webmag/img/post-5.jpg" alt=""></a>
+                                <div class="post-body">
+                                    <h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /favorite post-->
+                    }
+                }
+
             </div>
         </div>
 

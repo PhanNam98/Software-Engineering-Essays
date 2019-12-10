@@ -4,17 +4,15 @@
     ViewData["Title"] = "Dự đoán giá nhà sử dụng ML.NET";
 }
 
-<section class="section">
+<!-- Breadcrumb -->
+<div class="breadcrumb" style="margin-bottom: 0;">
+    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+    <span><i class="fa fa-angle-right"></i> Dự đoán giá nhà</span>
+</div>
+
+<div class="section">
     <div class="container">
         <div class="row">
-
-            <!-- Breadcrumb -->
-            <div class="site-breadcrumb">
-                <div class="container">
-                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
-                    <span><i class="fa fa-angle-right"></i> Dự đoán giá nhà</span>
-                </div>
-            </div>
             <div class="col-md-4">
                 <form asp-action="Predict" asp-controller="Predict">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -53,9 +51,9 @@
                 @if (ViewBag.Price != null)
                 {
                     <h1>Kết Quả</h1>
-                    <h2>Giá dự đoán: @ViewBag.Price</h2>
+                    <h3>Giá dự đoán: @ViewBag.Price Triệu VND</h3>
                 }
             </div>
         </div>
     </div>
-</section>
+</div>

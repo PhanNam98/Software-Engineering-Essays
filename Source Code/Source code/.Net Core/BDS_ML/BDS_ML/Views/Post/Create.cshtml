@@ -6,180 +6,182 @@
 }
 
 <!-- Breadcrumb -->
-<div class="site-breadcrumb">
+<div class="breadcrumb" style="margin-bottom: 0;">
+    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+    <span><i class="fa fa-angle-right"></i> Tạo bài đăng</span>
+</div>
+
+
+<div class="section">
     <div class="container">
-        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
-        <span><i class="fa fa-angle-right"></i> Chi tiết Bài đăng</span>
+        <div class="row">
+            <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Loại bài đăng</label>
+                        <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tiêu đề</label>
+                        <input asp-for="Tittle" class="form-control" required placeholder="Tiêu đề bài đăng" />
+                        <span asp-validation-for="Tittle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Loại bất động sản</label>
+                        <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Giá</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Price" class="form-control" min="0" placeholder="Giá" required />
+                            <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
+                        </div>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Miêu tả về bất động sản</label>
+                        <textarea asp-for="Description" class="form-control" style="resize: vertical; max-height: 110px; min-height: 50px;" placeholder="Miêu tả một vài chi tiết lien quan..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Diện tích</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Size" class="form-control" min="0" required placeholder="Diện tích theo m²" />
+                            <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
+                        </div>
+                        <span asp-validation-for="Size" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tầng</label>
+                        <div class="input-group">
+                            <input type="number" id="floor" name="floor" class="form-control" value="0" min="0" max="20" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Phòng ngủ</label>
+                        <div class="input-group">
+                            <input type="number" id="bedroom" name="bedroom" class="form-control" value="0" min="0" max="100" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Phòng vệ sinh</label>
+                        <div class="input-group">
+                            <input type="number" id="bathroom" name="bathroom" class="form-control" value="0" min="0" max="100" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Sân</label>
+                        <input type="number" id="yard" name="yard" class="form-control" value="1" min="0" max="10" />
+                    </div>
+
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">
+                            <input type="checkbox" id="nearHospital" name="nearHospital" value="true" /> Gần bệnh viện
+                        </label>   
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="nearMarket" name="nearMarket" value="true" /> Gần chợ/siêu thị
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="nearAirport" name="nearAirport" value="true" /> Gần sân bay
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="nearSchool" name="nearSchool" value="true" /> Gần trường học
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">
+                            <input type="checkbox" id="alley" name="alley" value="true" /> Trong Hẻm
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Miêu tả vị trí</label>
+                        <textarea id="descriptiondetail" style="resize: vertical; max-height: 135px; min-height: 50px;" name="descriptiondetail" placeholder="Miêu tả một vài điểm về vị trí địa lý (hướng,...) của bất động sản..." class="form-control"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file-input" class=" form-control-label">Ảnh chụp</label>
+                        <input type="file" id="images" name="images" accept="image/*" class="form-control-file" multiple />
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Project" class="control-label"></label>
+                        <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"><option>--- Không ---</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tỉnh/Thành phố</label>
+                        @Html.DropDownList("Province", (IEnumerable<SelectListItem>)ViewBag.Province, new { @class = "form-control", @id = "province" })
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Quận/Huyện</label><br />
+                        <select id="district" name="district" class="form-control"><option disabled selected>---Chọn Quận/Huyện---</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Khu vực</label><br />
+                        <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Đường</label><br />
+                        <select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Số nhà, tên hẻm</label>
+                        <div class="input-group">
+                            <input id="diachi" name="diachi" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="ID_Account" class="control-label"></label>
+                        <input asp-for="ID_Account" class="form-control" value="@ViewBag.IDAccount" />
+                    </div>
+
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="PostTime" class="control-label"></label>
+                        <input asp-for="PostTime" value="@DateTime.Now" class="form-control" />
+                        <span asp-validation-for="PostTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Status" class="control-label"></label>
+                        <input asp-for="Status" class="form-control" />
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group text-center">
+                    <input type="submit" value="Tạo bài đăng" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<section class="section">
-    <div class="container">
-        <div class="row">
-
-            <h1>Tạo bài đăng mới</h1>
-
-            <hr />
-            <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
-            <div class="row">
-                <div class="col-md-4">
-                    <form asp-action="Create" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group" hidden="hidden">
-                            <label asp-for="ID_Account" class="control-label"></label>
-                            <input asp-for="ID_Account" class="form-control" value="@ViewBag.IDAccount" />
-                        </div>
-                        <div class="form-group" hidden="hidden">
-                            <label asp-for="PostTime" class="control-label"></label>
-                            <input asp-for="PostTime" value="@DateTime.Now" class="form-control" />
-                            <span asp-validation-for="PostTime" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Loại bài đăng</label>
-                            <select asp-for="PostType" class="form-control" asp-items="ViewBag.PostType"></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Tiêu đề</label>
-                            <input asp-for="Tittle" class="form-control" required />
-                            <span asp-validation-for="Tittle" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Diện tích</label>
-                            <div class="input-group">
-                                <input type="number" asp-for="Size" class="form-control" min="0" required />
-                                <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
-                            </div>
-                            <span asp-validation-for="Size" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Project" class="control-label"></label>
-                            <select asp-for="Project" class="form-control" asp-items="ViewBag.Project"><option>--- Không ---</option></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Giá</label>
-                            <div class="input-group">
-
-                                <input type="number" asp-for="Price" class="form-control" placeholder="Giá" value="1" required />
-                                <div class="input-group-btn"><span class="btn btn-primary">Triệu VNĐ</span></div>
-                            </div>
-                            <span asp-validation-for="Price" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Loại bất động sản</label>
-                            <select asp-for="RealEstateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Miêu tả về bất động sản</label>
-                            <textarea asp-for="Description" class="form-control"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Tầng</label>
-                            <div class="input-group">
-                                <input type="number" id="floor" name="floor" class="form-control" value="0" min="0" max="20" />
-                                <div class="input-group-btn"><span class="btn btn-primary">Tầng</span></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Phòng ngủ</label>
-                            <div class="input-group">
-                                <input type="number" id="bedroom" name="bedroom" class="form-control" value="0" min="0" max="100" />
-                                <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Phòng vệ sinh</label>
-                            <div class="input-group">
-                                <input type="number" id="bathroom" name="bathroom" class="form-control" value="0" min="0" max="100" />
-                                <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Sân</label>
-                            <input type="number" id="yard" name="yard" class="form-control" value="1" min="0" max="10" />
-
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="nearHospital" name="nearHospital" value="true" /> Gần bệnh viện
-                            </label>
-
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="nearMarket" name="nearMarket" value="true" /> Gần chợ/siêu thị
-                            </label>
-
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="nearAirport" name="nearAirport" value="true" /> Gần sân bay
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="nearSchool" name="nearSchool" value="true" /> Gần trường học
-                            </label>
-
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">
-                                <input type="checkbox" id="alley" name="alley" value="true" /> Trong Hẻm
-                            </label>
-
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label">Miêu tả</label>
-                            <textarea id="descriptiondetail" name="descriptiondetail" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Tỉnh/Thành phố</label>
-                            @Html.DropDownList("Province", (IEnumerable<SelectListItem>)ViewBag.Province, new { @class = "form-control", @id = "province" })
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Quận/Huyện</label><br />
-                            <select id="district" name="district" class="form-control"><option disabled selected>---Chọn Quận/Huyện---</option></select><br />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Khu vực</label><br />
-                            <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Đường</label><br />
-                            <select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Số nhà, tên hẻm</label>
-                            <div class="input-group">
-                                <input id="diachi" name="diachi" class="form-control" />
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="file-input" class=" form-control-label">Ảnh chụp</label>
-                            <input type="file" id="images" name="images" accept="image/*" class="form-control-file" multiple />
-                        </div>
-
-                        <div class="form-group" hidden="hidden">
-                            <label asp-for="Status" class="control-label"></label>
-                            <input asp-for="Status" class="form-control" />
-                            <span asp-validation-for="Status" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Tạo bài đăng" class="btn btn-primary" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div>
-                <a asp-action="Index" asp-controller="Home" asp-area="">Về trang chủ</a>
-            </div>
-        </div>
-    </div>
-</section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>

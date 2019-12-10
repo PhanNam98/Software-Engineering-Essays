@@ -2,7 +2,6 @@
 @using BDS_ML.Models.Common
 @{
     ViewData["Title"] = "Search";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -101,139 +100,154 @@
         }
     }
 </style>
-<h1>Search</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Search" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label class="control-label">Loại bài đăng</label>
-                <select id="postType" name="postType" class="form-control" asp-items="ViewBag.PostType"></select>
-            </div>
+<!-- Breadcrumb -->
+<div class="breadcrumb" style="margin-bottom: 0;">
+    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home </a>
+    <span><i class="fa fa-angle-right"></i> <i class="fa fa-search"></i>Tìm kiếm</span>
+</div>
 
-            <div class="form-group">
-                <label class="control-label">Loại bất động sản</label>
-                <select id="realestateType" name="realestateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Khoảng giá</label>
-                @Html.DropDownList("PriceFromTo", (IEnumerable<SelectListItem>)ViewBag.PriceFromTo, new { @class = "form-control", @id = "priceFromTo" })
-            </div>
-            <div class="form-group">
-                <label class="control-label">Tỉnh/Thành phố</label>
-                @Html.DropDownList("Province", (IEnumerable<SelectListItem>)ViewBag.Province, new { @class = "form-control", @id = "province" })
-            </div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <h2 class="text-center">Tìm Kiếm Nâng Cao</h2>
+            <p class="text-center">Tìm kiếm theo loại bài đăng, khu vực, mức giá,...</p>
+            <form asp-action="Search" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-4 author-card">
+                    <div class="form-group">
+                        <label class="control-label">Tỉnh/Thành phố</label>
+                        @Html.DropDownList("Province", (IEnumerable<SelectListItem>)ViewBag.Province, new { @class = "form-control", @id = "province" })
+                    </div>
 
-            <div class="form-group">
-                <label class="control-label">Quận/Huyện</label><br />
-                @Html.DropDownList("District", (SelectList)ViewBag.District, "---Chọn Quận/Huyện---", new { @class = "form-control" ,@id= "district" })
-                @*<select id="district" name="district" class="form-control">
-                    <option disabled selected>---Chọn Quận/Huyện---</option>
+                    <div class="form-group">
+                        <label class="control-label">Quận/Huyện</label><br />
+                        @Html.DropDownList("District", (SelectList)ViewBag.District, "---Chọn Quận/Huyện---", new { @class = "form-control", @id = "district" })
+                        @*<select id="district" name="district" class="form-control">
+                                <option disabled selected>---Chọn Quận/Huyện---</option>
+                                @{
+                                    if (ViewBag.District != null)
+                                    {
+                                        foreach (var d in ViewBag.District as IEnumerable<SelectListItem>)
+                                        {
+                                            <option value="@d.Value">@d.Text</option>
+                                        }
+                                    }
+                                }
+                            </select>*@
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Khu vực</label><br />
+                        @Html.DropDownList("Ward", (SelectList)ViewBag.Ward, "---Chọn Phường/Xã---", new { @class = "form-control", @id = "ward" })
+                        @* <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />*@
+                    </div>
+                </div>
+                <div class="col-md-4 author-card">
+                    <div class="form-group">
+                        <label class="control-label">Loại bài đăng</label>
+                        <select id="postType" name="postType" class="form-control" asp-items="ViewBag.PostType"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Loại bất động sản</label>
+                        <select id="realestateType" name="realestateType" class="form-control" asp-items="ViewBag.RealEstateType"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Khoảng giá</label>
+                        @Html.DropDownList("PriceFromTo", (IEnumerable<SelectListItem>)ViewBag.PriceFromTo, new { @class = "form-control", @id = "priceFromTo" })
+                    </div>
+                </div>
+                <div class="col-md-4 author-card">
+                    <div class="form-group">
+                        <label class="control-label">Đường</label><br />
+                        @Html.DropDownList("Street", (SelectList)ViewBag.Street, "---Chọn Đường---", new { @class = "form-control", @id = "street" })
+                        @*<select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />*@
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Từ khóa</label>
+                        <div>
+                            <input id="searchkey" name="searchkey" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group text-center" style="padding-bottom: 9px; margin-top: 35px">
+                        <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <partial name="~/Views/Shared/_StatusResult.cshtml" for=@ViewData["StatusResult"] />
+        @if (Model != null)
+        {
+            <table id="exam" name="exam" class="table table-striped table-bordered">
+
+                <thead>
+                    <tr>
+
+                        <th>
+
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tiêu đề")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Diện tích")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Giá")
+                        </th>
+
+                        <th>
+                            @Html.DisplayName("HÌnh thức trao đổi")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Loại Bất động sản")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
                     @{
-                        if (ViewBag.District != null)
+                        if (Model != null)
                         {
-                            foreach (var d in ViewBag.District as IEnumerable<SelectListItem>)
+                            foreach (var item in Model)
                             {
-                                <option value="@d.Value">@d.Text</option>
+                                <tr>
+
+                                    <td>
+                                        <img alt="Ảnh bài đăng" class="postimage" id="myImg" src="@(Constants.POST_IMG_URL + item.Post_Image.FirstOrDefault().url)" onclick="Popupimage('myModal','myImg','img01','caption');">
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tittle)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Size)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PostTypeNavigation.Description)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RealEstateTypeNavigation.Description)
+                                    </td>
+                                    <td><a class="btn btn-info" asp-area="" asp-controller="Post" asp-action="PostDetail" asp-route-id="@item.ID_Post" title="Xem chi tiết">Chi tiết</a></td>
+                                </tr>
                             }
                         }
                     }
-                </select>*@
-                <br />
-            </div>
-            <div class="form-group">
-                <label class="control-label">Khu vực</label><br />
-                @Html.DropDownList("Ward", (SelectList)ViewBag.Ward, "---Chọn Phường/Xã---", new { @class = "form-control", @id = "ward" })
-                @* <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />*@
-            </div>
-            <div class="form-group">
-                <label class="control-label">Đường</label><br />
-                @Html.DropDownList("Street", (SelectList)ViewBag.Street, "---Chọn Đường---", new { @class = "form-control", @id = "street" })
-                @*<select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />*@
-            </div>
-            <div class="form-group">
-                <label class="control-label">Từ khóa</label>
-                <div class="input-group">
-                    <input id="searchkey" name="searchkey" class="form-control" />
-
-                </div>
-            </div>
+                </tbody>
+            </table>
+        }
 
 
-            <div class="form-group">
-                <input type="submit" value="Tìm kiếm" class="btn btn-primary" />
-            </div>
-        </form>
     </div>
 </div>
-<partial name="~/Views/Shared/_StatusResult.cshtml" for=@ViewData["StatusResult"] />
-@if (Model != null)
-{
-    <table id="exam" name="exam" class="table table-striped table-bordered">
 
-        <thead>
-            <tr>
 
-                <th>
-
-                </th>
-                <th>
-                    @Html.DisplayName("Tiêu đề")
-                </th>
-                <th>
-                    @Html.DisplayName("Diện tích")
-                </th>
-                <th>
-                    @Html.DisplayName("Giá")
-                </th>
-
-                <th>
-                    @Html.DisplayName("HÌnh thức trao đổi")
-                </th>
-                <th>
-                    @Html.DisplayName("Loại Bất động sản")
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                if (Model != null)
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr>
-
-                            <td>
-                                <img alt="Ảnh bài đăng" class="postimage" id="myImg" src="@(Constants.POST_IMG_URL + item.Post_Image.FirstOrDefault().url)" onclick="Popupimage('myModal','myImg','img01','caption');">
-
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Tittle)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Size)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PostTypeNavigation.Description)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RealEstateTypeNavigation.Description)
-                            </td>
-                            <td><a class="btn btn-info" asp-area="" asp-controller="Post" asp-action="PostDetail" asp-route-id="@item.ID_Post" title="Xem chi tiết">Chi tiết</a></td>
-                        </tr>
-                    }
-                }
-            }
-        </tbody>
-    </table>
-}
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script>
 

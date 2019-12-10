@@ -1,93 +1,105 @@
 ﻿@page
 @model LoginModel
-@{
-    Layout = "/Views/Shared/_Layout_login.cshtml";
-}
-
 
 @{
     ViewData["Title"] = "Đăng nhập";
 }
-<div class="login-logo">
-    <h3>BDS_ML</h3>
 
-</div>
-<h3>@ViewData["Title"]</h3>
-
-<div class="row">
-    <div class="col-md-12">
-   
-        <form id="account" method="post">
-            @*<h4>Use a local account to log in.</h4>*@
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" placeholder="example@gmail.com"/>
-                <span asp-validation-for="Input.Email" cclass="au-input au-input--full" ></span>
-            </div>
-            <div class="form-group">
-                <label >Mật khẩu</label>
-                <input asp-for="Input.Password" class="form-control" placeholder="********"/>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label asp-for="Input.RememberMe">
-                        <input asp-for="Input.RememberMe" />
-                        Ghi nhớ tôi
-                        @*@Html.DisplayNameFor(m => m.Input.RememberMe)*@
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Đăng nhập</button>
-            </div>
-            <div class="form-group">
-                <p>
-                    <a id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu?</a>
-                </p>
-                <p>
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Đăng kí tài khoản mới</a>
-                </p>
-            </div>
-        </form>
-    
-
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12 col-md-offset-2">
-        <section>
-            <h4>Đăng nhập bằng.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            @*There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.*@
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="author-card">
+                    <form id="account" method="post">
+                        @*<h4>Use a local account to log in.</h4>*@
+                        @*<div asp-validation-summary="All" class="text-danger"></div>*@
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" placeholder="example@gmail.com" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Mật khẩu</label>
+                            <input asp-for="Input.Password" class="form-control" placeholder="********" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                    Ghi nhớ tôi
+                                    @*@Html.DisplayNameFor(m => m.Input.RememberMe)*@
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                        </div>
+                        <div class="form-group">
                             <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập sử dụng tài khoản @provider.DisplayName của bạn">@provider.DisplayName</button>
-                                }
+                                <a id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu?</a>
+                            </p>
+                            <p>
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Đăng kí tài khoản mới</a>
                             </p>
                         </div>
                     </form>
-                }
-            }
-        </section>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="author-card text-center">
+                    <h4>Hoặc đăng nhập bằng</h4>
+                    <hr />
+                    @{
+                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
+                            <div>
+                                <p>
+                                    @*There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                    for details on setting up this ASP.NET application to support logging in via external services.*@
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Đăng nhập sử dụng tài khoản @provider.DisplayName của bạn">@provider.DisplayName</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="author-card">
+                    <h4>Quyền lợi khi đăng kí tài khoản tại BĐS REAL HOUSE</h4>
+                    <hr />
+                    <ul>
+                        <li>
+                            <p>Được đăng bài của bạn trên trang chủ</p>
+                        </li>
+                        <li>
+                            <p>Được thêm vào danh sách theo dõi cá nhân</p>
+                        </li>
+                        <li>
+                            <p>Được hỗ trợ nâng cấp lên VIP để ghim bài lên đầu trang</p>
+                        </li>
+                        <li>
+                            <p>Và nhiều điều khác nữa !</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
