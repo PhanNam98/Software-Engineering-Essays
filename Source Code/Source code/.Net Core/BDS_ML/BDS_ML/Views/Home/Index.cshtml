@@ -276,10 +276,10 @@
                     </div>
                     <div class="category-widget">
                         <ul>
-                            <li><a href="#" class="cat-1">Cần Mua<span>340</span></a></li>
-                            <li><a href="#" class="cat-2">Cần Bán<span>74</span></a></li>
-                            <li><a href="#" class="cat-1">Cần Thuê<span>41</span></a></li>
-                            <li><a href="#" class="cat-2">Cần Cho Thuê<span>35</span></a></li>
+                            <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="2">Cần Mua<span>@ViewData["canmua"]</span></a></li>
+                            <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="0">Cần Bán<span>@ViewData["canban"]</span></a></li>
+                            <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="3">Cần Thuê<span>@ViewData["canthue"]</span></a></li>
+                            <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="1">Cần Cho Thuê<span>@ViewData["canchothue"]</span></a></li>
                         </ul>
                     </div>
                 </div>
@@ -358,21 +358,21 @@
                             <p>Tìm kiếm theo khu vực</p>
                         </div>
                         <div class="post post-thumb">
-                            <a class="post-img" href="#"><img src="~/images/anhthuy1202-180520020532-du-lich-phan-thiet-mui-ne.jpg" alt=""></a>
+                            <a class="post-img" asp-area="" asp-controller="Post" asp-action="Search"><img src="~/images/anhthuy1202-180520020532-du-lich-phan-thiet-mui-ne.jpg" alt="img"></a>
                             <div class="post-body">
-                                <h3 class="post-title"><a href="blog-post.html">Múi Né, Phan Thiết</a></h3>
+                                <h3 class="post-title"><a asp-area="" asp-controller="Post" asp-action="Search">Múi Né, Phan Thiết</a></h3>
                             </div>
                         </div>
                         <div class="post post-thumb">
-                            <a class="post-img" href="blog-post.html"><img src="~/images/cover-tour-dalat2.jpg" alt=""></a>
+                            <a class="post-img" asp-area="" asp-controller="Post" asp-action="Search"><img src="~/images/cover-tour-dalat2.jpg" alt="img"></a>
                             <div class="post-body">
-                                <h3 class="post-title"><a href="blog-post.html">Đà Lạt</a></h3>
+                                <h3 class="post-title"><a asp-area="" asp-controller="Post" asp-action="Search">Đà Lạt</a></h3>
                             </div>
                         </div>
                         <div class="post post-thumb">
-                            <a class="post-img" href="blog-post.html"><img src="~/images/image002_1.jpg" alt=""></a>
+                            <a class="post-img" asp-area="" asp-controller="Post" asp-action="Search"><img src="~/images/image002_1.jpg" alt="img"></a>
                             <div class="post-body">
-                                <h3 class="post-title"><a href="blog-post.html">Đà Nẵng</a></h3>
+                                <h3 class="post-title"><a asp-area="" asp-controller="Post" asp-action="Search">Đà Nẵng</a></h3>
                             </div>
                         </div>
                     </div>

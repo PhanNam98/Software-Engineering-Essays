@@ -1,4 +1,13 @@
-(function($) {
+$(window).on('load', function () {
+	/*------------------
+		Preloder
+	--------------------*/
+    $(".loader").fadeOut();
+    $("#preloder").delay(400).fadeOut("slow");
+
+});
+
+(function ($) {
 	"use strict"
 
 	// Fixed Nav

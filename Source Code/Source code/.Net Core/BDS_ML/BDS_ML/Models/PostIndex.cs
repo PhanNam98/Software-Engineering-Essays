@@ -46,5 +46,12 @@ namespace BDS_ML.Models
 
             return lst6PopularPosts;
         }
+
+        public int getCount(int id)
+        {
+            int result = 0;
+            result = db.Post.Include(p => p.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == id).Count();
+            return result;
+        }
     }
 }

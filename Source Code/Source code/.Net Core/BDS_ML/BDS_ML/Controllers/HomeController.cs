@@ -19,11 +19,27 @@ namespace BDS_ML.Controllers
             Home_Index data = new Home_Index();
             PostIndex postIndex = new PostIndex();
 
+            int count_canban = 0;
+            int count_canmua = 0;
+            int count_canthue = 0;
+            int count_canchothue = 0;
+
             data.lst3HotPosts = postIndex.get3HotPosts();
             data.lst6PopularPosts = postIndex.get6PopularPosts();
 
+            count_canban = postIndex.getCount(1);
+            count_canmua = postIndex.getCount(3);
+            count_canthue = postIndex.getCount(4);
+            count_canchothue = postIndex.getCount(2);
+
+            ViewBag.canban = count_canban;
+            ViewBag.canmua = count_canmua;
+            ViewBag.canthue = count_canthue;
+            ViewBag.canchothue = count_canchothue;
+
             return View(data);
         }
+        
         //[Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {

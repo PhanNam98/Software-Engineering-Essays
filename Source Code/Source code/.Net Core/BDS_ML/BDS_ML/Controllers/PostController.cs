@@ -18,6 +18,7 @@ namespace BDS_ML.Controllers
     {
         private readonly BDT_MLDBContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public PostController(UserManager<ApplicationUser> userManager)
         {
             _context = new BDT_MLDBContext();
@@ -40,6 +41,7 @@ namespace BDS_ML.Controllers
                      new SelectListItem { Text = "Trên 10 tỷ", Value = (5).ToString()}
                 };
         }
+
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -49,12 +51,14 @@ namespace BDS_ML.Controllers
             public decimal PriceFrom { get; set; }
             public decimal PriceTo { get; set; }
         }
+
         public List<priceFromToPost> listPrice;
 
         public IActionResult Index()
         {
             return View();
         }
+
         [Authorize]
         public async Task<IActionResult> Create()
         {
@@ -210,14 +214,18 @@ namespace BDS_ML.Controllers
             ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name");
             return View(post);
         }
+
         [AllowAnonymous]
-        [HttpGet("/{id}")]
+        [HttpGet("/post/{id}")]
         public async Task<IActionResult> PostDetail(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+
+            
+
             var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
                           .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
                           .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
@@ -232,6 +240,22 @@ namespace BDS_ML.Controllers
             }
 
             var user = await _context.AspNetUsers.Where(p => p.Id == post.ID_Account).SingleOrDefaultAsync();
+            PostIndex postIndex = new PostIndex();
+            int count_canban = 0;
+            int count_canmua = 0;
+            int count_canthue = 0;
+            int count_canchothue = 0;
+
+            count_canban = postIndex.getCount(1);
+            count_canmua = postIndex.getCount(3);
+            count_canthue = postIndex.getCount(4);
+            count_canchothue = postIndex.getCount(2);
+
+            ViewBag.canban = count_canban;
+            ViewBag.canmua = count_canmua;
+            ViewBag.canthue = count_canthue;
+            ViewBag.canchothue = count_canchothue;
+
             if (user.IsAdmin == 1)
             {
                 ViewData["image"] = _context.Admin.Where(p => p.Account_ID == user.Id).SingleOrDefault().Avatar_URL;
@@ -275,6 +299,7 @@ namespace BDS_ML.Controllers
         //        Name = x._prefix + " " + x._name
         //    }).ToList());
         //}
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Search()
@@ -292,7 +317,9 @@ namespace BDS_ML.Controllers
 
             return View();
         }
+
         public List<SelectListItem> listprice;
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -492,8 +519,8 @@ namespace BDS_ML.Controllers
             ViewData["StatusResult"] = "Error Không tìm thấy kết quả phù hợp";
             return View();
         }
+        
         //Thêm bài đăng vào danh sách yêu thích
-       
         [HttpPost]
         public async Task<JsonResult> AddFavorite(int idpost)
         {
@@ -523,6 +550,7 @@ namespace BDS_ML.Controllers
 
 
         }
+
         [HttpPost]
         public async Task<JsonResult> RemoveFavorite(int id)
         {
@@ -550,5 +578,95 @@ namespace BDS_ML.Controllers
 
         }
 
+        //get post by post type large
+        [AllowAnonymous]
+        [Route("mua-thue-ban-chothue")]
+        public IActionResult SearchByPostType(int id = 0)
+        {
+            List<Post> lstFull = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+             .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
+             .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
+             .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
+             .Include(d => d.Post_Detail).Include(image => image.Post_Image).Include(p => p.Post_Status)
+             .ThenInclude(pt => pt.StatusNavigation.Post_Status)
+             .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1).ToList();
+
+            List<Post> lst = null;
+
+            if (id == 0)
+            {
+                ViewBag.Title = "Cần Mua/Cần Thuê";
+                lst = lstFull.Where(p => p.PostType == 3 || p.PostType == 4).ToList();
+            }
+            else
+            {
+                ViewBag.Title = "Cần Bán/Cho Thuê";
+                lst = lstFull.Where(p => p.PostType == 1 || p.PostType == 2).ToList();
+            }
+
+            return View("Index", lst);
+        }
+
+        //get post by post type
+        [AllowAnonymous]
+        [Route("type/{id}")]
+        public IActionResult SearchByType(int id = 0)
+        {
+            List<Post> lstFull = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+             .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
+             .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
+             .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
+             .Include(d => d.Post_Detail).Include(image => image.Post_Image).Include(p => p.Post_Status)
+             .ThenInclude(pt => pt.StatusNavigation.Post_Status)
+             .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1).ToList();
+
+            List<Post> lst = null;
+
+            if (id == 0)
+            {
+                ViewBag.Title = "Cần Bán";
+                lst = lstFull.Where(p => p.PostType == 1).ToList();
+            }
+            else
+            if (id == 1)
+            {
+                ViewBag.Title = "Cần Cho Thuê";
+                lst = lstFull.Where(p => p.PostType == 2).ToList();
+            }
+            else
+            if (id == 2)
+            {
+                ViewBag.Title = "Cần Mua";
+                lst = lstFull.Where(p => p.PostType == 3).ToList();
+            }
+            else
+            {
+                ViewBag.Title = "Cần Cho Thuê";
+                lst = lstFull.Where(p => p.PostType == 4).ToList();
+            }
+
+            return View("Index", lst);
+        }
+
+        //get post by post type
+        //[AllowAnonymous]
+        //[Route("hot-location/{id}")]
+        //public IActionResult SearchByLocation(string lc)
+        //{
+        //    List<Post> lstFull = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+        //     .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
+        //     .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
+        //     .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
+        //     .Include(d => d.Post_Detail).Include(image => image.Post_Image).Include(p => p.Post_Status)
+        //     .ThenInclude(pt => pt.StatusNavigation.Post_Status)
+        //     .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1).ToList();
+
+        //    List<Post> lst = null;
+        //    ViewBag.Title = lc;
+
+        //    lst = lstFull.Where(p => p.Post_Location.SingleOrDefault().Tinh_TPNavigation._name == lc).ToList();
+
+        //    return View("Index", lst);
+        //}
     }
 }
