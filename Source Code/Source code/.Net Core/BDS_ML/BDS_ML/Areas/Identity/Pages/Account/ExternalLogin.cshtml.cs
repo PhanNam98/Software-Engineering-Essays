@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BDS_ML.Models.ModelDB;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.EntityFrameworkCore;
 namespace BDS_ML.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
@@ -99,7 +99,9 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
-            var user = _context.AspNetUsers.Where(p => p.UserName == info.Principal.FindFirstValue(ClaimTypes.Email)).SingleOrDefault();
+           
+            var userID = _context.AspNetUserLogins.Where(p => p.ProviderKey == info.ProviderKey && p.LoginProvider == info.LoginProvider).SingleOrDefault().UserId;
+            var user = _context.AspNetUsers.Where(p => p.Id == userID).SingleOrDefault();
             BDS_ML.Models.ModelDB.Admin admin = new Models.ModelDB.Admin();
             Customer cus = new Customer();
             if (user != null)
