@@ -51,7 +51,7 @@ namespace BDS_ML.Controllers
             if(user!=null)
             {
                 ViewBag.favoritepost= _context.Post_Favorite.Include(p=>p.ID_PostNavigation).ThenInclude(p=>p.Post_Image).Include(p => p.ID_PostNavigation).ThenInclude(p => p.PostTypeNavigation).Include(p => p.ID_PostNavigation).ThenInclude(p => p.RealEstateTypeNavigation).Include(p => p.ID_UserNavigation)
-               .Where(p => p.ID_User == user.Id).ToList();
+               .Where(p => p.ID_User == user.Id).OrderByDescending(p=>p.MortifiedDate).Take(5).ToList();
             }
             return View(data);
         }

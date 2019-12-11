@@ -273,7 +273,7 @@ namespace BDS_ML.Controllers
             if (userCurrent != null)
             {
                 ViewBag.favoritepost = _context.Post_Favorite.Include(p => p.ID_PostNavigation).ThenInclude(p => p.Post_Image).Include(p => p.ID_PostNavigation).ThenInclude(p => p.PostTypeNavigation).Include(p => p.ID_PostNavigation).ThenInclude(p => p.RealEstateTypeNavigation).Include(p => p.ID_UserNavigation)
-               .Where(p => p.ID_User == userCurrent.Id).ToList();
+              .Where(p => p.ID_User == user.Id).OrderByDescending(p => p.MortifiedDate).Take(5).ToList();
             }
             return View(post);
         }
@@ -564,10 +564,10 @@ namespace BDS_ML.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
            
-            var post_Reporrtcount = _context.Report_Post.Where(p => p.ID_Post == idpost && p.MortifiedDate== DateTime.Now).Count();
+            var post_Reporrtcount = _context.Report_Post.Where(p => p.ID_Post == idpost && p.ID_Account_Report==user.Id && p.MortifiedDate.Date== DateTime.Now.Date).Count();
             if (post_Reporrtcount > 0)
             {
-                return Json(new { Result = "ERROR", Message = "Bạn đã báo cáo bài đăng này trong hôm nay rồi" });
+                return Json(new { Result = "ERROR", Message = "Bạn đã báo cáo bài đăng này trong hôm nay rồi!\n" });
             }
             try
             {
@@ -575,6 +575,7 @@ namespace BDS_ML.Controllers
                 report.ID_Post = idpost;
                 report.ID_Account_Report = user.Id;
                 report.MortifiedDate = DateTime.Now;
+                report.Reason = reason;
                 report.IsRead = false;
                 _context.Report_Post.Add(report);
                 _context.SaveChanges();
