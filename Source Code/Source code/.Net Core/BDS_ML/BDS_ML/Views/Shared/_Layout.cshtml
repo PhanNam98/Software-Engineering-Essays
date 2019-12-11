@@ -101,26 +101,21 @@
                 <!-- nav -->
                 <div class="section-row">
                     <ul class="nav-aside-menu">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
                         <li><hr /></li>
                         <partial name="_LoginPartial" />
                         <li><hr /></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="About">About Us</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Join">Join Us</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Advertisement">Advertisement</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacts</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">Về Chúng Tôi</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Join">Về Cộng Tác</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Quảng Cáo">Quảng Cáo</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Thông Tin Liên Hệ</a></li>
                     </ul>
                 </div>
                 <!-- /nav -->
-                <!-- widget posts -->
-                <div class="section-row">
-                    <h3>Recent Posts</h3>
 
-                </div>
-                <!-- /widget posts -->
                 <!-- social links -->
                 <div class="section-row">
-                    <h3>Follow us</h3>
+                    <h3>Theo Dõi Chúng Tôi</h3>
                     <ul class="nav-aside-social">
                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                         <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -165,8 +160,8 @@
                             <a asp-area="" asp-controller="Home" asp-action="Index" class="logo"><img src="~/logo/Group.png" alt="WebMag"></a>
                         </div>
                         <ul class="footer-nav">
-                            <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="Advertisement">Advertisement</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Chính Sách Bảo Mật</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Quảng Cáo">Quảng Cáo</a></li>
                         </ul>
                         <div class="footer-copyright">
                             <span>
@@ -185,17 +180,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="footer-widget">
-                                <h3 class="footer-title">About Us</h3>
+                                <h3 class="footer-title">Về Chúng Tôi</h3>
                                 <ul class="footer-links">
-                                    <li><a asp-area="" asp-controller="Home" asp-action="About">About Us</a></li>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Join">Join Us</a></li>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacts</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="About">Về Chúng Tôi</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="Join">Về Cộng Tác</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Thông Tin Liên Hệ</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="footer-widget">
-                                <h3 class="footer-title">Catagories</h3>
+                                <h3 class="footer-title">Thể Loại</h3>
                                 <ul class="footer-links">
                                     <li><a asp-action="SearchByType" asp-controller="Post" asp-route-id="2">Cần Mua</a></li>
                                     <li><a asp-action="SearchByType" asp-controller="Post" asp-route-id="3">Cần Thuê</a></li>
@@ -209,10 +204,10 @@
 
                 <div class="col-md-3">
                     <div class="footer-widget">
-                        <h3 class="footer-title">Join our Newsletter</h3>
+                        <h3 class="footer-title">Nhận Thông Tin Từ Chúng Tôi</h3>
                         <div class="footer-newsletter">
                             <form>
-                                <input class="input" type="email" name="newsletter" placeholder="Enter your email">
+                                <input class="input" type="email" name="newsletter" placeholder="Nhập Email của bạn...">
                                 <button class="newsletter-btn"><i class="fa fa-paper-plane"></i></button>
                             </form>
                         </div>

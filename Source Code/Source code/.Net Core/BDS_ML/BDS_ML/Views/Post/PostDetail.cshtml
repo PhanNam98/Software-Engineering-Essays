@@ -9,11 +9,11 @@
 }
 <style>
 
-    /*.modal-dialog {
-        width: 100%;
-        margin-left: 30%;
+    .modal-dialog {
+        width: auto;
+        margin-left: 10%;
         margin-right: 10%;
-    }*/
+    }
     .modal-backdrop.in {
     filter: alpha(opacity=50);
     opacity: 0;
@@ -41,20 +41,20 @@
 
     /* The Modal (background) */
     .modal {
-        display: none;
         position: fixed;
-        z-index: 1;
-        padding-top: 100px;
-        left: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: black;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #0000004a;
+        z-index: 1050;
+        display: none;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+        outline: 0;
     }
-
-    /* Modal Content */
-    .modal-content {
+        /* Modal Content */
+        .modal-content {
         position: relative;
         background-color: #fefefe;
         margin: auto;
@@ -65,7 +65,7 @@
 
     /* The Close Button */
     .close {
-        color: white;
+        /*color: white;*/
         position: absolute;
         top: 10px;
         right: 25px;
@@ -377,9 +377,10 @@
                     </div>
                     <div id="myModal" class="modal">
 
-                        <span class="close cursor" onclick="closeModal()">Đóng</span>
 
                         <div class="modal-content">
+                            <span class="close cursor" onclick="closeModal()">Đóng</span>
+
                             @{
                                 var count1 = 0;
                                 @foreach (var item in Model.Post_Image.ToList())
@@ -430,23 +431,22 @@
                     <div class="author-contact">
                         <p><i class="fa fa-phone"></i> @(String.Format("{0:0### ### ###}", Model.ID_AccountNavigation.PhoneNumber))</p>
                         <p><i class="fa fa-envelope"></i>@Model.ID_AccountNavigation.Email</p>
-                    </div>
-                </div>
 
-                @{
 
-                   
+                        @{
 
-                        string reportq = "rb" + Model.ID_Post.ToString();
-                        <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@reportq">Báo cáo bài viết</button>
-                        string reasonReportPost = "re" + Model.ID_Post.ToString();
-                        <!-- Modal -->
 
-                        <div class="modal fade" id="@reportq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="center">
-                                <div class="modal-dialog modal-dialog-center" role="document">
-                                    <div class="modal-content">
-                                       
+
+                            string reportq = "rb" + Model.ID_Post.ToString();
+                            <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@reportq">Báo cáo bài viết</button>
+                            string reasonReportPost = "re" + Model.ID_Post.ToString();
+                            <!-- Modal -->
+
+                            <div class="modal fade" id="@reportq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="center">
+                                    <div class="modal-dialog modal-dialog-center" role="document">
+                                        <div class="modal-content">
+
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">Báo cáo bài đăng</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
@@ -455,14 +455,14 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row form-group">
-                                                    <div class="col col-md-3">@Html.Label("Mã bài đăng")</div>
-                                                    <div class="col-12 col-md-9">
+                                                    <div class="col col-md-4">@Html.Label("Mã bài đăng")</div>
+                                                    <div class="col-12 col-md-8">
                                                         <input type="text" name="idpost" class="input-md form-control" value="@Model.ID_Post" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
-                                                    <div class="col col-md-3">@Html.Label("Lí do báo cáo")</div>
-                                                    <div class="col-12 col-md-9">
+                                                    <div class="col col-md-4">@Html.Label("Lí do báo cáo")</div>
+                                                    <div class="col-12 col-md-8">
                                                         <input type="text" name="reasonBlockPost" class="input-md form-control" id="@reasonReportPost" placeholder="Lí do báo cáo">
                                                         @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
                                                     </div>
@@ -478,113 +478,114 @@
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                                             </div>
 
-                                        
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                    
-                    }
 
 
-
-
-
-
-
-                    @{
-                        if (!SignInManager.IsSignedIn(User))
-                        {
-                            <!-- ad -->
-                            <div class="aside-widget text-center">
-                                <a href="#" style="display: inline-block;margin: auto;">
-                                    <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
-                                </a>
-                            </div>
-                            <!-- /ad -->
-
-                            <!-- catagories -->
-                            <div class="aside-widget">
-                                <div class="section-title">
-                                    <h2 class="text-center">Danh Mục</h2>
-                                </div>
-                                <div class="category-widget">
-                                    <ul>
-                                        <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="2">Cần Mua<span>@ViewData["canmua"]</span></a></li>
-                                        <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="0">Cần Bán<span>@ViewData["canban"]</span></a></li>
-                                        <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="3">Cần Thuê<span>@ViewData["canthue"]</span></a></li>
-                                        <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="1">Cần Cho Thuê<span>@ViewData["canchothue"]</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- /catagories -->
                         }
-                        else
-                        {
-                            <!-- ad -->
-                            <div class="aside-widget text-center">
-                                <a href="#" style="display: inline-block;margin: auto;">
-                                    <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
-                                </a>
+
+                    </div>
+                </div>
+
+
+
+
+
+                @{
+                    if (!SignInManager.IsSignedIn(User))
+                    {
+                        <!-- ad -->
+                        <div class="aside-widget text-center">
+                            <a href="#" style="display: inline-block;margin: auto;">
+                                <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                            </a>
+                        </div>
+                        <!-- /ad -->
+
+                        <!-- catagories -->
+                        <div class="aside-widget">
+                            <div class="section-title">
+                                <h2 class="text-center">Danh Mục</h2>
                             </div>
-                            <!-- /ad -->
+                            <div class="category-widget">
+                                <ul>
+                                    <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="2">Cần Mua<span>@ViewData["canmua"]</span></a></li>
+                                    <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="0">Cần Bán<span>@ViewData["canban"]</span></a></li>
+                                    <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="3">Cần Thuê<span>@ViewData["canthue"]</span></a></li>
+                                    <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="1">Cần Cho Thuê<span>@ViewData["canchothue"]</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /catagories -->
+                    }
+                    else
+                    {
+                        <!-- ad -->
+                        <div class="aside-widget text-center">
+                            <a href="#" style="display: inline-block;margin: auto;">
+                                <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                            </a>
+                        </div>
+                        <!-- /ad -->
 
-                            <!-- favorite post-->
-                            <div class="aside-widget">
-                                <div class="section-title text-right">
-                                    <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
-                                    <p>Bài viết được bạn yêu thích</p>
-                                </div>
+                        <!-- favorite post-->
+                        <div class="aside-widget">
+                            <div class="section-title text-right">
+                                <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
+                                <p>Bài viết được bạn yêu thích</p>
+                            </div>
 
-                                @{
-                                    if (SignInManager.IsSignedIn(User))
+                            @{
+                                if (SignInManager.IsSignedIn(User))
+                                {
+                                    if (ViewData["favoritepost"] != null && (ViewData["favoritepost"] as IEnumerable<Post_Favorite>).Count() != 0)
                                     {
-                                        if (ViewData["favoritepost"] != null && (ViewData["favoritepost"] as IEnumerable<Post_Favorite>).Count() != 0)
+                                        foreach (var item in ViewData["favoritepost"] as IEnumerable<Post_Favorite>)
                                         {
-                                            foreach (var item in ViewData["favoritepost"] as IEnumerable<Post_Favorite>)
+                                            var _ImagespostFavorate = item.ID_PostNavigation.Post_Image.ToList();
+                                            var image = "";
+                                            foreach (var i in _ImagespostFavorate)
                                             {
-                                                var _ImagespostFavorate = item.ID_PostNavigation.Post_Image.ToList();
-                                                var image = "";
-                                                foreach (var i in _ImagespostFavorate)
-                                                {
-                                                    image = i.url;
-                                                    break;
-                                                }
-                                                <div class="post post-widget">
-
-                                                    <a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail" class="post-img"><img src="@(Constants.POST_IMG_URL + image)" alt=""></a>
-                                                    <div class="post-body">
-                                                        <h3 class="post-title"><a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail">@item.ID_PostNavigation.Tittle</a></h3>
-                                                    </div>
-                                                </div>
+                                                image = i.url;
+                                                break;
                                             }
-                                        }
-                                        else
-                                        {
                                             <div class="post post-widget">
+
+                                                <a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail" class="post-img"><img src="@(Constants.POST_IMG_URL + image)" alt=""></a>
                                                 <div class="post-body">
-                                                    <p><i>Bạn chưa có bài đăng yêu thích!</i></p>
+                                                    <h3 class="post-title"><a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail">@item.ID_PostNavigation.Tittle</a></h3>
                                                 </div>
                                             </div>
                                         }
-
                                     }
                                     else
                                     {
                                         <div class="post post-widget">
                                             <div class="post-body">
-                                                <p><i>Hãy đăng nhập để sử dụng tính năng này!</i></p>
+                                                <p><i>Bạn chưa có bài đăng yêu thích!</i></p>
                                             </div>
                                         </div>
                                     }
-                                }
-                            </div>
-                            <!-- /favorite post-->
-                        }
-                    }
 
-                </div>
+                                }
+                                else
+                                {
+                                    <div class="post post-widget">
+                                        <div class="post-body">
+                                            <p><i>Hãy đăng nhập để sử dụng tính năng này!</i></p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!-- /favorite post-->
+                    }
+                }
+
+            </div>
         </div>
 
     </div>
