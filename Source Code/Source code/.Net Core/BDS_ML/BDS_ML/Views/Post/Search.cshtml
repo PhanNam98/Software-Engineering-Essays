@@ -221,11 +221,13 @@
                                         @Html.DisplayFor(modelItem => item.Tittle)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Size)
+                                       
+                                        @Html.Raw(string.Format("{0:0.#### m²}", item.Size))
                                     </td>
                                     <td>
-                                       @* @Html.DisplayFor(modelItem => item.Price)*@
-                                        @{
+                                      
+                                        @if (item.PostType == 1 || item.PostType == 3)
+                                        {
                                             if (item.Price >= 1000)
                                             {
                                                 @Html.Raw(string.Format("{0:0.#### Tỷ VND}", item.Price / 1000))
@@ -235,6 +237,19 @@
                                                 @Html.Raw(string.Format("{0:0.#### Triệu VND}", item.Price))
                                             }
                                         }
+                                        else
+                                        {
+                                            if (item.Price >= 1000)
+                                            {
+                                                @Html.Raw(string.Format("{0:0.#### Tỷ VND / tháng}", item.Price / 1000))
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(string.Format("{0:0.#### Triệu VND / tháng}", item.Price))
+                                            }
+
+                                        }
+                                    
                                     </td>
 
                                     <td>
