@@ -83,18 +83,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             }
             BDS_ML.Models.ModelDB.Admin admin=new Models.ModelDB.Admin();
             Customer cus=new Customer();
-            string urlavatar = "";
-            if(user.IsAdmin==1)
-            {
-                 admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-                urlavatar += admin.Avatar_URL;
-            }
-            else
-            {
-                cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
-                urlavatar += cus.Avatar_URL;
-            }
-            HttpContext.Session.SetString("AvatarImage",urlavatar);
+           
             if (user.IsBlock != 0)
             {
                 if (user.IsAdmin == 0)
@@ -159,6 +148,18 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
+                    string urlavatar = "";
+                    if (user.IsAdmin == 1)
+                    {
+                        admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                        urlavatar += admin.Avatar_URL;
+                    }
+                    else
+                    {
+                        cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                        urlavatar += cus.Avatar_URL;
+                    }
+                    HttpContext.Session.SetString("AvatarImage", urlavatar);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

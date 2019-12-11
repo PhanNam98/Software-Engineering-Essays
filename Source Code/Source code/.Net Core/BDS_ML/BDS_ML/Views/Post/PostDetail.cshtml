@@ -224,21 +224,36 @@
                 }
                 <div class="section">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <h3>@Model.Post_Location.SingleOrDefault().DiaChi, Đường: @Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name, @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
                             <p><i class="fa fa-map-marker"></i> @Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                         </div>
-                        <div class="col-md-4 feature-item">
+                        <div class="col-md-3 feature-item">
                             <a href="#" class="room-price1" onclick="addfavorite(@Model.ID_Post)">Thích</a>
                         </div>
-                        <div class="col-md-4 feature-item">
+                        <div class="col-md-3 feature-item">
                             @if (Model.PostType == 1)
                             {
-                                <a href="#" class="room-price">@string.Format("{0:0 Triệu VND}", Model.Price)</a>
+                                if (Model.Price >= 1000)
+                                {
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@Model.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", Model.Price / 1000)</a>
+                                }
+                                else
+                                {
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@Model.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", Model.Price)</a>
+                                }
                             }
                             else
                             {
-                                <a href="#" class="room-price">@string.Format("{0:0 Triệu VND / tháng}", Model.Price)</a>
+                                if (Model.Price >= 1000)
+                                {
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@Model.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", Model.Price / 1000) / tháng</a>
+                                }
+                                else
+                                {
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@Model.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", Model.Price) / tháng</a>
+                                }
+
                             }
                         </div>
                     </div>

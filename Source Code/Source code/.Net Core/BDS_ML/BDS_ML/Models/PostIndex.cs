@@ -28,6 +28,7 @@ namespace BDS_ML.Models
               .Include(p=>p.Post_Location).ThenInclude(l=>l.Tinh_TPNavigation.Post_Location)
               .Include(p=>p.Post_Location).ThenInclude(l=>l.Quan_HuyenNavigation.Post_Location)
               .Include(i=>i.Post_Image)
+              .Include(p=>p.Post_Detail)
               .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1)
               .OrderByDescending(n => n.PostTime).Take(3).ToList();
 
@@ -41,6 +42,7 @@ namespace BDS_ML.Models
               .Include(p => p.Post_Location).ThenInclude(l => l.Tinh_TPNavigation.Post_Location)
               .Include(p => p.Post_Location).ThenInclude(l => l.Quan_HuyenNavigation.Post_Location)
               .Include(i => i.Post_Image)
+              .Include(p=>p.Post_Detail)
               .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1)
               .OrderByDescending(n => n.PostTime).Take(6).ToList();
 

@@ -17,6 +17,7 @@ using BDS_ML.Models;
 using BDS_ML.Models.ModelDB;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
+using ReflectionIT.Mvc.Paging;
 
 namespace BDS_ML
 {
@@ -95,6 +96,10 @@ namespace BDS_ML
 
             services.AddSession();
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(1));
+            services.AddPaging(options => {
+                options.ViewName = "Bootstrap4";
+                options.PageParameterName = "pageindex";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
+
 namespace BDS_ML.Controllers
 {
     [Authorize]
@@ -191,10 +194,10 @@ namespace BDS_ML.Controllers
 
             }
 
-        
+
             try
             {
-              
+
                 await _context.SaveChangesAsync();
                 StatusMessage = "Đăng bài thành công!";
                 return RedirectToAction("Index", "Post", new { area = "ManagePosts" });
@@ -224,7 +227,7 @@ namespace BDS_ML.Controllers
                 return NotFound();
             }
 
-            
+
 
             var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
                           .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
@@ -519,7 +522,7 @@ namespace BDS_ML.Controllers
             ViewData["StatusResult"] = "Error Không tìm thấy kết quả phù hợp";
             return View();
         }
-        
+
         //Thêm bài đăng vào danh sách yêu thích
         [HttpPost]
         public async Task<JsonResult> AddFavorite(int idpost)
@@ -566,7 +569,7 @@ namespace BDS_ML.Controllers
                 Post_Favorite post_Favorite = _context.Post_Favorite.Where(p => p.ID_Post == id && p.ID_User == user.Id).SingleOrDefault();
                 _context.Post_Favorite.Remove(post_Favorite);
                 _context.SaveChanges();
-                return Json(new { Result = "OK", Message = "Đã xóa bài ra khỏi danh sách yêu thích",Id=id });
+                return Json(new { Result = "OK", Message = "Đã xóa bài ra khỏi danh sách yêu thích", Id = id });
 
 
             }
@@ -580,8 +583,9 @@ namespace BDS_ML.Controllers
 
         //get post by post type large
         [AllowAnonymous]
+        [HttpGet]
         [Route("mua-thue-ban-chothue")]
-        public IActionResult SearchByPostType(int id = 0)
+        public IActionResult SearchByPostType(int id = 0, int pageindex = 1)
         {
             List<Post> lstFull = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
              .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
@@ -596,21 +600,32 @@ namespace BDS_ML.Controllers
             if (id == 0)
             {
                 ViewBag.Title = "Cần Mua/Cần Thuê";
-                lst = lstFull.Where(p => p.PostType == 3 || p.PostType == 4).ToList();
+                lst = lstFull.Where(p => p.PostType == 3 || p.PostType == 4).OrderByDescending(p=>p.PostTime).ToList();
+                ViewBag.Count = lst.Count();
+                var model = PagingList.Create(lst,6, pageindex);
+                model.Action = "SearchByPostType";
+                model.RouteValue = new RouteValueDictionary {
+                { "id", id}};
+                return View("Index", model);
             }
             else
             {
                 ViewBag.Title = "Cần Bán/Cho Thuê";
-                lst = lstFull.Where(p => p.PostType == 1 || p.PostType == 2).ToList();
+                lst = lstFull.Where(p => p.PostType == 1 || p.PostType == 2).OrderByDescending(p => p.PostTime).ToList();
+                ViewBag.Count = lst.Count();
+                var model = PagingList.Create(lst,6, pageindex);
+                model.Action = "SearchByPostType";
+                model.RouteValue = new RouteValueDictionary {
+                { "id", id}};
+                return View("Index", model);
             }
 
-            return View("Index", lst);
         }
 
         //get post by post type
         [AllowAnonymous]
         [Route("type/{id}")]
-        public IActionResult SearchByType(int id = 0)
+        public IActionResult SearchByType(int id = 0, int pageindex = 1)
         {
             List<Post> lstFull = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
              .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
@@ -625,27 +640,51 @@ namespace BDS_ML.Controllers
             if (id == 0)
             {
                 ViewBag.Title = "Cần Bán";
-                lst = lstFull.Where(p => p.PostType == 1).ToList();
+                lst = lstFull.Where(p => p.PostType == 1).OrderByDescending(p=>p.PostTime).ToList();
+                ViewBag.Count = lst.Count();
+                var model = PagingList.Create(lst, 6, pageindex);
+                model.Action = "SearchByType";
+                model.RouteValue = new RouteValueDictionary {
+                { "id", id}};
+                return View("Index", model);
             }
             else
             if (id == 1)
             {
                 ViewBag.Title = "Cần Cho Thuê";
-                lst = lstFull.Where(p => p.PostType == 2).ToList();
+                lst = lstFull.Where(p => p.PostType == 2).OrderByDescending(p => p.PostTime).ToList();
+                ViewBag.Count = lst.Count();
+                var model = PagingList.Create(lst, 6, pageindex);
+                model.Action = "SearchByType";
+                model.RouteValue = new RouteValueDictionary {
+                { "id", id}};
+                return View("Index", model);
             }
             else
             if (id == 2)
             {
                 ViewBag.Title = "Cần Mua";
-                lst = lstFull.Where(p => p.PostType == 3).ToList();
+                lst = lstFull.Where(p => p.PostType == 3).OrderByDescending(p => p.PostTime).ToList();
+                ViewBag.Count = lst.Count();
+                var model = PagingList.Create(lst, 6, pageindex);
+                model.Action = "SearchByType";
+                model.RouteValue = new RouteValueDictionary {
+                { "id", id}};
+                return View("Index", model);
             }
             else
             {
                 ViewBag.Title = "Cần Cho Thuê";
-                lst = lstFull.Where(p => p.PostType == 4).ToList();
+                lst = lstFull.Where(p => p.PostType == 4).OrderByDescending(p => p.PostTime).ToList();
+                ViewBag.Count = lst.Count();
+                var model = PagingList.Create(lst, 6, pageindex);
+                model.Action = "SearchByType";
+                model.RouteValue = new RouteValueDictionary {
+                { "id", id}};
+                return View("Index", model);
             }
 
-            return View("Index", lst);
+          
         }
 
         //get post by post type

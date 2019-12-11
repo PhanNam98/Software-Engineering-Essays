@@ -1,6 +1,8 @@
 ﻿@using BDS_ML.Models.ModelDB
 @using BDS_ML.Models.Common
-@model List<Post>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *,ReflectionIT.Mvc.Paging
+@model ReflectionIT.Mvc.Paging.PagingList<Post>
 @{
     ViewData["Title"] = "Các Bài Đăng Về " + ViewBag.Title;
     BDT_MLDBContext db = new BDT_MLDBContext();
@@ -11,13 +13,17 @@
     <span><i class="fa fa-angle-right"></i> @ViewBag.Title</span>
 </div>
 
-
 <div class="section">
     <div class="container">
         <div class="text-center">
             <h2 class="display-4">@ViewData["Title"]</h2>
-            <p>Tìm thấy: @Model.Count() kết quả!</p>
+            <p>Tìm thấy: @ViewData["Count"] kết quả!</p>
         </div>
+        <input name="id" class="form-control"
+               value="@Model.RouteValue["id"]" type="hidden" />
+        <nav aria-label="Suppliers navigation example">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
 
         @{if (Model.Count() == 0)
             {
@@ -77,12 +83,12 @@
                                         <div class="room-info">
                                             <div class="rf-left">
                                                 <p><i class="fa fa-th-large"></i>@string.Format("{0:0 m²}", post.Size)</p>
-                                                <p><i class="fa fa-building-o"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Floor lầu</p>
-                                                <p><i class="fa fa-bed"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Bedroom phòng ngủ</p>
-                                                <p><i class="fa fa-bath"></i>@db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).Bathroom phòng tắm</p>
+                                                <p><i class="fa fa-building-o"></i>@post.Post_Detail.SingleOrDefault().Floor lầu</p>
+                                                <p><i class="fa fa-bed"></i>@post.Post_Detail.SingleOrDefault().Bedroom phòng ngủ</p>
+                                                <p><i class="fa fa-bath"></i>@post.Post_Detail.SingleOrDefault().Bathroom phòng tắm</p>
                                             </div>
                                             <div class="rf-right">
-                                                @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearHospital == true)
+                                                @if (post.Post_Detail.SingleOrDefault().NearHospital == true)
                                                 {
                                                     <p><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
                                                 }
@@ -91,7 +97,7 @@
                                                     <p class="notavailable"><i class="fa fa-hospital-o"></i>gần Bệnh Viện</p>
                                                 }
 
-                                                @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearMarket == true)
+                                                @if (post.Post_Detail.SingleOrDefault().NearMarket == true)
                                                 {
                                                     <p><i class="fa fa-shopping-cart"></i>gần Chợ</p>
                                                 }
@@ -100,7 +106,7 @@
                                                     <p class="notavailable"><i class="fa fa-shopping-cart"></i>gần Chợ</p>
                                                 }
 
-                                                @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearSchool == true)
+                                                @if (post.Post_Detail.SingleOrDefault().NearSchool == true)
                                                 {
                                                     <p><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
 
@@ -110,7 +116,7 @@
                                                     <p class="notavailable"><i class="fa fa-graduation-cap"></i>gần Trường Học</p>
                                                 }
 
-                                                @if (db.Post_Detail.FirstOrDefault(p => p.ID_Post == post.ID_Post).NearAirport == true)
+                                                @if (post.Post_Detail.SingleOrDefault().NearAirport == true)
                                                 {
                                                     <p><i class="fa fa-plane"></i>gần Sân Bay</p>
 
@@ -132,11 +138,26 @@
                                     </div>
                                     @if (post.PostType == 1)
                                     {
-                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price)</a>
+                                        if (post.Price >= 1000)
+                                        {
+                                            <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", post.Price / 1000)</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price)</a>
+                                        }
                                     }
                                     else
                                     {
-                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price) / tháng</a>
+                                        if (post.Price >= 1000)
+                                        {
+                                            <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", post.Price / 1000) / tháng</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price) / tháng</a>
+                                        }
+
                                     }
                                 </div>
                             </div>
@@ -145,5 +166,9 @@
                 </div>
             }
         }
+        <nav aria-label="Products navigation example">
+            <vc:pager paging-list="@Model" paging-listc="1" />
+        </nav>
+
     </div>
 </div>
