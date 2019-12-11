@@ -7,14 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using BDS_ML.Models;
 using Microsoft.AspNetCore.Authorization;
 using BDS_ML.Models.Data;
-
+using BDS_ML.Models.ModelDB;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 namespace BDS_ML.Controllers
 {
     [AllowAnonymous]
     [Authorize]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        private readonly BDT_MLDBContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(UserManager<ApplicationUser> userManager)
+        {
+            _context = new BDT_MLDBContext();
+            _userManager = userManager;
+          
+        }
+        public async Task<IActionResult> Index()
         {
             Home_Index data = new Home_Index();
             PostIndex postIndex = new PostIndex();
@@ -36,7 +47,12 @@ namespace BDS_ML.Controllers
             ViewBag.canmua = count_canmua;
             ViewBag.canthue = count_canthue;
             ViewBag.canchothue = count_canchothue;
-
+            var user = await _userManager.GetUserAsync(User);
+            if(user!=null)
+            {
+                ViewBag.favoritepost= _context.Post_Favorite.Include(p=>p.ID_PostNavigation).ThenInclude(p=>p.Post_Image).Include(p => p.ID_PostNavigation).ThenInclude(p => p.PostTypeNavigation).Include(p => p.ID_PostNavigation).ThenInclude(p => p.RealEstateTypeNavigation).Include(p => p.ID_UserNavigation)
+               .Where(p => p.ID_User == user.Id).ToList();
+            }
             return View(data);
         }
         

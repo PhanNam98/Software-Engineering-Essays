@@ -197,7 +197,7 @@
                         </th>
 
                         <th>
-                            @Html.DisplayName("HÌnh thức trao đổi")
+                            @Html.DisplayName("Hình thức trao đổi")
                         </th>
                         <th>
                             @Html.DisplayName("Loại Bất động sản")
@@ -224,7 +224,17 @@
                                         @Html.DisplayFor(modelItem => item.Size)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Price)
+                                       @* @Html.DisplayFor(modelItem => item.Price)*@
+                                        @{
+                                            if (item.Price >= 1000)
+                                            {
+                                                @Html.Raw(string.Format("{0:0.#### Tỷ VND}", item.Price / 1000))
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(string.Format("{0:0.#### Triệu VND}", item.Price))
+                                            }
+                                        }
                                     </td>
 
                                     <td>

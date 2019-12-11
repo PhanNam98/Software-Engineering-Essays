@@ -269,40 +269,15 @@ namespace BDS_ML.Controllers
             }
             if (ViewData["image"] == null)
                 ViewData["image"] = "avatar_common.png";
-
+            var userCurrent = await _userManager.GetUserAsync(User);
+            if (userCurrent != null)
+            {
+                ViewBag.favoritepost = _context.Post_Favorite.Include(p => p.ID_PostNavigation).ThenInclude(p => p.Post_Image).Include(p => p.ID_PostNavigation).ThenInclude(p => p.PostTypeNavigation).Include(p => p.ID_PostNavigation).ThenInclude(p => p.RealEstateTypeNavigation).Include(p => p.ID_UserNavigation)
+               .Where(p => p.ID_User == userCurrent.Id).ToList();
+            }
             return View(post);
         }
-        //[AllowAnonymous]
-        //public JsonResult Get_district(int province_id)
-        //{
-        //    var list = _context.district.Where(p => p._province_id == province_id);
-        //    return Json(list.Select(x => new
-        //    {
-        //        ID = x.id,
-        //        Name = x._prefix + " " + x._name
-        //    }).ToList());
-        //}
-        //[AllowAnonymous]
-        //public JsonResult Get_ward(int province_id, int district_id)
-        //{
-        //    var list = _context.ward.Where(p => p._province_id == province_id && p._district_id == district_id);
-        //    return Json(list.Select(x => new
-        //    {
-        //        ID = x.id,
-        //        Name = x._prefix + " " + x._name
-        //    }).ToList());
-        //}
-        //[AllowAnonymous]
-        //public JsonResult Get_street(int province_id, int district_id)
-        //{
-        //    var list = _context.street.Where(p => p._province_id == province_id && p._district_id == district_id);
-        //    return Json(list.Select(x => new
-        //    {
-        //        ID = x.id,
-        //        Name = x._prefix + " " + x._name
-        //    }).ToList());
-        //}
-
+       
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Search()
@@ -570,6 +545,40 @@ namespace BDS_ML.Controllers
                 _context.Post_Favorite.Remove(post_Favorite);
                 _context.SaveChanges();
                 return Json(new { Result = "OK", Message = "Đã xóa bài ra khỏi danh sách yêu thích", Id = id });
+
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+
+
+        }
+
+
+
+        //báo cáo bài đăng 
+        [HttpPost]
+        public async Task<JsonResult> AddReportPost(int idpost,string reason)
+        {
+            var user = await _userManager.GetUserAsync(User);
+           
+            var post_Reporrtcount = _context.Report_Post.Where(p => p.ID_Post == idpost && p.MortifiedDate== DateTime.Now).Count();
+            if (post_Reporrtcount > 0)
+            {
+                return Json(new { Result = "ERROR", Message = "Bạn đã báo cáo bài đăng này trong hôm nay rồi" });
+            }
+            try
+            {
+                Report_Post report = new Report_Post();
+                report.ID_Post = idpost;
+                report.ID_Account_Report = user.Id;
+                report.MortifiedDate = DateTime.Now;
+                report.IsRead = false;
+                _context.Report_Post.Add(report);
+                _context.SaveChanges();
+                return Json(new { Result = "OK", Message = "Đã báo cáo bài đăng" });
 
 
             }

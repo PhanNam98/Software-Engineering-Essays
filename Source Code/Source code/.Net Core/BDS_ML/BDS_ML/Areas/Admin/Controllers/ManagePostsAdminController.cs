@@ -32,9 +32,7 @@ namespace BDS_ML.Areas.Admin.Controllers
         // GET: Admin/ManagePostsAdmin
         public async Task<IActionResult> Index()
         {
-            //var bDT_MLDBContext = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-            //  .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Status).OrderByDescending(p => p.PostTime);
-            //return View(await bDT_MLDBContext.ToListAsync());
+        
             
            var listpost =await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
               .Include(p => p.RealEstateTypeNavigation)
@@ -57,34 +55,7 @@ namespace BDS_ML.Areas.Admin.Controllers
             return View(listpost);
 
         }
-        //public async Task<IActionResult> ListPost()
-        //{
-
-        //    var user = await _userManager.GetUserAsync(User);
-        //    var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-        //       .Include(p => p.RealEstateTypeNavigation)
-        //       .Include(p => p.Post_Status)
-        //       .ThenInclude(post => post.StatusNavigation.Post_Status).Where(p=>p.ID_Account==user.Id && p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status != 8 &&
-        //       p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status != 7).ToList();
-
-        //    return View(listpost);
-
-        //}
-
-
-
-        //public async Task<IActionResult> ListHidePost()
-        //{
-
-        //    var user = await _userManager.GetUserAsync(User);
-        //    var listpost = _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-        //       .Include(p => p.RealEstateTypeNavigation)
-        //       .Include(p => p.Post_Status)
-        //       .ThenInclude(post => post.StatusNavigation.Post_Status).Where(p => p.ID_Account == user.Id && p.Post_Status.OrderBy(c=>c.ModifiedDate).LastOrDefault().Status==8).ToList();
-
-        //    return View(listpost);
-
-        //}
+        
         public async Task<IActionResult> ListPedingPost()
         {
 

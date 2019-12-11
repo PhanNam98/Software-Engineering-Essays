@@ -8,6 +8,17 @@
     BDT_MLDBContext db = new BDT_MLDBContext();
 }
 <style>
+
+    /*.modal-dialog {
+        width: 100%;
+        margin-left: 30%;
+        margin-right: 10%;
+    }*/
+    .modal-backdrop.in {
+    filter: alpha(opacity=50);
+    opacity: 0;
+}
+
     hr.style1 {
         border-top: 1px solid #8c8b8b;
     }
@@ -423,75 +434,157 @@
                 </div>
 
                 @{
-                    if (!SignInManager.IsSignedIn(User))
-                    {
-                        <!-- ad -->
-                        <div class="aside-widget text-center">
-                            <a href="#" style="display: inline-block;margin: auto;">
-                                <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
-                            </a>
-                        </div>
-                        <!-- /ad -->
 
-                        <!-- catagories -->
-                        <div class="aside-widget">
-                            <div class="section-title">
-                                <h2 class="text-center">Danh Mục</h2>
-                            </div>
-                            <div class="category-widget">
-                                <ul>
-                                    <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="2">Cần Mua<span>@ViewData["canmua"]</span></a></li>
-                                    <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="0">Cần Bán<span>@ViewData["canban"]</span></a></li>
-                                    <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="3">Cần Thuê<span>@ViewData["canthue"]</span></a></li>
-                                    <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="1">Cần Cho Thuê<span>@ViewData["canchothue"]</span></a></li>
-                                </ul>
+                   
+
+                        string reportq = "rb" + Model.ID_Post.ToString();
+                        <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@reportq">Báo cáo bài viết</button>
+                        string reasonReportPost = "re" + Model.ID_Post.ToString();
+                        <!-- Modal -->
+
+                        <div class="modal fade" id="@reportq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="center">
+                                <div class="modal-dialog modal-dialog-center" role="document">
+                                    <div class="modal-content">
+                                       
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Báo cáo bài đăng</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">@Html.Label("Mã bài đăng")</div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" name="idpost" class="input-md form-control" value="@Model.ID_Post" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">@Html.Label("Lí do báo cáo")</div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" name="reasonBlockPost" class="input-md form-control" id="@reasonReportPost" placeholder="Lí do báo cáo">
+                                                        @* @Html.TextBox("reasonBlockCus", null, htmlAttributes: new { @name = "reasonBlockCus", @class = "form-control", @placeholder = "Lí do khóa", required = "required" })*@
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-12">
+                                                        <strong> <a>Bạn muốn báo bài đăng này?</a></strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-success" onclick="reportPost('@Model.ID_Post','@reasonReportPost')">Đồng ý</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            </div>
+
+                                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- /catagories -->
+
+                    
                     }
-                    else
-                    {
-                        <!-- ad -->
-                        <div class="aside-widget text-center">
-                            <a href="#" style="display: inline-block;margin: auto;">
-                                <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
-                            </a>
-                        </div>
-                        <!-- /ad -->
 
-                        <!-- favorite post-->
-                        <div class="aside-widget">
-                            <div class="section-title text-right">
-                                <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
-                                <p>Bài viết được bạn yêu thích</p>
+
+
+
+
+
+
+                    @{
+                        if (!SignInManager.IsSignedIn(User))
+                        {
+                            <!-- ad -->
+                            <div class="aside-widget text-center">
+                                <a href="#" style="display: inline-block;margin: auto;">
+                                    <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                                </a>
                             </div>
+                            <!-- /ad -->
 
-                            <div class="post post-widget">
-                                <a class="post-img" href="#"><img src="/webmag/img/post-5.jpg" alt=""></a>
-                                <div class="post-body">
-                                    <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
+                            <!-- catagories -->
+                            <div class="aside-widget">
+                                <div class="section-title">
+                                    <h2 class="text-center">Danh Mục</h2>
+                                </div>
+                                <div class="category-widget">
+                                    <ul>
+                                        <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="2">Cần Mua<span>@ViewData["canmua"]</span></a></li>
+                                        <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="0">Cần Bán<span>@ViewData["canban"]</span></a></li>
+                                        <li><a class="cat-1" asp-action="SearchByType" asp-controller="Post" asp-route-id="3">Cần Thuê<span>@ViewData["canthue"]</span></a></li>
+                                        <li><a class="cat-2" asp-action="SearchByType" asp-controller="Post" asp-route-id="1">Cần Cho Thuê<span>@ViewData["canchothue"]</span></a></li>
+                                    </ul>
                                 </div>
                             </div>
-
-                            <div class="post post-widget">
-                                <a class="post-img" href="#"><img src="/webmag/img/post-5.jpg" alt=""></a>
-                                <div class="post-body">
-                                    <h3 class="post-title"><a href="blog-post.html">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
-                                </div>
+                            <!-- /catagories -->
+                        }
+                        else
+                        {
+                            <!-- ad -->
+                            <div class="aside-widget text-center">
+                                <a href="#" style="display: inline-block;margin: auto;">
+                                    <img class="img-responsive" src="~/webmag/img/sample.jpg" alt="sample">
+                                </a>
                             </div>
+                            <!-- /ad -->
 
-                            <div class="post post-widget">
-                                <a class="post-img" href="#"><img src="/webmag/img/post-5.jpg" alt=""></a>
-                                <div class="post-body">
-                                    <h3 class="post-title"><a href="blog-post.html">Why Node.js Is The Coolest Kid On The Backend Development Block!</a></h3>
+                            <!-- favorite post-->
+                            <div class="aside-widget">
+                                <div class="section-title text-right">
+                                    <h2>Bài viết Yêu Thích <i class="fa fa-heart-o"></i></h2>
+                                    <p>Bài viết được bạn yêu thích</p>
                                 </div>
+
+                                @{
+                                    if (SignInManager.IsSignedIn(User))
+                                    {
+                                        if (ViewData["favoritepost"] != null && (ViewData["favoritepost"] as IEnumerable<Post_Favorite>).Count() != 0)
+                                        {
+                                            foreach (var item in ViewData["favoritepost"] as IEnumerable<Post_Favorite>)
+                                            {
+                                                var _ImagespostFavorate = item.ID_PostNavigation.Post_Image.ToList();
+                                                var image = "";
+                                                foreach (var i in _ImagespostFavorate)
+                                                {
+                                                    image = i.url;
+                                                    break;
+                                                }
+                                                <div class="post post-widget">
+
+                                                    <a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail" class="post-img"><img src="@(Constants.POST_IMG_URL + image)" alt=""></a>
+                                                    <div class="post-body">
+                                                        <h3 class="post-title"><a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail">@item.ID_PostNavigation.Tittle</a></h3>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="post post-widget">
+                                                <div class="post-body">
+                                                    <p><i>Bạn chưa có bài đăng yêu thích!</i></p>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <div class="post post-widget">
+                                            <div class="post-body">
+                                                <p><i>Hãy đăng nhập để sử dụng tính năng này!</i></p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
                             </div>
-                        </div>
-                        <!-- /favorite post-->
+                            <!-- /favorite post-->
+                        }
                     }
-                }
 
-            </div>
+                </div>
         </div>
 
     </div>
@@ -558,7 +651,30 @@
                     alert(data.message);
                 }
             }).fail(function () {
-                alert("Đã có lỗi. Hãy thử lại.");
+                alert("Bạn cần đăng nhập để thực hiện tính năng này.");
+            })
+
+
+    }
+    function reportPost() {
+
+        var idp = arguments[0];
+        var Reason = arguments[1];
+
+
+            $.ajax({
+                url: '@Url.Action("AddReportPost", "Post")',
+                type: 'POST',
+                data: { idpost: idp, reason: Reason }
+            }).done(function (data) {
+                if (data.result == "OK") {
+                    alert(data.message);
+                }
+                else if (data.message) {
+                    alert(data.message);
+                }
+            }).fail(function () {
+                alert("Bạn cần đăng nhập để thực hiện tính năng này.");
             })
 
 

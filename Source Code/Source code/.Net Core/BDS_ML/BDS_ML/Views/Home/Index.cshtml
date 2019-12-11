@@ -69,7 +69,7 @@
                             <div class="room-info-warp">
                                 <div class="room-info">
                                     <div class="rf-left">
-                                        <p><i class="fa fa-th-large"></i>@string.Format("{0:0 m²}", post.Size)</p>
+                                        <p><i class="fa fa-th-large"></i>@string.Format("{0:0.## m²}", post.Size)</p>
                                         <p><i class="fa fa-building-o"></i>@post.Post_Detail.SingleOrDefault().Floor lầu</p>
                                         <p><i class="fa fa-bed"></i>@post.Post_Detail.SingleOrDefault().Bedroom phòng ngủ</p>
                                         <p><i class="fa fa-bath"></i>@post.Post_Detail.FirstOrDefault().Bathroom phòng tắm</p>
@@ -127,22 +127,22 @@
                             {
                                 if (post.Price >= 1000)
                                 {
-                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", post.Price / 1000)</a>
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Tỷ VND}", post.Price / 1000)</a>
                                 }
                                 else
                                 {
-                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price)</a>
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.##### Triệu VND}", post.Price)</a>
                                 }
                             }
                             else
                             {
                                 if (post.Price >= 1000)
                                 {
-                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", post.Price/1000) / tháng</a>
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Tỷ VND}", post.Price / 1000) / tháng</a>
                                 }
                                 else
                                 {
-                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price) / tháng</a>
+                                    <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Triệu VND}", post.Price) / tháng</a>
                                 }
 
                             }
@@ -188,7 +188,7 @@
                                         <div class="room-info-warp">
                                             <div class="room-info">
                                                 <div class="rf-left">
-                                                    <p><i class="fa fa-th-large"></i>@string.Format("{0:0 m²}", post.Size)</p>
+                                                    <p><i class="fa fa-th-large"></i>@string.Format("{0:0.## m²}", post.Size)</p>
                                                     <p><i class="fa fa-building-o"></i>@post.Post_Detail.SingleOrDefault().Floor lầu</p>
                                                     <p><i class="fa fa-bed"></i>@post.Post_Detail.SingleOrDefault().Bedroom phòng ngủ</p>
                                                     <p><i class="fa fa-bath"></i>@post.Post_Detail.SingleOrDefault().Bathroom phòng tắm</p>
@@ -239,22 +239,22 @@
                                                 {
                                                     if (post.Price >= 1000)
                                                     {
-                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", post.Price / 1000)</a>
+                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Tỷ VND}", post.Price / 1000)</a>
                                                     }
                                                     else
                                                     {
-                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price)</a>
+                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Triệu VND}", post.Price)</a>
                                                     }
                                                 }
                                                 else
                                                 {
                                                     if (post.Price >= 1000)
                                                     {
-                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Tỷ VND}", post.Price / 1000) / tháng</a>
+                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Tỷ VND}", post.Price / 1000) post.Price / 1000 / tháng</a>
                                                     }
                                                     else
                                                     {
-                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0 Triệu VND}", post.Price) / tháng</a>
+                                                        <a class="room-price" asp-controller="Post" asp-route-id="@post.ID_Post" asp-action="PostDetail">@string.Format("{0:0.#### Triệu VND}", post.Price) / tháng</a>
                                                     }
 
                                                 }
@@ -339,14 +339,35 @@
                     @{
                         if (SignInManager.IsSignedIn(User))
                         {
-                            <div class="post post-widget">
-                                <a class="post-img" href="blog-post.html"><img src="~/webmag/img/post-5.jpg" alt=""></a>
-                                <div class="post-body">
-                                    <h3 class="post-title"><a href="blog-post.html">Tell-A-Tool: Guide To Web Design And Development Tools</a></h3>
-                                </div>
-                            </div>
+                            if (ViewData["favoritepost"] != null && (ViewData["favoritepost"] as IEnumerable<Post_Favorite>).Count()!=0)
+                            {
+                                foreach (var item in ViewData["favoritepost"] as IEnumerable<Post_Favorite>)
+                                {
+                                    var _Images = item.ID_PostNavigation.Post_Image.ToList();
+                                    var image = "";
+                                    foreach (var i in _Images)
+                                    {
+                                        image = i.url;
+                                        break;
+                                    }
+                                    <div class="post post-widget">
 
-                            
+                                        <a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail" class="post-img"><img src="@(Constants.POST_IMG_URL + image)" alt=""></a>
+                                        <div class="post-body">
+                                            <h3 class="post-title"><a asp-controller="Post" asp-route-id="@item.ID_PostNavigation.ID_Post" asp-action="PostDetail">@item.ID_PostNavigation.Tittle</a></h3>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="post post-widget">
+                                    <div class="post-body">
+                                        <p><i>Bạn chưa có bài đăng yêu thích!</i></p>
+                                    </div>
+                                </div>
+                            }
+
                         }
                         else
                         {
