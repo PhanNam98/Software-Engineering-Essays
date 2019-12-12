@@ -123,23 +123,10 @@
                     <div class="form-group">
                         <label class="control-label">Quận/Huyện</label><br />
                         @Html.DropDownList("District", (SelectList)ViewBag.District, "---Chọn Quận/Huyện---", new { @class = "form-control", @id = "district" })
-                        @*<select id="district" name="district" class="form-control">
-                                <option disabled selected>---Chọn Quận/Huyện---</option>
-                                @{
-                                    if (ViewBag.District != null)
-                                    {
-                                        foreach (var d in ViewBag.District as IEnumerable<SelectListItem>)
-                                        {
-                                            <option value="@d.Value">@d.Text</option>
-                                        }
-                                    }
-                                }
-                            </select>*@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Khu vực</label><br />
                         @Html.DropDownList("Ward", (SelectList)ViewBag.Ward, "---Chọn Phường/Xã---", new { @class = "form-control", @id = "ward" })
-                        @* <select id="ward" name="ward" class="form-control"><option disabled selected>---Chọn Phường/Xã---</option></select><br />*@
                     </div>
                 </div>
                 <div class="col-md-4 author-card">
@@ -160,7 +147,6 @@
                     <div class="form-group">
                         <label class="control-label">Đường</label><br />
                         @Html.DropDownList("Street", (SelectList)ViewBag.Street, "---Chọn Đường---", new { @class = "form-control", @id = "street" })
-                        @*<select id="street" name="street" class="form-control"><option disabled selected>---Chọn Đường---</option></select><br />*@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Từ khóa</label>

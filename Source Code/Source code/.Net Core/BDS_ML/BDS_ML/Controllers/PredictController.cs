@@ -27,6 +27,7 @@ namespace BDS_ML.Controllers
             ModelOutput result = predEngine.Predict(input);
 
             ViewBag.Price = result.Score;
+            ViewBag.PriceVN = result.Score*23172;
        
             return View(input);
         }

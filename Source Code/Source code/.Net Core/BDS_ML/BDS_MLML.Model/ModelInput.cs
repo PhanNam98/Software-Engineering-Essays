@@ -6,28 +6,92 @@ namespace BDS_MLML.Model
 {
     public class ModelInput
     {
-        [ColumnName("size"), LoadColumn(0)]
-        public float Size { get; set; }
+        [ColumnName("num_bed"), LoadColumn(0)]
+        public float Num_bed { get; set; }
 
 
-        [ColumnName("floor"), LoadColumn(1)]
-        public float Floor { get; set; }
+        [ColumnName("year_built"), LoadColumn(1)]
+        public float Year_built { get; set; }
 
 
-        [ColumnName("bedroom"), LoadColumn(2)]
-        public float Bedroom { get; set; }
+        [ColumnName("longitude"), LoadColumn(2)]
+        public float Longitude { get; set; }
 
 
-        [ColumnName("bathroom"), LoadColumn(3)]
-        public float Bathroom { get; set; }
+        [ColumnName("latitude"), LoadColumn(3)]
+        public float Latitude { get; set; }
 
 
-        [ColumnName("yard"), LoadColumn(4)]
-        public float Yard { get; set; }
+        [ColumnName("num_room"), LoadColumn(4)]
+        public float Num_room { get; set; }
 
 
-        [ColumnName("price"), LoadColumn(5)]
-        public float Price { get; set; }
+        [ColumnName("num_bath"), LoadColumn(5)]
+        public float Num_bath { get; set; }
+
+
+        [ColumnName("living_area"), LoadColumn(6)]
+        public float Living_area { get; set; }
+
+
+        [ColumnName("property_type"), LoadColumn(7)]
+        public float Property_type { get; set; }
+
+
+        [ColumnName("num_parking"), LoadColumn(8)]
+        public float Num_parking { get; set; }
+
+
+        [ColumnName("accessible_buildings"), LoadColumn(9)]
+        public float Accessible_buildings { get; set; }
+
+
+        [ColumnName("family_quality"), LoadColumn(10)]
+        public float Family_quality { get; set; }
+
+
+        [ColumnName("art_expos"), LoadColumn(11)]
+        public float Art_expos { get; set; }
+
+
+        [ColumnName("emergency_shelters"), LoadColumn(12)]
+        public float Emergency_shelters { get; set; }
+
+
+        [ColumnName("emergency_water"), LoadColumn(13)]
+        public float Emergency_water { get; set; }
+
+
+        [ColumnName("Facilities"), LoadColumn(14)]
+        public float Facilities { get; set; }
+
+
+        [ColumnName("fire_stations"), LoadColumn(15)]
+        public float Fire_stations { get; set; }
+
+
+        [ColumnName("Cultural"), LoadColumn(16)]
+        public float Cultural { get; set; }
+
+
+        [ColumnName("Monuments"), LoadColumn(17)]
+        public float Monuments { get; set; }
+
+
+        [ColumnName("police_stations"), LoadColumn(18)]
+        public float Police_stations { get; set; }
+
+
+        [ColumnName("Vacant"), LoadColumn(19)]
+        public float Vacant { get; set; }
+
+
+        [ColumnName("Free_Parking"), LoadColumn(20)]
+        public float Free_Parking { get; set; }
+
+
+        [ColumnName("askprice"), LoadColumn(21)]
+        public float Askprice { get; set; }
 
 
     }
