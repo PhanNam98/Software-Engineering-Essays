@@ -7,13 +7,12 @@ using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using BDS_MLML.Model;
-using Microsoft.ML.Trainers.FastTree;
 
 namespace BDS_MLML.ConsoleApp
 {
     public static class ModelBuilder
     {
-        private static string TRAIN_DATA_FILEPATH = @"C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\ML\datafortrain.csv";
+        private static string TRAIN_DATA_FILEPATH = @"C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\ML\home_data_edited.csv";
         private static string MODEL_FILEPATH = @"../../../../BDS_MLML.Model/MLModel.zip";
 
         // Create MLContext to be shared across the model creation workflow objects 
@@ -46,10 +45,10 @@ namespace BDS_MLML.ConsoleApp
         public static IEstimator<ITransformer> BuildTrainingPipeline(MLContext mlContext)
         {
             // Data process configuration with pipeline data transformations 
-            var dataProcessPipeline = mlContext.Transforms.Concatenate("Features", new[] { "size", "floor", "bedroom", "bathroom", "yard" });
+            var dataProcessPipeline = mlContext.Transforms.Concatenate("Features", new[] { "num_bed", "year_built", "num_room", "num_bath", "living_area" });
 
             // Set the training algorithm 
-            var trainer = mlContext.Regression.Trainers.FastTreeTweedie(new FastTreeTweedieTrainer.Options() { NumberOfLeaves = 2, MinimumExampleCountPerLeaf = 1, NumberOfTrees = 100, LearningRate = 0.3214795f, Shrinkage = 0.1082099f, LabelColumnName = "price", FeatureColumnName = "Features" });
+            var trainer = mlContext.Regression.Trainers.FastForest(numberOfLeaves: 73, minimumExampleCountPerLeaf: 1, numberOfTrees: 100, labelColumnName: "askprice", featureColumnName: "Features");
             var trainingPipeline = dataProcessPipeline.Append(trainer);
 
             return trainingPipeline;
@@ -70,7 +69,7 @@ namespace BDS_MLML.ConsoleApp
             // Cross-Validate with single dataset (since we don't have two datasets, one for training and for evaluate)
             // in order to evaluate and get the model's accuracy metrics
             Console.WriteLine("=============== Cross-validating to get model's accuracy metrics ===============");
-            var crossValidationResults = mlContext.Regression.CrossValidate(trainingDataView, trainingPipeline, numberOfFolds: 5, labelColumnName: "price");
+            var crossValidationResults = mlContext.Regression.CrossValidate(trainingDataView, trainingPipeline, numberOfFolds: 5, labelColumnName: "askprice");
             PrintRegressionFoldsAverageMetrics(crossValidationResults);
         }
 

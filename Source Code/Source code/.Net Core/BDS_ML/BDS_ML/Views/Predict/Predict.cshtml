@@ -16,34 +16,45 @@
 
             <div class="col-md-4">
                 <form asp-action="Predict" asp-controller="Predict">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
                     <div class="form-group">
-                        <label asp-for="Size" class="control-label"></label>
-                        <input asp-for="Size" type="number" class="form-control" />
-                        <span asp-validation-for="Size" class="text-danger"></span>
+                        <label class="control-label">Diện tích</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Living_area" class="form-control" min="0" required placeholder="Diện tích theo m²" />
+                            <div class="input-group-btn"><span class="btn btn-primary">m²</span></div>
+                        </div>
+                        <span asp-validation-for="Living_area" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Floor" class="control-label"></label>
-                        <input asp-for="Floor" type="number" class="form-control" />
-                        <span asp-validation-for="Floor" class="text-danger"></span>
+                        <label class="control-label">Năm xây dựng</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Year_built" class="form-control" required placeholder="Năm xây dựng" min="1900" max="2014" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Năm</span></div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Bedroom" class="control-label"></label>
-                        <input asp-for="Bedroom" type="number" class="form-control" />
-                        <span asp-validation-for="Bedroom" class="text-danger"></span>
+                        <label class="control-label">Số lượng phòng</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Num_room" class="form-control" required value="1" min="0" max="14" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Bathroom" class="control-label"></label>
-                        <input asp-for="Bathroom" type="number" class="form-control" />
-                        <span asp-validation-for="Bathroom" class="text-danger"></span>
+                        <label class="control-label">Số lượng giường</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Num_bed" class="form-control" required value="1" min="0" max="6" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Yard" class="control-label"></label>
-                        <input asp-for="Yard" type="number" class="form-control" />
-                        <span asp-validation-for="Yard" class="text-danger"></span>
+                        <label class="control-label">Số lượng nhà vệ sinh</label>
+                        <div class="input-group">
+                            <input type="number" asp-for="Num_bath" class="form-control" required value="1" min="0" max="14" />
+                            <div class="input-group-btn"><span class="btn btn-primary">Phòng</span></div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-center">
                         <input type="submit" value="Dự đoán" class="btn btn-default" />
                     </div>
                 </form>
@@ -52,7 +63,8 @@
                 @if (ViewBag.Price != null)
                 {
                     <h1>Kết Quả</h1>
-                    <h3>Giá dự đoán: @ViewBag.Price Triệu VND</h3>
+                    <h3>Giá dự đoán: @ViewBag.Price USD</h3>
+                    <h3>Giá dự đoán: @ViewBag.PriceVN VNĐ</h3>
                 }
             </div>
         </div>

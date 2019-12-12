@@ -11,7 +11,7 @@ namespace BDS_MLML.ConsoleApp
     class Program
     {
         //Dataset to use for predictions 
-        private const string DATA_FILEPATH = @"C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\ML\datafortrain.csv";
+        private const string DATA_FILEPATH = @"C:\Users\Admin\Documents\GitHub\Software-Engineering-Essays\Source Code\Source code\ML\home_data_edited.csv";
 
         static void Main(string[] args)
         {
@@ -21,13 +21,29 @@ namespace BDS_MLML.ConsoleApp
             // Make a single prediction on the sample data and print results
             ModelOutput predictionResult = ConsumeModel.Predict(sampleData);
 
-            Console.WriteLine("Using model to make single prediction -- Comparing actual Price with predicted Price from sample data...\n\n");
-            Console.WriteLine($"size: {sampleData.Size}");
-            Console.WriteLine($"floor: {sampleData.Floor}");
-            Console.WriteLine($"bedroom: {sampleData.Bedroom}");
-            Console.WriteLine($"bathroom: {sampleData.Bathroom}");
-            Console.WriteLine($"yard: {sampleData.Yard}");
-            Console.WriteLine($"\n\nActual Price: {sampleData.Price} \nPredicted Price: {predictionResult.Score}\n\n");
+            Console.WriteLine("Using model to make single prediction -- Comparing actual Askprice with predicted Askprice from sample data...\n\n");
+            Console.WriteLine($"num_bed: {sampleData.Num_bed}");
+            Console.WriteLine($"year_built: {sampleData.Year_built}");
+            Console.WriteLine($"longitude: {sampleData.Longitude}");
+            Console.WriteLine($"latitude: {sampleData.Latitude}");
+            Console.WriteLine($"num_room: {sampleData.Num_room}");
+            Console.WriteLine($"num_bath: {sampleData.Num_bath}");
+            Console.WriteLine($"living_area: {sampleData.Living_area}");
+            Console.WriteLine($"property_type: {sampleData.Property_type}");
+            Console.WriteLine($"num_parking: {sampleData.Num_parking}");
+            Console.WriteLine($"accessible_buildings: {sampleData.Accessible_buildings}");
+            Console.WriteLine($"family_quality: {sampleData.Family_quality}");
+            Console.WriteLine($"art_expos: {sampleData.Art_expos}");
+            Console.WriteLine($"emergency_shelters: {sampleData.Emergency_shelters}");
+            Console.WriteLine($"emergency_water: {sampleData.Emergency_water}");
+            Console.WriteLine($"Facilities: {sampleData.Facilities}");
+            Console.WriteLine($"fire_stations: {sampleData.Fire_stations}");
+            Console.WriteLine($"Cultural: {sampleData.Cultural}");
+            Console.WriteLine($"Monuments: {sampleData.Monuments}");
+            Console.WriteLine($"police_stations: {sampleData.Police_stations}");
+            Console.WriteLine($"Vacant: {sampleData.Vacant}");
+            Console.WriteLine($"Free_Parking: {sampleData.Free_Parking}");
+            Console.WriteLine($"\n\nActual Askprice: {sampleData.Askprice} \nPredicted Askprice: {predictionResult.Score}\n\n");
             Console.WriteLine("=============== End of process, hit any key to finish ===============");
             Console.ReadKey();
         }
