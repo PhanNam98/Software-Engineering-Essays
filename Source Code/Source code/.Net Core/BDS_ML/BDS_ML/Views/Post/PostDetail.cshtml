@@ -60,7 +60,7 @@
         background-color: #fefefe;
         margin: auto;
         padding: 0;
-        width: 52%;
+        width: fit-content;
         max-width: 1200px;
     }
 
@@ -278,6 +278,10 @@
                             }
                         </div>
                     </div>
+                    <h3 class="sl-sp-title">Mô tả về bất động sản</h3>
+                    <div class="description">
+                        <p>@Model.Description</p>
+                    </div>
                     @if (Model.Post_Detail != null)
                     {
                         <h3 class="sl-sp-title">Thông tin chi tiết</h3>
@@ -349,9 +353,9 @@
                             </div>
                         </div>
                     }
-                    <h3 class="sl-sp-title">Mô tả</h3>
+                    <h3 class="sl-sp-title">Mô tả vị trí</h3>
                     <div class="description">
-                        <p>@Model.Description</p>
+                        <p>@Model.Post_Detail.SingleOrDefault().Description</p>
                     </div>
 
                     <div class="form-group">
@@ -425,7 +429,7 @@
                     </div>
 
                     @*<h3 class="sl-sp-title bd-no">Location</h3>
-                        <div id="map"></div>*@
+        <div id="map"></div>*@
                 </div>
             </div>
 

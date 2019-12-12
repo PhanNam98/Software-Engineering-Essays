@@ -27,7 +27,7 @@ namespace BDS_ML.Controllers
             ModelOutput result = predEngine.Predict(input);
 
             ViewBag.Price = result.Score;
-            ViewBag.PriceVN = result.Score*23172;
+            ViewBag.PriceVN = string.Format("{0:0.#### Tỷ VND}", result.Score*21000 / 1000000000);
        
             return View(input);
         }
