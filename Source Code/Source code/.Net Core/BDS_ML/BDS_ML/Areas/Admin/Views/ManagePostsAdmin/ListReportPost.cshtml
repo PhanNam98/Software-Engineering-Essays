@@ -53,22 +53,23 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ID_Post)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Tittle)
-                                    </td>
-                                   
-                                    <td>
-                                      @Html.Raw(item.Report_Post.OrderBy(c => c.MortifiedDate).Where(c => c.IsRead == false).Count())
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-success"  asp-action="DetailReportPost" asp-route-id="@item.ID_Post">Chi tiết</a>
-                                      
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID_Post)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Tittle)
+                                </td>
+
+                                <td>
+                                    @Html.Raw(item.Report_Post.OrderBy(c => c.MortifiedDate).Where(c => c.IsRead == false).Count())
+                                </td>
+                                <td>
+                                    <a class="btn btn-success" asp-action="DetailReportPost" asp-route-id="@item.ID_Post">Chi tiết các báo cáo</a>
+                                    <a class="btn btn-info" asp-area="" asp-controller="Post" asp-action="PostDetail" asp-route-id="@item.ID_Post" title="Xem chi tiết" target="_blank">Chi tiết bài đăng</a>
+                                
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

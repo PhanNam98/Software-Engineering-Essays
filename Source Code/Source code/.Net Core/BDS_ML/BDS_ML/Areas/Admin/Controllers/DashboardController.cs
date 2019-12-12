@@ -43,7 +43,8 @@ namespace BDS_ML.Areas.Admin.Controllers
             {
               
               
-                var list = _context.Post.Include(p => p.Post_Status);
+                var list = _context.Post.Include(p => p.Post_Status).Include(p => p.Report_Post)
+               .ThenInclude(r => r.ID_PostNavigation.Report_Post);
                 dboard.CustomerNumber = _context.Customer.Count();
                 dboard.PostNumber = list.Count();
                 if (HttpContext.Session.GetString("AvatarImage")==null)
@@ -70,7 +71,12 @@ namespace BDS_ML.Areas.Admin.Controllers
                 dboard.PostPendingApprovalNumber = Pending;
                 dboard.PostSoldNumber = Sold;
                 dboard.PostedNumber = Posted;
+                dboard.ReportpostNumber = _context.Post
+                .Include(p => p.Report_Post)
+                .ThenInclude(r => r.ID_PostNavigation.Report_Post)
+                .Where(p => p.Report_Post.OrderByDescending(c => c.MortifiedDate).Where(c => c.IsRead == false).Count() > 0).Count();
                 HttpContext.Session.SetString("PedingPost", Pending.ToString());
+                HttpContext.Session.SetString("ReportPost", dboard.ReportpostNumber.ToString());
                 StatusMessage = "Lấy dữ liệu thành công";
             }
             catch { StatusMessage = "Error Lấy dữ liệu không thành công"; }

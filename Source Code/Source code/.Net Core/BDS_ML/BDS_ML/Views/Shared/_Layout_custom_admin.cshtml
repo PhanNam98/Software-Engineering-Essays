@@ -77,7 +77,7 @@
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="Index">Danh sách bài đăng</a></li>
                             <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListPedingPost">Duyệt bài <span class="count">@Context.Session.GetString("PedingPost")</span></a></li>
-                            <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListReportPost">Bài đăng bị báo cáo</a></li>
+                            <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListReportPost">Bài đăng bị báo cáo <span class="count">@Context.Session.GetString("ReportPost")</span></a></li>
                             <li><i class="fa fa-table"></i><a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListSoldPost">BĐS đã bán</a></li>
                         </ul>
                     </li>
@@ -233,6 +233,7 @@
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Trang admin</a>
                             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListPedingPost"><i class="fa fa- user"></i>Duyệt bài <span class="count">@Context.Session.GetString("PedingPost")</span></a>
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="ManagePostsAdmin" asp-action="ListReportPost"><i class="fa fa- user"></i>Xử lí bài báo cáo <span class="count">@Context.Session.GetString("ReportPost")</span></a>
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                 <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-power -off"></i>Đăng xuất</button>
                             </form>

@@ -88,9 +88,9 @@ namespace BDS_ML.Areas.Identity.Pages.Account
             {
                 if (user.IsAdmin == 0)
                 {
-                    //var cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    cus = _context.Customer.Where(c => c.Account_ID == user.Id).SingleOrDefault();
                     var block = _context.Block.Where(b => b.ID_User == cus.ID_User).OrderBy(p => p.ModifiedDate).LastOrDefault();
-                    if (block.UnLockDate <= DateTime.Now)
+                    if (block.UnLockDate.GetValueOrDefault().Date <= DateTime.Now.Date)
                     {
                         try
                         {
@@ -114,7 +114,7 @@ namespace BDS_ML.Areas.Identity.Pages.Account
                 }
                 if (user.IsAdmin == 1)
                 {
-                    //admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
+                    admin = _context.Admin.Where(c => c.Account_ID == user.Id).SingleOrDefault();
                     var block = _context.Block.Where(b => b.ID_User == admin.ID_Admin).OrderBy(p=>p.ModifiedDate).LastOrDefault();
                     if (block.UnLockDate <= DateTime.Now)
                     {

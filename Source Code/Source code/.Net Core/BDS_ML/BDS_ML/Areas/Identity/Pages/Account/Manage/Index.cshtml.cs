@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BDS_ML.Models.ModelDB;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BDS_ML.Areas.Identity.Pages.Account.Manage
 {
+    [AllowAnonymous]
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;

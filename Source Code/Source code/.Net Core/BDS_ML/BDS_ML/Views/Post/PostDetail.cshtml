@@ -237,7 +237,16 @@
                 <div class="section">
                     <div class="row">
                         <div class="col-md-6">
-                            <h3>@Model.Post_Location.SingleOrDefault().DiaChi, Đường: @Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name, @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
+                            @{ var street = "";
+                                if (Model.Post_Location.SingleOrDefault().Duong_PhoNavigation != null)
+                                {
+                                    street = Model.Post_Location.SingleOrDefault().Duong_PhoNavigation._name;
+                                }
+                                else
+                                {
+                                    street = "";
+                                }}
+                            <h3>@Model.Post_Location.SingleOrDefault().DiaChi, Đường: @street, @Model.Post_Location.SingleOrDefault().Phuong_XaNavigation._name</h3>
                             <p><i class="fa fa-map-marker"></i> @Model.Post_Location.SingleOrDefault().Quan_HuyenNavigation._name, @Model.Post_Location.SingleOrDefault().Tinh_TPNavigation._name</p>
                         </div>
                         <div class="col-md-3 feature-item">
@@ -438,11 +447,16 @@
 
 
 
-                                string reportq = "modal";
-                            <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@reportq">Báo cáo bài viết</button>
-                            string reasonReportPost = "re" + Model.ID_Post.ToString();
+
+
+
                             if (SignInManager.IsSignedIn(User))
                             {
+                                if (!User.IsInRole("Admin"))
+                                {
+                                    string reportq = "modal";
+                                <button type="button" class="btn btn-custon-rounded-three btn-warning btn-xs" data-toggle="modal" data-target="#@reportq">Báo cáo bài viết</button>
+                                    string reasonReportPost = "re" + Model.ID_Post.ToString();
                                 <!-- Modal -->
 
                                 <div class="modal fade" id="@reportq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -486,8 +500,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                }
                             }
-                            else
+                            @*else
                             {
                                 <div class="modal fade" id="@reportq" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="center">
@@ -518,7 +533,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            }
+                            }*@
 
                         }
 
@@ -713,6 +728,9 @@
                 else if (data.message) {
                     alert(data.message);
                 }
+              
+                $('.modal - dialog modal - dialog - center').remove();
+                $('.modal - backdrop fade show').remove();
                 $('#modal').modal('hide');
             }).fail(function () {
                 alert("Bạn cần đăng nhập để thực hiện tính năng này.");

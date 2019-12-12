@@ -292,7 +292,7 @@ namespace BDS_ML.Areas.ManagePosts.Controllers
             post_Location.DiaChi = diachi;
             if (street == 0)
             {
-                post_Location = null;
+                post_Location.Duong_Pho = null;
             }
             else
                 post_Location.Duong_Pho = street;

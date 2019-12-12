@@ -258,13 +258,15 @@
                                 if (User.IsInRole("Admin"))
                                 {
                                     <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Trang admin</a>
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
                                 }
                                 else
                                 {
                                     <a class="nav-link text-dark" asp-area="User" asp-controller="Dashboard" asp-action="Index">Quản lí bài đăng</a>
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Thông tin tài khoản</a>
                                 }
                             }
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/IndexAdmin" title="Manage">Thông tin tài khoản</a>
+
 
                             <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                 <button type="submit" class="nav-link btn btn-link text-dark"><i class="fa fa-power -off"></i>Đăng xuất</button>
