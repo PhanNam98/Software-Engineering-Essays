@@ -80,7 +80,34 @@ namespace BDS_ML.Areas.Admin.Controllers
             return View(listpost);
 
         }
-        
+        public async Task<IActionResult> ListReportPost()
+        {
+
+           
+            var listpost =await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+               .Include(p => p.RealEstateTypeNavigation)
+               .Include(p => p.Post_Status)
+               .ThenInclude(post => post.StatusNavigation.Post_Status)
+               .Include(p=>p.Report_Post)
+               .ThenInclude(r=>r.ID_PostNavigation.Report_Post)
+               .Where(p => p.Report_Post.OrderByDescending(c => c.MortifiedDate).Where(c=>c.IsRead==false).Count() > 0).ToListAsync();
+
+            return View(listpost);
+
+        }
+        public async Task<IActionResult> DetailReportPost(int id)
+        {
+
+
+            var listreportpost = await _context.Report_Post.Include(p=>p.ID_Account_ReportNavigation)
+                .ThenInclude(a=>a.Customer)
+                .ThenInclude(c=>c.Account_)
+                .Where(p => p.ID_Post == id && p.IsRead == false).OrderByDescending(d => d.MortifiedDate).ToListAsync();
+
+            return View(listreportpost);
+
+        }
+
 
         private bool PostExists(int id)
         {

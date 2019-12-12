@@ -1,0 +1,121 @@
+﻿@model IEnumerable<BDS_ML.Models.ModelDB.Report_Post>
+
+    @{
+        ViewData["Title"] = "Chi tiêt báo cáo";
+        Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+    }
+
+    <style type="text/css">
+    </style>
+    <div class="breadcrumbs">
+        <div class="col-sm-4">
+            <div class="page-header float-left">
+                <div class="page-title">
+                    <h1>Bài đăng bị báo cáo</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="page-header float-right">
+                <div class="page-title">
+                    <ol class="breadcrumb text-right">
+                        <li>Bài đăng</li>
+                        <li class="active">Chi tiết các lần bị báo cáo</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Danh sách các lần bị báo cáo</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="exam" class="table table-striped table-condensed table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    @*<th>
+                                            @Html.DisplayNameFor(model => model.IsRead)
+                                        </th>*@
+                                    <th>
+                                        @Html.DisplayName("Mã báo cáo")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Lí do khóa")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Ngày bị báo cáo")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Người báo cáo")
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+            {
+                                <tr>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.IsRead)
+                                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_Report)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Reason)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MortifiedDate)
+                                    </td>
+                                    <td>
+
+                                        @Html.Raw(item.ID_Account_ReportNavigation.Customer.SingleOrDefault().FirstName +" "+ item.ID_Account_ReportNavigation.Customer.SingleOrDefault().LastName)
+                                    </td>
+
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+
+                                    </td>
+                                </tr>
+            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+
+    $(document).ready(function () {
+        $('#exam').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thi _MENU_ kết quả trên 1 trang",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Trang _PAGE_ của _PAGES_",
+                "infoEmpty": "Không tìm thấy dữ liệu",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp tục",
+                    "previous": "Trở về"
+                },
+                "search": "Tìm kiếm:",
+                "loadingRecords": "Đang tải...",
+                "processing": "Đang xử lí..."
+            },
+            "lengthMenu": [[5,10, 25, 50, - 1], [5,10, 25, 50, "Tất cả"]]
+
+        });
+    });
+
+
+    </script>

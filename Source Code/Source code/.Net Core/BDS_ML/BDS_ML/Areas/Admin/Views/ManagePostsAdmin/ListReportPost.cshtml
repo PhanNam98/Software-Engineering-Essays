@@ -1,0 +1,108 @@
+﻿@model IEnumerable<BDS_ML.Models.ModelDB.Post>
+
+@{
+    ViewData["Title"] = "bài đăng bị báo cáo";
+    Layout = "~/Views/Shared/_Layout_custom_admin.cshtml";
+}
+
+<style type="text/css">
+</style>
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-left">
+            <div class="page-title">
+                <h1>Bài đăng bị báo cáo</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-right">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li>Bài đăng</li>
+                    <li class="active">Danh sách bài đăng bị báo cáo</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="~/Views/Shared/_StatusMessage.cshtml" for="@TempData["StatusMessage"]" />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Danh sách bài đăng bị báo cáo</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="exam" class="table table-striped table-condensed table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("Mã bài đăng")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Tiêu đề")
+                                </th>
+                               
+                                <th>
+                                    @Html.DisplayName("Số lượt bị  báo cáo")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ID_Post)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tittle)
+                                    </td>
+                                   
+                                    <td>
+                                      @Html.Raw(item.Report_Post.OrderBy(c => c.MortifiedDate).Where(c => c.IsRead == false).Count())
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-success"  asp-action="DetailReportPost" asp-route-id="@item.ID_Post">Chi tiết</a>
+                                      
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+
+    $(document).ready(function () {
+        $('#exam').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thi _MENU_ kết quả trên 1 trang",
+                "zeroRecords": "Không tìm thấy dữ liệu",
+                "info": "Trang _PAGE_ của _PAGES_",
+                "infoEmpty": "Không tìm thấy dữ liệu",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "paginate": {
+                    "first": "Trang đầu",
+                    "last": "Trang cuối",
+                    "next": "Tiếp tục",
+                    "previous": "Trở về"
+                },
+                "search": "Tìm kiếm:",
+                "loadingRecords": "Đang tải...",
+                "processing": "Đang xử lí..."
+            },
+            "lengthMenu": [[5,10, 25, 50, - 1], [5,10, 25, 50, "Tất cả"]]
+
+        });
+    });
+
+
+</script>
