@@ -1,4 +1,6 @@
-﻿using BDS_ML.Models.ModelDB;
+﻿using BDS_ML.Data;
+using BDS_ML.Models.ModelDB;
+using BDS_ML.Respository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,51 +11,30 @@ namespace BDS_ML.Models
 {
     public class PostIndex
     {
-        private readonly BDT_MLDBContext db;
+        private IPostRepository _postRepository;
 
         public PostIndex()
         {
-            db = new BDT_MLDBContext();
+            this._postRepository = new PostRespository();
         }
 
         public PostIndex(BDT_MLDBContext db)
         {
-            this.db = db;
         }
 
         public List<Post> get3HotPosts()
         {
-            List<Post> lst3HotPosts = db.Post.Include(p => p.Post_Status)
-              .ThenInclude(post => post.StatusNavigation.Post_Status)
-              .Include(p=>p.Post_Location).ThenInclude(l=>l.Tinh_TPNavigation.Post_Location)
-              .Include(p=>p.Post_Location).ThenInclude(l=>l.Quan_HuyenNavigation.Post_Location)
-              .Include(i=>i.Post_Image)
-              .Include(p=>p.Post_Detail)
-              .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1)
-              .OrderByDescending(n => n.PostTime).Take(3).ToList();
-
-            return lst3HotPosts;
+            return _postRepository.GetPostByCond(3);
         }
 
         public List<Post> get6PopularPosts()
         {
-            List<Post> lst6PopularPosts = db.Post.Include(p => p.Post_Status)
-              .ThenInclude(post => post.StatusNavigation.Post_Status)
-              .Include(p => p.Post_Location).ThenInclude(l => l.Tinh_TPNavigation.Post_Location)
-              .Include(p => p.Post_Location).ThenInclude(l => l.Quan_HuyenNavigation.Post_Location)
-              .Include(i => i.Post_Image)
-              .Include(p=>p.Post_Detail)
-              .Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1)
-              .OrderByDescending(n => n.PostTime).Take(6).ToList();
-
-            return lst6PopularPosts;
+            return _postRepository.GetPostByCond(6);
         }
 
         public int getCount(int id)
         {
-            int result = 0;
-            result = db.Post.Include(p => p.Post_Status).Where(p => p.Post_Status.OrderBy(c => c.ModifiedDate).LastOrDefault().Status == 1 && p.PostType == id).Count();
-            return result;
+            return _postRepository.getCount(id);
         }
     }
 }

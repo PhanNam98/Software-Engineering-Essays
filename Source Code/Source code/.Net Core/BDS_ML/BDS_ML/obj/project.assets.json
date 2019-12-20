@@ -5263,7 +5263,7 @@
       ]
     },
     "Microsoft.AspNetCore.Authentication.Google/2.2.2": {
-      "sha512": "oiCm+HAkkP9vBEBmqIuq+mz+ZxMRrnXviHepSChCFvpJvjYm5vWjpqD+L8JMQaGUTs3k4hycjgWbmhd/3bJx/A==",
+      "sha512": "R4uicniM/0llcj9cgd6yH+GfVoVkhUq2QEPPTyGohw4QTI8+TOvoMgLZXjspidQE8/bB8NpBR4kvK227KbKZtQ==",
       "type": "package",
       "path": "microsoft.aspnetcore.authentication.google/2.2.2",
       "files": [
@@ -7996,7 +7996,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration/2.2.3": {
-      "sha512": "wc71c9HWTeXy9/w9O4Yr2LKmdJjVyIoJ/XQX8/6uma4EAVU25RLtUWlvhA0gpgFw9Kf1TkCv70x+CbKnRw/d8Q==",
+      "sha512": "vQ+SS/Uiqwj5QN63fC9vSX4A8FMne8mXytF4eZXaEJWbhvsficfdWSsnwSt/cMZWmU/NziyMZ64P+CSiFHiRAA==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration/2.2.3",
       "files": [
@@ -8009,7 +8009,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Contracts/2.2.3": {
-      "sha512": "wXlpxDfRD5aPypa0p0UE97tkRQvAz9D9FfA2GITzr+LlGIpybyGnxkwGVp0Vha1Ibr0kJG0HdnqfeHME/WuAcQ==",
+      "sha512": "45mPSkpo/yPDN/1lC45c/P/1jzn2XPEdU0WGqhh8WH06/5zXyt6dHMEFAYedTGb4E61tOGDlrwOcGuxqvQ4DIw==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.contracts/2.2.3",
       "files": [
@@ -8022,7 +8022,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Core/2.2.3": {
-      "sha512": "APdPavBUYcGPBaW4rjxBVRePWmg0ZzhIRymOzvLFWUtzfvJKw1+8PaCzsH7Uvl+felm0L1UVQwBx1Do0R7j7Xg==",
+      "sha512": "SPMf2FoO8aHE5iG1TXUht+V7mT6VTPqwyywMHETWOxM0sUEaVd35soQJYzpvJdZtviW/3KgM1qvUCpRYyQS8oQ==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.core/2.2.3",
       "files": [
@@ -8035,7 +8035,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Design/2.2.3": {
-      "sha512": "xH50cYOU+infRq4KikBuu2qeXcwW4tE0D5TDfKLuLrEtDm90aXI+0qygPsqyISf+lOW7L7rQ64BH/dRYkK3c3Q==",
+      "sha512": "+R86lv7N5WmHi/5n7zOHqILNO81SXVo5YQZq74q1uz/GVHbDCY3lMhITFPuq8NwerJn+EDv/SfJzvD+wH7RXnw==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.design/2.2.3",
       "files": [
@@ -8058,7 +8058,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore/2.2.3": {
-      "sha512": "N9S7TeFZjXzNY9OVbz4OFw9cM9oEeMaCnuLFhetNioy/wPwZbgglrctAEYxfDbvocQ17YCAVR2EMRbYHNDHyVg==",
+      "sha512": "f9hviZy8zUCOlZD26rXq/GVBR5lVoDfH7rOBFlaPK0VqlvS0vR2rY4iEQao3OjxSnpBJSWrCoACFq6tSiRLOkg==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.entityframeworkcore/2.2.3",
       "files": [
@@ -8072,7 +8072,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Templating/2.2.3": {
-      "sha512": "sW2lHnOoL1xFnSm/2zSedeUoQPlbhPfWjSuUYsxYUj/N5QmLmH98ZLaqP26k6Om/heR6Gux/veXI96yM1Parow==",
+      "sha512": "5Tn3jTr7WZQQCPs42Im1tBXUwjgKvP1MlX8VJRzXLYECDv9S7Ucx02ucAx12NV0ViJuIpbMcnRafbGcgQ2rENQ==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.templating/2.2.3",
       "files": [
@@ -8085,7 +8085,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Utils/2.2.3": {
-      "sha512": "/r/y+XpOpbCwN/M/HopjfGTDRlmixTd4G6HG6FaBkD/YF3T1u+4WMRVtuB6zz7aw571HmX+6UokEa6HJSwkPDA==",
+      "sha512": "FbaNspRH4532EtTraeiSvdum56/l3jgGWHdMKktoDsAnwqjWtok2I0SyvNtdWyX5mdJHi3/MyMsU5jDJVYxT4Q==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.utils/2.2.3",
       "files": [
@@ -8098,7 +8098,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc/2.2.3": {
-      "sha512": "0gVuA4KUCHFM4M/9SjG+7j7BzZ7SW/BufF97Q78i2VV8JBbQXc/5Rf6YUG1VGW2fwSEOl9+S26utEGS+86GGGw==",
+      "sha512": "AkANFfnAaW+ahOA2QzY7KZTz/oUXl9ahRkPdCQhguFyf1TPEXKD7dVKmWEcCOgAfq/s7ScoDm3ydxW31QRAADQ==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegenerators.mvc/2.2.3",
       "files": [
@@ -8496,12 +8496,11 @@
       ]
     },
     "NETStandard.Library/2.0.3": {
-      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "sha512": "8TmdOVv1ySk/jQWkJQU3L3+4AyV0FLf8Ob4DPll/4f4kTShYT8i1vUGBL525p+onqgegP0x44MkSijCD621K6Q==",
       "type": "package",
       "path": "netstandard.library/2.0.3",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -9337,7 +9336,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "sha512": "NoPBj0ykejqAWW4p4gGtrrL+3c84ZLSvGnHgq422ew1Rj4WKj1FA8/BCybqC111EtgcqUl6ZJNFYYS22HLgbjA==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -12130,11 +12129,12 @@
       ]
     },
     "System.Runtime.Serialization.Primitives/4.3.0": {
-      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "sha512": "2Z5t70a2SwMsfQDp9KOclaZNyQhfIga2gppq9lIUDM1A4ohTshn4JqT7ir8bvIhXgorWKYDAr6rPzEbi/nTGKg==",
       "type": "package",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13849,23 +13849,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Users\\DELL\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
+      "projectUniqueName": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
       "projectName": "BDS_ML",
-      "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\obj\\",
+      "projectPath": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13873,13 +13873,19 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore-tooling/index.json": {},
+        "https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore/index.json": {},
+        "https://dotnetfeed.blob.core.windows.net/aspnet-entityframeworkcore/index.json": {},
+        "https://dotnetfeed.blob.core.windows.net/aspnet-extensions/index.json": {},
+        "https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json": {},
+        "https://dotnetfeed.blob.core.windows.net/dotnet-windowsdesktop/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj"
+            "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj": {
+              "projectPath": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj"
             }
           }
         }

@@ -13,17 +13,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
+using BDS_ML.Respository;
 
 namespace BDS_ML.Controllers
 {
     [Authorize]
     public class PostController : Controller
     {
+         
+        private IPostRepository _postRepository;
+
         private readonly BDT_MLDBContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public PostController(UserManager<ApplicationUser> userManager)
         {
+            this._postRepository = new PostRespository();
+
             _context = new BDT_MLDBContext();
             _userManager = userManager;
 
@@ -220,7 +226,7 @@ namespace BDS_ML.Controllers
 
         [AllowAnonymous]
         [HttpGet("/post/{id}")]
-        public async Task<IActionResult> PostDetail(int? id)
+        public async Task<IActionResult> PostDetail(int id)
         {
             if (id == null)
             {
@@ -229,14 +235,15 @@ namespace BDS_ML.Controllers
 
 
 
-            var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
-                          .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
-                          .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
-                          .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
-                          .Include(d => d.Post_Detail).
-                          Include(image => image.Post_Image)
-                          .Include(p => p.Post_Status)
-                          .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.ID_Post == id).SingleOrDefaultAsync();
+            //var post = await _context.Post.Include(p => p.ID_AccountNavigation).Include(p => p.PostTypeNavigation).Include(p => p.ProjectNavigation)
+            //              .Include(p => p.RealEstateTypeNavigation).Include(p => p.Post_Location).ThenInclude(lo => lo.Tinh_TPNavigation.Post_Location)
+            //              .ThenInclude(lo => lo.Quan_HuyenNavigation.Post_Location).ThenInclude(lo => lo.Phuong_XaNavigation.Post_Location)
+            //              .ThenInclude(lo => lo.Duong_PhoNavigation.Post_Location)
+            //              .Include(d => d.Post_Detail).
+            //              Include(image => image.Post_Image)
+            //              .Include(p => p.Post_Status)
+            //              .ThenInclude(pt => pt.StatusNavigation.Post_Status).Where(p => p.ID_Post == id).SingleOrDefaultAsync();
+            var post = _postRepository.GetPostByID(id);
             if (post == null)
             {
                 return NotFound();
