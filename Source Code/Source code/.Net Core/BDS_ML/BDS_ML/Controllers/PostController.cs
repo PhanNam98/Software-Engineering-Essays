@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using BDS_ML.Respository;
+using BDS_ML.Models.Builder;
 
 namespace BDS_ML.Controllers
 {
@@ -87,12 +88,153 @@ namespace BDS_ML.Controllers
         // POST: Admin/ManagePostsAdmin/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // Không xóa phần này-------------------------------------------------------------------------------------------------------------------------
+
+        //[Authorize]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post, string id
+        //    , int district, int ward, int street, string diachi, bool alley, bool nearSchool, bool nearAirport, bool nearHospital, bool nearMarket, List<IFormFile> images, string descriptiondetail, int bathroom,
+        //    int bedroom, int yard, int floor, int province)
+        //{
+
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    post.PostTime = DateTime.Now;
+        //    post.ID_Account = user.Id;
+        //    Post a = post;
+
+        //    _context.Post.Add(post);
+        //    await _context.SaveChangesAsync();
+        //    Post_Status poststatus = new Post_Status();
+        //    poststatus.ID_Account = user.Id;
+        //    poststatus.ID_Post = post.ID_Post;
+
+        //    poststatus.ModifiedDate = DateTime.Now;
+        //    if (user.IsAdmin == 1)
+        //    {
+        //        poststatus.Status = 1;
+        //    }
+        //    else
+        //    {
+        //        poststatus.Status = 5;
+        //    }
+        //    _context.Post_Status.Add(poststatus);
+
+        //    await _context.SaveChangesAsync();
+        //    Post_Detail postdetail = new Post_Detail()
+        //    {
+        //        ID_Post = post.ID_Post,
+        //        Alley = alley,
+        //        Bathroom = bathroom,
+        //        Bedroom = bedroom,
+        //        Description = descriptiondetail,
+        //        Floor = floor,
+        //        Yard = yard,
+        //        NearHospital = nearHospital,
+        //        NearAirport = nearAirport,
+        //        NearSchool = nearSchool,
+        //        NearMarket = nearMarket,
+        //    };
+        //    //}
+
+
+        //    Post_Location postlocation = new Post_Location();
+
+        //    postlocation.ID_Post = post.ID_Post;
+        //    postlocation.Tinh_TP = province;
+        //    postlocation.Quan_Huyen = district;
+        //    if (ward == 0)
+        //    {
+        //        postlocation.Phuong_Xa = null;
+        //    }
+        //    else
+        //        postlocation.Phuong_Xa = ward;
+
+        //    if (street == 0)
+        //    {
+        //        postlocation.Duong_Pho = null;
+        //    }
+        //    else
+        //        postlocation.Duong_Pho = street;
+        //    postlocation.DuAn = post.Project;
+        //    postlocation.DiaChi = diachi;
+
+
+        //    _context.Post_Location.Add(postlocation);
+
+        //    _context.Post_Detail.Add(postdetail);
+
+        //    if (images.Count > 0 && images[0].Length > 0)
+        //    {
+        //        for (int i = 0; i < images.Count; i++)
+        //        {
+        //            var file = images[i];
+
+        //            if (file != null && images[i].Length > 0)
+        //            {
+        //                string fileName = Path.GetFileName(file.FileName);
+        //                string extensionFileName = Path.GetExtension(fileName);
+        //                if (fileName.Length - extensionFileName.Length > 40)
+        //                {
+        //                    fileName = fileName.Substring(0, 40) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
+
+        //                }
+
+        //                else
+
+        //                    fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
+
+        //                var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\posts", fileName);
+
+        //                using (var stream = new FileStream(path, FileMode.Create))
+        //                {
+        //                    await file.CopyToAsync(stream);
+        //                }
+
+        //                Post_Image pstImg = new Post_Image();
+        //                pstImg.url = fileName;
+        //                pstImg.AddedDate = DateTime.Now;
+        //                pstImg.ID_Post = post.ID_Post;
+        //                _context.Post_Image.Add(pstImg);
+
+        //            }
+        //        }
+
+        //    }
+
+
+        //    try
+        //    {
+
+        //        await _context.SaveChangesAsync();
+        //        StatusMessage = "Đăng bài thành công!";
+        //        return RedirectToAction("Index", "Post", new { area = "ManagePosts" });
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        string m = e.Message;
+        //        StatusMessage = "Error Đăng bài không thành công";
+        //    }
+
+
+        //    ViewData["PostType"] = new SelectList(_context.Post_Type, "ID_PostType", "Description");
+        //    ViewData["Project"] = new SelectList(_context.project, "id", "_name");
+        //    ViewData["RealEstateType"] = new SelectList(_context.RealEstate_Type, "ID_RealEstateType", "Description");
+        //    ViewData["IDAccount"] = user.Id;
+        //    ViewData["Province"] = new SelectList(_context.province.OrderBy(p => p._name), "id", "_name");
+        //    return View(post);
+        //}
+        //-----------------------------------------Không xóa phần này---------------------------------------------------------------------------------------------------------
+        //Test
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID_Post,ID_Account,PostTime,PostType,Tittle,Size,Project,Price,RealEstateType,Description,Status")] Post post, string id
-            , int district, int ward, int street, string diachi, bool alley, bool nearSchool, bool nearAirport, bool nearHospital, bool nearMarket, List<IFormFile> images, string descriptiondetail, int bathroom,
-            int bedroom, int yard, int floor, int province)
+           , int district, int ward, int street, string diachi, bool alley, bool nearSchool, bool nearAirport, bool nearHospital, bool nearMarket, List<IFormFile> images, string descriptiondetail, int bathroom,
+           int bedroom, int yard, int floor, int province)
         {
 
             var user = await _userManager.GetUserAsync(User);
@@ -103,108 +245,19 @@ namespace BDS_ML.Controllers
 
             _context.Post.Add(post);
             await _context.SaveChangesAsync();
-            Post_Status poststatus = new Post_Status();
-            poststatus.ID_Account = user.Id;
-            poststatus.ID_Post = post.ID_Post;
 
-            poststatus.ModifiedDate = DateTime.Now;
-            if (user.IsAdmin == 1)
-            {
-                poststatus.Status = 1;
-            }
-            else
-            {
-                poststatus.Status = 5;
-            }
-            _context.Post_Status.Add(poststatus);
-
-            await _context.SaveChangesAsync();
-            Post_Detail postdetail = new Post_Detail()
-            {
-                ID_Post = post.ID_Post,
-                Alley = alley,
-                Bathroom = bathroom,
-                Bedroom = bedroom,
-                Description = descriptiondetail,
-                Floor = floor,
-                Yard = yard,
-                NearHospital = nearHospital,
-                NearAirport = nearAirport,
-                NearSchool = nearSchool,
-                NearMarket = nearMarket,
-            };
-            //}
+            var completePost = new CompletePost();
+            var builder = new PostBuilder();
+            completePost.Builder = builder;
 
 
-            Post_Location postlocation = new Post_Location();
-
-            postlocation.ID_Post = post.ID_Post;
-            postlocation.Tinh_TP = province;
-            postlocation.Quan_Huyen = district;
-            if (ward == 0)
-            {
-                postlocation.Phuong_Xa = null;
-            }
-            else
-                postlocation.Phuong_Xa = ward;
-
-            if (street == 0)
-            {
-                postlocation.Duong_Pho = null;
-            }
-            else
-                postlocation.Duong_Pho = street;
-            postlocation.DuAn = post.Project;
-            postlocation.DiaChi = diachi;
-
-
-            _context.Post_Location.Add(postlocation);
-
-            _context.Post_Detail.Add(postdetail);
-
-            if (images.Count > 0 && images[0].Length > 0)
-            {
-                for (int i = 0; i < images.Count; i++)
-                {
-                    var file = images[i];
-
-                    if (file != null && images[i].Length > 0)
-                    {
-                        string fileName = Path.GetFileName(file.FileName);
-                        string extensionFileName = Path.GetExtension(fileName);
-                        if (fileName.Length - extensionFileName.Length > 40)
-                        {
-                            fileName = fileName.Substring(0, 40) + "-" + user.Id + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
-
-                        }
-
-                        else
-
-                            fileName = fileName.Substring(0, fileName.Length - extensionFileName.Length) + "-" + DateTime.Now.ToString().Replace(" ", "").Replace(":", "").Replace("/", "") + extensionFileName;
-
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\posts", fileName);
-
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            await file.CopyToAsync(stream);
-                        }
-
-                        Post_Image pstImg = new Post_Image();
-                        pstImg.url = fileName;
-                        pstImg.AddedDate = DateTime.Now;
-                        pstImg.ID_Post = post.ID_Post;
-                        _context.Post_Image.Add(pstImg);
-
-                    }
-                }
-
-            }
-
+            completePost.buildFullPost(user.Id, post.ID_Post
+            , district, ward, street, diachi, alley, nearSchool, nearAirport, nearHospital, nearMarket, images, descriptiondetail, bathroom,
+            bedroom, yard, floor, province, user.IsAdmin, post.Project);
 
             try
             {
 
-                await _context.SaveChangesAsync();
                 StatusMessage = "Đăng bài thành công!";
                 return RedirectToAction("Index", "Post", new { area = "ManagePosts" });
 
@@ -228,10 +281,10 @@ namespace BDS_ML.Controllers
         [HttpGet("/post/{id}")]
         public async Task<IActionResult> PostDetail(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
 
 

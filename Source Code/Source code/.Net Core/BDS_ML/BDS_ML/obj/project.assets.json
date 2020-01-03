@@ -5263,7 +5263,7 @@
       ]
     },
     "Microsoft.AspNetCore.Authentication.Google/2.2.2": {
-      "sha512": "R4uicniM/0llcj9cgd6yH+GfVoVkhUq2QEPPTyGohw4QTI8+TOvoMgLZXjspidQE8/bB8NpBR4kvK227KbKZtQ==",
+      "sha512": "oiCm+HAkkP9vBEBmqIuq+mz+ZxMRrnXviHepSChCFvpJvjYm5vWjpqD+L8JMQaGUTs3k4hycjgWbmhd/3bJx/A==",
       "type": "package",
       "path": "microsoft.aspnetcore.authentication.google/2.2.2",
       "files": [
@@ -6439,7 +6439,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.1.0": {
-      "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
+      "sha512": "IE7jVquhC7dHcbjbzJ4YV8fOoDbJypQcxVI7Y/uwieCAqjQh19NUftBKVUY1OUcQovRysNGQnlPSDQ/Kw+FlvA==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
       "hasTools": true,
@@ -7996,7 +7996,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration/2.2.3": {
-      "sha512": "vQ+SS/Uiqwj5QN63fC9vSX4A8FMne8mXytF4eZXaEJWbhvsficfdWSsnwSt/cMZWmU/NziyMZ64P+CSiFHiRAA==",
+      "sha512": "wc71c9HWTeXy9/w9O4Yr2LKmdJjVyIoJ/XQX8/6uma4EAVU25RLtUWlvhA0gpgFw9Kf1TkCv70x+CbKnRw/d8Q==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration/2.2.3",
       "files": [
@@ -8009,7 +8009,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Contracts/2.2.3": {
-      "sha512": "45mPSkpo/yPDN/1lC45c/P/1jzn2XPEdU0WGqhh8WH06/5zXyt6dHMEFAYedTGb4E61tOGDlrwOcGuxqvQ4DIw==",
+      "sha512": "wXlpxDfRD5aPypa0p0UE97tkRQvAz9D9FfA2GITzr+LlGIpybyGnxkwGVp0Vha1Ibr0kJG0HdnqfeHME/WuAcQ==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.contracts/2.2.3",
       "files": [
@@ -8022,7 +8022,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Core/2.2.3": {
-      "sha512": "SPMf2FoO8aHE5iG1TXUht+V7mT6VTPqwyywMHETWOxM0sUEaVd35soQJYzpvJdZtviW/3KgM1qvUCpRYyQS8oQ==",
+      "sha512": "APdPavBUYcGPBaW4rjxBVRePWmg0ZzhIRymOzvLFWUtzfvJKw1+8PaCzsH7Uvl+felm0L1UVQwBx1Do0R7j7Xg==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.core/2.2.3",
       "files": [
@@ -8035,7 +8035,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Design/2.2.3": {
-      "sha512": "+R86lv7N5WmHi/5n7zOHqILNO81SXVo5YQZq74q1uz/GVHbDCY3lMhITFPuq8NwerJn+EDv/SfJzvD+wH7RXnw==",
+      "sha512": "xH50cYOU+infRq4KikBuu2qeXcwW4tE0D5TDfKLuLrEtDm90aXI+0qygPsqyISf+lOW7L7rQ64BH/dRYkK3c3Q==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.design/2.2.3",
       "files": [
@@ -8058,7 +8058,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore/2.2.3": {
-      "sha512": "f9hviZy8zUCOlZD26rXq/GVBR5lVoDfH7rOBFlaPK0VqlvS0vR2rY4iEQao3OjxSnpBJSWrCoACFq6tSiRLOkg==",
+      "sha512": "N9S7TeFZjXzNY9OVbz4OFw9cM9oEeMaCnuLFhetNioy/wPwZbgglrctAEYxfDbvocQ17YCAVR2EMRbYHNDHyVg==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.entityframeworkcore/2.2.3",
       "files": [
@@ -8072,7 +8072,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Templating/2.2.3": {
-      "sha512": "5Tn3jTr7WZQQCPs42Im1tBXUwjgKvP1MlX8VJRzXLYECDv9S7Ucx02ucAx12NV0ViJuIpbMcnRafbGcgQ2rENQ==",
+      "sha512": "sW2lHnOoL1xFnSm/2zSedeUoQPlbhPfWjSuUYsxYUj/N5QmLmH98ZLaqP26k6Om/heR6Gux/veXI96yM1Parow==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.templating/2.2.3",
       "files": [
@@ -8085,7 +8085,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration.Utils/2.2.3": {
-      "sha512": "FbaNspRH4532EtTraeiSvdum56/l3jgGWHdMKktoDsAnwqjWtok2I0SyvNtdWyX5mdJHi3/MyMsU5jDJVYxT4Q==",
+      "sha512": "/r/y+XpOpbCwN/M/HopjfGTDRlmixTd4G6HG6FaBkD/YF3T1u+4WMRVtuB6zz7aw571HmX+6UokEa6HJSwkPDA==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegeneration.utils/2.2.3",
       "files": [
@@ -8098,7 +8098,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc/2.2.3": {
-      "sha512": "AkANFfnAaW+ahOA2QzY7KZTz/oUXl9ahRkPdCQhguFyf1TPEXKD7dVKmWEcCOgAfq/s7ScoDm3ydxW31QRAADQ==",
+      "sha512": "0gVuA4KUCHFM4M/9SjG+7j7BzZ7SW/BufF97Q78i2VV8JBbQXc/5Rf6YUG1VGW2fwSEOl9+S26utEGS+86GGGw==",
       "type": "package",
       "path": "microsoft.visualstudio.web.codegenerators.mvc/2.2.3",
       "files": [
@@ -8496,11 +8496,12 @@
       ]
     },
     "NETStandard.Library/2.0.3": {
-      "sha512": "8TmdOVv1ySk/jQWkJQU3L3+4AyV0FLf8Ob4DPll/4f4kTShYT8i1vUGBL525p+onqgegP0x44MkSijCD621K6Q==",
+      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "type": "package",
       "path": "netstandard.library/2.0.3",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -8838,7 +8839,7 @@
       ]
     },
     "runtime.native.System.Net.Security/4.3.0": {
-      "sha512": "M2nN92ePS8BgQ2oi6Jj3PlTUzadYSIWLdZrHY1n1ZcW9o4wAQQ6W+aQ2lfq1ysZQfVCgDwY58alUdowrzezztg==",
+      "sha512": "cnHpUuR9dfMJGVleFHM3a7VpdDMVO5NWHYO861eZxONBOL8IIJAOWbwK2WDEi6Y8zk6dQWytTKSUcrVy9YmqYA==",
       "type": "package",
       "path": "runtime.native.system.net.security/4.3.0",
       "files": [
@@ -9336,7 +9337,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "NoPBj0ykejqAWW4p4gGtrrL+3c84ZLSvGnHgq422ew1Rj4WKj1FA8/BCybqC111EtgcqUl6ZJNFYYS22HLgbjA==",
+      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -9708,12 +9709,11 @@
       ]
     },
     "System.Diagnostics.Contracts/4.3.0": {
-      "sha512": "eelRRbnm+OloiQvp9CXS0ixjNQldjjkHO4iIkR5XH2VIP8sUB/SIpa1TdUW6/+HDcQ+MlhP3pNa1u5SbzYuWGA==",
+      "sha512": "kVnwhDC6EZka4gtNUvUjEM9+yIfn8jVFPEu68PwTJSo0l/rHI5yvkEXnLbJWqrfO7vH4SdiRU5vupx+NdBIU7Q==",
       "type": "package",
       "path": "system.diagnostics.contracts/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -10748,7 +10748,7 @@
       ]
     },
     "System.Linq.Parallel/4.3.0": {
-      "sha512": "td7x21K8LalpjTWCzW/nQboQIFbq9i0r+PCyBBCdLWWnm4NBcdN18vpz/G9hCpUaCIfRL+ZxJNVTywlNlB1aLQ==",
+      "sha512": "VcEcwKFuBCm8TWpDOqLh9MDom17yDFQEKsWm5PuJ80vgcEZCaqIoIX2GfKQIbJz/Iff574aZhi7odjPXfVdc3A==",
       "type": "package",
       "path": "system.linq.parallel/4.3.0",
       "files": [
@@ -10804,7 +10804,7 @@
       ]
     },
     "System.Linq.Queryable/4.0.1": {
-      "sha512": "Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
+      "sha512": "IFCkyHsN5oh6Vhya0MGNVxH5t3ELQATEQknHnnThsv/PsS+R9q9xZgultH2iBQwwOwJDdNtjSFVxHdBVKfgpcQ==",
       "type": "package",
       "path": "system.linq.queryable/4.0.1",
       "files": [
@@ -12129,12 +12129,11 @@
       ]
     },
     "System.Runtime.Serialization.Primitives/4.3.0": {
-      "sha512": "2Z5t70a2SwMsfQDp9KOclaZNyQhfIga2gppq9lIUDM1A4ohTshn4JqT7ir8bvIhXgorWKYDAr6rPzEbi/nTGKg==",
+      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
       "type": "package",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13308,12 +13307,11 @@
       ]
     },
     "System.Threading.Tasks.Parallel/4.3.0": {
-      "sha512": "cbjBNZHf/vQCfcdhzx7knsiygoCKgxL8mZOeocXZn5gWhCdzHIq6bYNKWX0LAJCWYP7bds4yBK8p06YkP0oa0g==",
+      "sha512": "voaxa+GJ0MrPCqZaZ5a4qWkzx8/tWpRY8RD+egH8n0BBntS78n0pTjytqBCA42xD0Yhh3bS0hUguYNbP8Znurg==",
       "type": "package",
       "path": "system.threading.tasks.parallel/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13839,6 +13837,7 @@
       "Microsoft.AspNetCore.Authentication.Facebook >= 2.2.0",
       "Microsoft.AspNetCore.Authentication.Google >= 2.2.2",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
+      "Microsoft.EntityFrameworkCore.Analyzers >= 2.2.6",
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.2.6",
       "Microsoft.EntityFrameworkCore.Tools >= 2.2.6",
       "Microsoft.ML >= 1.4.0",
@@ -13849,23 +13848,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DELL\\.nuget\\packages\\": {},
+    "C:\\Users\\phant\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
+      "projectUniqueName": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
       "projectName": "BDS_ML",
-      "projectPath": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
-      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\obj\\",
+      "projectPath": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\BDS_ML.csproj",
+      "packagesPath": "C:\\Users\\phant\\.nuget\\packages\\",
+      "outputPath": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_ML\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\phant\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13873,19 +13872,13 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore-tooling/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-entityframeworkcore/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-extensions/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/dotnet-windowsdesktop/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj": {
-              "projectPath": "D:\\SeniorYear\\OOAD\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj"
+            "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj": {
+              "projectPath": "D:\\1.NAM JOKER\\Bai tap\\TieuLuanChuyenNganh\\Software-Engineering-Essays\\Source Code\\Source code\\.Net Core\\BDS_ML\\BDS_MLML.Model\\BDS_MLML.Model.csproj"
             }
           }
         }
@@ -13921,6 +13914,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[2.2.0, )"
+          },
+          "Microsoft.EntityFrameworkCore.Analyzers": {
+            "target": "Package",
+            "version": "[2.2.6, )"
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
